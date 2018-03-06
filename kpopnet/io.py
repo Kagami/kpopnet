@@ -58,7 +58,7 @@ def deep_update(a, b):
                 s = set(a[k])
                 s.update(v)
                 a[k] = sorted(s)
-            except (KeyError, ValueError):
+            except (KeyError, TypeError):
                 a[k] = sorted(v)
         else:
             a[k] = v
