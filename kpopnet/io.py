@@ -15,16 +15,26 @@ def get_profiles_path():
     return path.join(get_data_path(), 'profiles')
 
 
+def check_name(name):
+    assert (name != '.'
+            and name != '..'
+            and '/' not in name
+            and name != 'index'), 'Bad name'
+
+
 def get_band_path(band):
+    check_name(band['name'])
     return path.join(get_profiles_path(), band['name'], 'index.json')
 
 
 def get_band_path_by_name(name):
+    check_name(name)
     return path.join(get_profiles_path(), name, 'index.json')
 
 
 def get_member_path(band, member):
-    assert member['name'] != 'index', 'Bad member name'
+    check_name(band['name'])
+    check_name(member['name'])
     fname = '{}.json'.format(member['name'])
     return path.join(get_profiles_path(), band['name'], fname)
 

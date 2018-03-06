@@ -36,7 +36,8 @@ class KprofilesSpider(ProfileSpider):
                 band['name'] = name
                 band['urls'] = [response.meta['_kpopnet_url']]
             # Member info paragraph.
-            elif p.css('span::text').re_first(r'(?i)stage\s+name:'):
+            elif p.css('span::text').\
+                    re_first(r'(?i)(stage|real|birth)\s+name'):
                 self.parse_member(response, band, p)
         assert band, 'No band'
         self.save_band(band)
@@ -45,72 +46,107 @@ class KprofilesSpider(ProfileSpider):
         member = {}
         for span in p.css('span'):
             key = span.css('::text').extract_first()
-            if not key or not key.strip().endswith(':'):
+            if not key:
                 continue
-            key = self.normalize_member_key(key)
-            # TODO(Kagami): Parse twitter/instagram.
             val = span.xpath('following::text()').extract_first()
+            # Try more aggressive search only if node was really empty.
             if not val or not val.strip():
                 val = span.xpath('following::text()/following::text()').\
                     extract_first()
-            if not val or not val.strip():
+                if not val:
+                    continue
+            key = key.strip()
+            val = val.strip()
+            # Can check only this late.
+            if not key.endswith(':') and not val.startswith(':'):
                 continue
+            key = self.normalize_member_key(key)
             val = self.normalize_member_val(key, val)
-            member[key] = val
-        member = self.normalize_member(member)
+            if key and val:
+                member[key] = val
+        # if not member.get('name'):
+        #     from IPython import embed; embed()
         assert member.get('name'), 'No member name'
+        member = self.normalize_member(member)
         self.save_member(band, member)
 
     def normalize_band_name(self, name):
+        orig = name
         name = name.strip()
-        with suppress(AttributeError):
-            name = re.match(r'(.*)\s+\(', name).group(1)
+        name = re.sub(r'\s*\(.*', '', name)
+        name = re.sub(r'\s+', ' ', name)
         name = re.sub(r'’', "'", name)
 
         # Fix profile bugs.
-        if name == 'F(x)':
+        # TODO(Kagami): Better normalization.
+        if orig == 'F(x)':
             name = 'f(x)'
+        elif name == 'Dal\u2605Shabet':
+            name = 'Dal Shabet'
 
         return name
 
     def normalize_member_key(self, key):
-        key = key.strip()
         key = key.lower()
-        key = re.sub(r':$', '', key)
+        key = re.sub(r'\s*:$', '', key)
         key = re.sub(r'\s+', '_', key)
-        if key == 'zodiac_sign':
-            key = 'zodiac'
-        elif key == 'position':
-            key = 'positions'
-        elif key == 'specialty':
-            key = 'specialties'
+        if key == 'stage_name' or key == 'sage_name':
+            key = 'name'
+        elif key == 'real_name':
+            key = 'birth_name'
         elif key == 'birthday':
             key = 'birth_date'
+        elif key == 'position':
+            key = 'positions'
+        elif key == 'specialty' or key == 'speciality' or key == 'instruments':
+            key = 'specialties'
+        elif key == 'zodiac_sign':
+            key = 'zodiac'
+        elif key == 'twitter_account':
+            key = 'twitter'
         return key
 
     def normalize_member_val(self, key, val):
-        val = val.strip()
+        val = re.sub(r'^:\s*', '', val)
         val = re.sub(r'’', "'", val)
 
-        if key == 'birth_date':
-            with suppress(ValueError):
+        if key == 'name':
+            # Ara / Yooara
+            val = re.sub(r'\s*/.*', '', val)
+        elif key == 'birth_date':
+            try:
                 val = datetime.strptime(val, '%B %d, %Y')
+            except ValueError:
+                val = None
+        elif key == 'height':
+            try:
+                val = int(re.search(r'(\d+)\s*cm', val).group(1))
+            except AttributeError:
+                val = None
+        elif key == 'weight':
+            try:
+                val = int(re.search(r'(\d+)\s*kg', val).group(1))
+            except AttributeError:
+                val = None
         elif key == 'zodiac':
             val = val.lower()
         elif key == 'nationality':
             val = val.lower()
-        elif key == 'height':
-            with suppress(AttributeError):
-                val = int(re.search(r'(\d+)\s+cm', val).group(1))
-        elif key == 'weight':
-            with suppress(AttributeError):
-                val = int(re.search(r'(\d+)\s+kg', val).group(1))
         elif key == 'positions' or key == 'specialties':
-            val = [s.lower() for s in re.split(r',\s+', val)] if val else []
+            val = [s.lower() for s in re.split(r',\s*', val)] if val else []
+        elif key == 'twitter' or key == 'instagram':
+            # @ uieing
+            val = re.sub(r'@\s*', '', val)
+            # @so_yul22 (she deactivated her account)
+            val = re.sub(r'\s*\(.*', '', val)
+        elif key.endswith('_facts'):
+            val = None
 
         # Fix profile bugs.
-        if key == 'stage_name' and val.startswith('Jiin went on'):
+        if key == 'name' and val.startswith('Jiin went on'):
             val = 'Jisun'
+        elif key == 'name' and val == 'ROSÉ':
+            val = 'Rose'
 
         return val
 
@@ -118,25 +154,35 @@ class KprofilesSpider(ProfileSpider):
         member = member.copy()
 
         # Name field must always present.
-        name = member.pop('stage_name')
         with suppress(AttributeError):
+            name = member['name']
             name, name_hangul = re.\
-                match(r'(.*)\s+\((.*)\)', name).\
+                match(r'(.*?)\s*\((.*?)\)', name).\
                 groups()
+
+            # Fix profile bugs.
+            if name == 'EXY':
+                name = 'Exy'
+
+            member['name'] = name
             member['name_hangul'] = name_hangul
-        member['name'] = name
 
         # Normalize birth name if any.
-        try:
+        with suppress(KeyError, AttributeError):
             birth_name = member['birth_name']
-        except KeyError:
-            pass
-        else:
-            with suppress(AttributeError):
-                birth_name, birth_name_hangul = re.\
-                    match(r'(.*)\s+\((.*)\)', birth_name).\
-                    groups()
-                member['birth_name'] = birth_name
-                member['birth_name_hangul'] = birth_name_hangul
+            birth_name, birth_name_hangul = re.\
+                match(r'(.*?)\s*\((.*?)\)', birth_name).\
+                groups()
+            member['birth_name'] = birth_name
+            member['birth_name_hangul'] = birth_name_hangul
+
+        # Normalize korean name if any.
+        with suppress(KeyError, AttributeError):
+            korean_name = member['korean_name']
+            korean_name, korean_name_hangul = re.\
+                match(r'(.*?)\s*\((.*?)\)', korean_name).\
+                groups()
+            member['korean_name'] = korean_name
+            member['korean_name_hangul'] = korean_name_hangul
 
         return member

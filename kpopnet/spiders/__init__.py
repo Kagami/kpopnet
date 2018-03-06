@@ -23,18 +23,15 @@ for spider in [
     profile_spiders[spider.name] = spider
 
 
-had_error = False
+def run_spider(spider, bail=False, **kwargs):
+    def process_spider_error(failure, response, spider):
+        nonlocal had_error
+        had_error = True
 
-
-def process_spider_error(failure, response, spider):
-    global had_error
-    had_error = True
-
-
-def run_spider(spider, **kwargs):
+    had_error = False
     process = CrawlerProcess({
         'USER_AGENT': USER_AGENT,
-        'CLOSESPIDER_ERRORCOUNT': 1 if kwargs['bail'] else 0,
+        'CLOSESPIDER_ERRORCOUNT': 1 if bail else 0,
     })
     crawler = process.create_crawler(spider)
     crawler.signals.connect(process_spider_error, signals.spider_error)
