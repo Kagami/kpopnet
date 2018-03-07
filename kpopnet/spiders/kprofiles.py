@@ -15,7 +15,7 @@ class KprofilesSpider(ProfileSpider):
             if not self.update_all and self.has_band_by_url(url):
                 continue
             if url.endswith('-profile/'):
-                meta = {'_kpopnet_url': url}
+                meta = {'_knet_url': url}
                 yield response.follow(url, self.parse_band, meta=meta)
 
     def parse_band(self, response):
@@ -34,7 +34,7 @@ class KprofilesSpider(ProfileSpider):
                 assert name, 'No band name'
                 # TODO(Kagami): Parse more info.
                 band['name'] = name
-                band['urls'] = [response.meta['_kpopnet_url']]
+                band['urls'] = [response.meta['_knet_url']]
             # Member info paragraph.
             elif p.css('span::text').\
                     re_first(r'(?i)(stage|real|birth)\s+name'):

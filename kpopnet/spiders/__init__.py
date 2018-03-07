@@ -5,6 +5,7 @@ from .kprofiles import KprofilesSpider
 from .nowkpop import NowkpopSpider
 from .kpopinfo114 import Kpopinfo114Spider
 from .wikipedia import WikipediaSpider
+from .googleimages import GoogleimagesSpider
 
 
 USER_AGENT = (
@@ -23,15 +24,34 @@ for spider in [
     profile_spiders[spider.name] = spider
 
 
+image_spiders = {}
+for spider in [
+    GoogleimagesSpider,
+]:
+    image_spiders[spider.name] = spider
+
+
+class HttpErrorMiddleware:
+    def process_spider_input(self, response, spider):
+        if not 200 <= response.status < 300:
+            raise Exception('HTTP error {}'.format(response))
+
+
 def run_spider(spider, bail=False, **kwargs):
+
     def process_spider_error(failure, response, spider):
         nonlocal had_error
         had_error = True
 
     had_error = False
+    spider_middlewares = {}
+    if bail:
+        spider_middlewares['kpopnet.spiders.HttpErrorMiddleware'] = 1
     process = CrawlerProcess({
         'USER_AGENT': USER_AGENT,
         'CLOSESPIDER_ERRORCOUNT': 1 if bail else 0,
+        'CONCURRENT_REQUESTS_PER_DOMAIN': 1,
+        'SPIDER_MIDDLEWARES': spider_middlewares,
     })
     crawler = process.create_crawler(spider)
     crawler.signals.connect(process_spider_error, signals.spider_error)
