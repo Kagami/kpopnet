@@ -171,4 +171,9 @@ def save_image_by_name(bname, mname, data):
     fname = '{}.jpg'.format(md5)
     ipath = path.join(get_images_path(), bname, mname, fname)
     os.makedirs(path.dirname(ipath), exist_ok=True)
-    open(ipath, 'wb').write(data)
+    try:
+        open(ipath, 'xb').write(data)
+    except FileExistsError:
+        return False
+    else:
+        return True

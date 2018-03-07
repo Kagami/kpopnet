@@ -50,7 +50,7 @@ def run_spider(spider, bail=False, **kwargs):
     process = CrawlerProcess({
         'USER_AGENT': USER_AGENT,
         'CLOSESPIDER_ERRORCOUNT': 1 if bail else 0,
-        'CONCURRENT_REQUESTS_PER_DOMAIN': 1,
+        'CONCURRENT_REQUESTS_PER_DOMAIN': 3,
         'SPIDER_MIDDLEWARES': spider_middlewares,
     })
     crawler = process.create_crawler(spider)

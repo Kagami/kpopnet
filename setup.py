@@ -12,6 +12,7 @@ setup(
     install_requires=[
         'docopt>=0.6.2',
         'scrapy>=1.5.0',
+        'Pillow>=5.0.0',
     ],
     extras_require={
       'tests': ['flake8'],

@@ -1,16 +1,28 @@
+import io
+
 import scrapy
+from PIL import Image
 
 from ..io import has_images_by_name, get_all_member_names, save_image_by_name
 
 
-def has_jpeg_header(data):
-    return data[6:10] in (b'JFIF', b'Exif')
+def is_valid_jpeg(data):
+    try:
+        assert data[6:10] in (b'JFIF', b'Exif')
+        im = Image.open(io.BytesIO(data))
+        assert im.format == 'JPEG'
+        assert im.width < 5000
+        assert im.height < 5000
+        im.load()
+    except Exception:
+        return False
+    else:
+        return True
 
 
 class ImageSpider(scrapy.Spider):
     """
-    Just a collection of useful wrappers. We may pass settings object in
-    the future to support e.g. custom locations of image data.
+    Useful wrappers and common image spider methods.
     """
 
     MAX_IMAGES_PER_MEMBER = 10
@@ -22,11 +34,9 @@ class ImageSpider(scrapy.Spider):
         return get_all_member_names()
 
     def save_image(self, response):
-        # TODO(Kagami): File might be corrupted so probably better to
-        # fully decode?
-        if not has_jpeg_header(response.body):
+        # TODO(Kagami): Ensure there is only single face in the image.
+        if not is_valid_jpeg(response.body):
             return False
         bname = response.meta['_knet_bname']
         mname = response.meta['_knet_mname']
-        save_image_by_name(bname, mname, response.body)
-        return True
+        return save_image_by_name(bname, mname, response.body)
