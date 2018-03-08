@@ -2,8 +2,8 @@
 K-pop face recognition neural network and utilities.
 
 Usage:
-  kpopnet profiles update [options]
-  kpopnet images update [options]
+  kpopnet profile update [options]
+  kpopnet image update [options]
   kpopnet [-h | --help]
   kpopnet [-V | --version]
 
@@ -27,13 +27,13 @@ def main():
     version = pkg_resources.require('kpopnet')[0].version
     args = docopt(__doc__, version=version)
 
-    if args['profiles']:
+    if args['profile']:
         if args['update']:
             return profiles.update(
                 args['-s'] or 'kprofiles',
                 update_all=args['--all'],
                 bail=args['--bail'])
-    elif args['images']:
+    elif args['image']:
         if args['update']:
             return images.update(
                 args['-s'] or 'googleimages',
