@@ -15,12 +15,10 @@ Options:
   --bail        Exit on first error.
 """
 
+import sys
 import pkg_resources
 
 from docopt import docopt
-
-from . import profiles
-from . import images
 
 
 def main():
@@ -28,14 +26,19 @@ def main():
     args = docopt(__doc__, version=version)
 
     if args['profile']:
+        from . import profiles
         if args['update']:
             return profiles.update(
                 args['-s'] or 'kprofiles',
                 update_all=args['--all'],
                 bail=args['--bail'])
     elif args['image']:
+        from . import images
         if args['update']:
             return images.update(
                 args['-s'] or 'googleimages',
                 update_all=args['--all'],
                 bail=args['--bail'])
+
+    print('No command selected, try --help.', file=sys.stderr)
+    sys.exit(1)
