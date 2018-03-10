@@ -1,4 +1,10 @@
 *.pyc
 /py/env/
 /py/kpopnet.egg-info/
+
+/go/src/*
+/go/bin/
+/go/pkg/
+!/go/src/kpopnet/
+
 /data/images/

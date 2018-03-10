@@ -1,10 +1,18 @@
-all: install-deps
+export GOPATH = $(PWD)/go
+
+all: pydeps go/bin/kpopnet
 
 py/env:
 	virtualenv -p python3 --system-site-packages $@
 
-install-deps: py/env
+pydeps: py/env
 	$^/bin/pip install -e .[tests]
 
-lint: py/env
+pylint: py/env
 	$^/bin/flake8 py/kpopnet
+
+go/bin/kpopnet: go/src/kpopnet/**/*
+	go get -v kpopnet
+
+gofmt:
+	go fmt kpopnet/...
