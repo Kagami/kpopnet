@@ -10,7 +10,7 @@ INDEX_NAME = 'index'
 
 # TODO(Kagami): Make it configurable.
 def get_data_path():
-    dpath = path.join(path.dirname(__file__), '..', 'data')
+    dpath = path.join(path.dirname(__file__), '..', '..', 'data')
     dpath = path.abspath(dpath)
     return dpath
 

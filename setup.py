@@ -9,6 +9,11 @@ setup(
     url='https://github.com/Kagami/kpopnet',
     description='K-pop face recognition neural network',
     license='CC0',
+    package_dir={'': 'py'},
+    packages=find_packages('py', exclude=['tests']),
+    entry_points={
+        'console_scripts': ['kpopnet = kpopnet.cli:main'],
+    },
     install_requires=[
         'docopt>=0.6.2',
         'scrapy>=1.5.0',
@@ -16,10 +21,6 @@ setup(
     ],
     extras_require={
       'tests': ['flake8'],
-    },
-    packages=find_packages(exclude=['tests']),
-    entry_points={
-        'console_scripts': ['kpopnet = kpopnet.cli:main'],
     },
     classifiers=[
         'Development Status :: 3 - Alpha',
