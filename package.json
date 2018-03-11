@@ -4,7 +4,7 @@
   "private": true,
   "description": "K-pop face recognition neural network",
   "scripts": {
-    "start": "webpack-cli -w --mode development"
+    "start": "webpack-cli --mode=development --watch"
   },
   "repository": {
     "type": "git",

@@ -13,26 +13,26 @@ module.exports = {
       {
         test: /\.tsx?$/,
         use: "ts-loader",
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
       {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({use: "css-loader"}),
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
     ],
   },
   plugins: [
     new CleanWebpackPlugin(["dist"]),
-    new ExtractTextPlugin("[contenthash:10].css"),
+    new ExtractTextPlugin("static/[contenthash:10].css"),
     new HtmlWebpackPlugin({
       template: "ts/index/index.html",
       favicon: "ts/index/favicon.ico",
-      title: "K-pop face recognition",
     }),
   ],
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "[chunkhash:10].js",
+    filename: "static/[chunkhash:10].js",
+    publicPath: "/",
   },
 };
