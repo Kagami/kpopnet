@@ -1,4 +1,5 @@
 const path = require("path");
+const LiveReloadPlugin = require("webpack-livereload-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -23,6 +24,7 @@ module.exports = {
     ],
   },
   plugins: [
+    new LiveReloadPlugin(),
     new CleanWebpackPlugin(["dist"]),
     new ExtractTextPlugin("static/[contenthash:10].css"),
     new HtmlWebpackPlugin({
