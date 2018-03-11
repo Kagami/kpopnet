@@ -7,4 +7,8 @@
 /go/pkg/
 !/go/src/kpopnet/
 
+/node_modules/
+/package-lock.json
+/dist/
+
 /data/images/

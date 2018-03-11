@@ -1,0 +1,32 @@
+{
+  "name": "kpopnet",
+  "version": "0.0.0",
+  "private": true,
+  "description": "K-pop face recognition neural network",
+  "scripts": {
+    "start": "webpack-cli -w --mode development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kagami/kpopnet.git"
+  },
+  "author": "Kagami Hiiragi",
+  "license": "CC0-1.0",
+  "bugs": {
+    "url": "https://github.com/Kagami/kpopnet/issues"
+  },
+  "homepage": "https://github.com/Kagami/kpopnet#readme",
+  "dependencies": {
+    "preact": "^8.2.7"
+  },
+  "devDependencies": {
+    "clean-webpack-plugin": "^0.1.19",
+    "css-loader": "^0.28.10",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "html-webpack-plugin": "^3.0.6",
+    "ts-loader": "^4.0.1",
+    "typescript": "^2.7.2",
+    "webpack": "^4.1.1",
+    "webpack-cli": "^2.0.11"
+  }
+}

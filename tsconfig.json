@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "es6",
+    "target": "es6",
+    "jsx": "React",
+    "jsxFactory": "h",
+    "strict": true,
+    "noUnusedLocals": true,
+    "allowJs": true
+  }
+}
