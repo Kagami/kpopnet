@@ -14,14 +14,12 @@ func getTx() (tx *sql.Tx, err error) {
 	return db.Begin()
 }
 
-func getRoTx() (tx *sql.Tx, err error) {
-	tx, err = getTx()
-	if err != nil {
-		return
-	}
+func setReadOnly(tx *sql.Tx) (err error) {
 	_, err = tx.Exec("SET TRANSACTION READ ONLY")
-	if err != nil {
-		err = tx.Rollback()
-	}
+	return
+}
+
+func setRepeatableRead(tx *sql.Tx) (err error) {
+	_, err = tx.Exec("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ")
 	return
 }

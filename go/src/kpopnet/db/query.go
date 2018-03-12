@@ -34,11 +34,17 @@ func fixIdolData(buf []byte, id string, bandId string) []byte {
 // Get all profiles.
 // FIXME(Kagami): Cache it!
 func GetProfiles() (ps *Profiles, err error) {
-	tx, err := getRoTx()
+	tx, err := getTx()
 	if err != nil {
 		return
 	}
 	defer tx.Rollback()
+	if setReadOnly(tx) != nil {
+		return
+	}
+	if setRepeatableRead(tx) != nil {
+		return
+	}
 
 	r, err := tx.Stmt(prepared["get_bands"]).Query()
 	if err != nil {
