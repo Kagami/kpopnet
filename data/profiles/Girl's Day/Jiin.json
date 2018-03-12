@@ -1,8 +1,10 @@
 {
-    "birth_date": "1992-03-13 00:00:00",
+    "band_id": "33e2fd8d-0327-45f2-a619-88b8f181ce87",
+    "birth_date": "1992-03-13",
     "birth_name": "Lee Jiin",
     "blood_type": "O",
     "height": 167,
+    "id": "74d18a13-96f8-4d38-8525-fb2584649ba7",
     "name": "Jiin",
     "positions": [
         "main vocalist"

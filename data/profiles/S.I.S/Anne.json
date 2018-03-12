@@ -1,9 +1,11 @@
 {
-    "birth_date": "2000-05-03 00:00:00",
+    "band_id": "dfba4411-93c5-42f5-adc5-db452dc0dda7",
+    "birth_date": "2000-05-03",
     "birth_name": "Kim Sung-yeon",
     "birth_name_hangul": "김승연",
     "blood_type": "O",
     "height": 162,
+    "id": "3c6f7c45-7d3d-4daf-b050-6c8817fa793c",
     "name": "Anne",
     "name_hangul": "앤",
     "positions": [

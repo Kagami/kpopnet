@@ -1,9 +1,11 @@
 {
-    "birth_date": "1998-06-03 00:00:00",
+    "band_id": "e2adbb26-ce4c-4990-a042-8c7536d7ffb1",
+    "birth_date": "1998-06-03",
     "birth_name": "Kim Taeha",
     "birth_name_hangul": "김태하",
     "blood_type": "B",
     "height": 163,
+    "id": "c768adef-1970-4f70-b036-e4b8c4a185f7",
     "name": "Taeha",
     "name_hangul": "태하",
     "positions": [

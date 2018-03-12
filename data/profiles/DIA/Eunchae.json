@@ -1,8 +1,10 @@
 {
-    "birth_date": "1999-05-26 00:00:00",
+    "band_id": "b84a59fd-3964-469f-b592-8c5830bae934",
+    "birth_date": "1999-05-26",
     "birth_name": "Kwon Chaewon",
     "blood_type": "A",
     "height": 159,
+    "id": "8bc5bde7-6e81-4a7a-b1c0-af9f40d59130",
     "name": "Eunchae",
     "positions": [
         "lead vocalist"

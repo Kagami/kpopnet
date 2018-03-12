@@ -1,9 +1,11 @@
 {
-    "birth_date": "1990-06-25 00:00:00",
+    "band_id": "e048dd15-b44b-4fc4-90a5-61f1ad61d0f9",
+    "birth_date": "1990-06-25",
     "birth_name": "Song Ji Eun",
     "birth_name_hangul": "송지은",
     "blood_type": "O",
     "height": 169,
+    "id": "fcbd0e91-4b14-4368-b3d5-1f03a9d9f1ac",
     "name": "Dain",
     "name_hangul": "다인",
     "positions": [

@@ -1,8 +1,10 @@
 {
-    "birth_date": "1996-09-14 00:00:00",
+    "band_id": "b84a59fd-3964-469f-b592-8c5830bae934",
+    "birth_date": "1996-09-14",
     "birth_name": "Lee So Yul",
     "blood_type": "A",
     "height": 165,
+    "id": "fa76ad91-6035-40ac-814e-4c559e0d4e50",
     "name": "Jenny",
     "positions": [
         "visual",

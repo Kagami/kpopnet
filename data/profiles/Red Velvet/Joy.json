@@ -1,11 +1,13 @@
 {
-    "birth_date": "1996-09-03 00:00:00",
+    "band_id": "bdb764d4-7d12-49d3-a164-fab313e17063",
+    "birth_date": "1996-09-03",
     "birth_name": "Park Soo Young",
     "birth_name_hangul": "박수영",
     "birth_place": "Jeju Island, South Korea",
     "blood_type": "A",
     "family": "Parents, two younger sisters",
     "height": 168,
+    "id": "f572ca89-a458-4b7f-893f-f5e5834d592e",
     "name": "Joy",
     "name_hangul": "조이",
     "positions": [

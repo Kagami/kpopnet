@@ -1,9 +1,11 @@
 {
-    "birth_date": "2001-07-02 00:00:00",
+    "band_id": "dfba4411-93c5-42f5-adc5-db452dc0dda7",
+    "birth_date": "2001-07-02",
     "birth_name": "Lee Se-bin",
     "birth_name_hangul": "이세빈",
     "blood_type": "B",
     "height": 160,
+    "id": "41de79bc-d8e5-427f-af57-1d98603c604d",
     "name": "Sebin",
     "name_hangul": "세빈",
     "positions": [

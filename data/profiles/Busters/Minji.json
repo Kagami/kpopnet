@@ -1,9 +1,11 @@
 {
-    "birth_date": "2001-01-16 00:00:00",
+    "band_id": "d23b024e-14f6-49e8-99c1-60a5f634275e",
+    "birth_date": "2001-01-16",
     "birth_name": "Kim Min Ji",
     "birth_name_hangul": "김민지",
     "color": "Red",
     "height": 162,
+    "id": "b1751ec2-6457-4476-832c-73a8f0b74c49",
     "name": "Minji",
     "name_hangul": "민지",
     "positions": [

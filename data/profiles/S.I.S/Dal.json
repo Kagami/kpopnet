@@ -1,9 +1,11 @@
 {
-    "birth_date": "1996-05-28 00:00:00",
+    "band_id": "dfba4411-93c5-42f5-adc5-db452dc0dda7",
+    "birth_date": "1996-05-28",
     "birth_name": "Kim A-hyeon",
     "birth_name_hangul": "김아현",
     "blood_type": "A",
     "height": 165,
+    "id": "79056f51-9e53-40bf-84d0-8db327bd49ac",
     "name": "Dal",
     "name_hangul": "달",
     "positions": [

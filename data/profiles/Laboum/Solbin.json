@@ -1,9 +1,11 @@
 {
-    "birth_date": "1997-08-19 00:00:00",
+    "band_id": "ee63939f-4593-4cb9-9f50-0eb9cac54497",
+    "birth_date": "1997-08-19",
     "birth_name": "Ahn Solbin",
     "birth_name_hangul": "안솔빈",
     "blood_type": "A",
     "height": 169,
+    "id": "ab4f8cc3-73ad-4573-a59c-e6bedc905411",
     "name": "Solbin",
     "positions": [
         "",

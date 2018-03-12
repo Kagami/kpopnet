@@ -1,9 +1,11 @@
 {
-    "birth_date": "1999-09-27 00:00:00",
+    "band_id": "e2adbb26-ce4c-4990-a042-8c7536d7ffb1",
+    "birth_date": "1999-09-27",
     "birth_name": "Lee Ah In",
     "birth_name_hangul": "이아인",
     "blood_type": "A",
     "height": 160,
+    "id": "7a772401-0769-46da-be42-3aff2dcc1bd2",
     "name": "Ahin",
     "name_hangul": "아인",
     "positions": [

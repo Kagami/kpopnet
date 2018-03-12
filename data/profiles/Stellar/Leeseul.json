@@ -1,9 +1,11 @@
 {
-    "birth_date": "1990-06-14 00:00:00",
+    "band_id": "3fb253ad-d262-45b7-9416-ecbdf506fe52",
+    "birth_date": "1990-06-14",
     "birth_name": "Kim Lee-seul",
     "birth_name_hangul": "김이슬",
     "blood_type": "AB",
     "height": 163,
+    "id": "cb0cd656-87ac-4500-837d-a21c83b01a0f",
     "name": "Leeseul",
     "name_hangul": "이슬",
     "positions": [

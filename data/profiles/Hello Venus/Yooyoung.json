@@ -1,9 +1,11 @@
 {
-    "birth_date": "1995-01-23 00:00:00",
+    "band_id": "79e836b3-f741-4232-94dc-9c691efa1d20",
+    "birth_date": "1995-01-23",
     "birth_name": "Lee Yoo-young",
     "birth_name_hangul": "이유영",
     "blood_type": "A",
     "height": 170,
+    "id": "1c64edec-9b6c-4438-ae7a-94137befad89",
     "name": "Yooyoung",
     "positions": [
         "lead dancer",

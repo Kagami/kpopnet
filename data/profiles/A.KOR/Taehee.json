@@ -1,8 +1,10 @@
 {
-    "birth_date": "1990-11-23 00:00:00",
+    "band_id": "51eff915-0a51-43b0-918c-262d459d7f6a",
+    "birth_date": "1990-11-23",
     "birth_name": "Kim Tae Hee",
     "blood_type": "A",
     "height": 165,
+    "id": "d2eded3b-c87d-46d0-ba33-e572276cd681",
     "name": "Taehee",
     "positions": [
         "visual",

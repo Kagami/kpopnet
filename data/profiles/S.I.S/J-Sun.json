@@ -1,9 +1,11 @@
 {
-    "birth_date": "1995-08-10 00:00:00",
+    "band_id": "dfba4411-93c5-42f5-adc5-db452dc0dda7",
+    "birth_date": "1995-08-10",
     "birth_name": "Kim Ji-hae",
     "birth_name_hangul": "김지해",
     "blood_type": "A",
     "height": 170,
+    "id": "1e7fd2bb-ae10-4ab7-b584-a8483d689b70",
     "name": "J-Sun",
     "name_hangul": "지해",
     "positions": [

@@ -1,9 +1,11 @@
 {
-    "birth_date": "1990-11-24 00:00:00",
+    "band_id": "3075f0c6-0774-4e55-ac2d-9991c621b692",
+    "birth_date": "1990-11-24",
     "birth_name": "Han Ye-jin",
     "birth_name_hangul": "한예진",
     "blood_type": "AB",
     "height": 166,
+    "id": "099bbc86-45ea-4513-aeae-30384f4161d5",
     "name": "Yejin",
     "position_in_group": "Vocalist",
     "zodiac": "sagittarius"

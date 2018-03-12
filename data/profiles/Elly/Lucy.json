@@ -1,9 +1,11 @@
 {
-    "birth_date": "2002-08-31 00:00:00",
+    "band_id": "d6ced719-1da9-41a3-b520-c34479f8a40b",
+    "birth_date": "2002-08-31",
     "birth_name": "Noh Hyo-jung",
     "birth_name_hangul": "노효정",
     "blood_type": "B",
     "height": 168,
+    "id": "f96ec9db-b660-4e06-9961-f92ef0c1fc6f",
     "name": "Lucy",
     "name_hangul": "루시",
     "positions": [

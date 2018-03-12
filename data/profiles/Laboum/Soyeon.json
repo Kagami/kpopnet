@@ -1,9 +1,11 @@
 {
-    "birth_date": "1994-05-04 00:00:00",
+    "band_id": "ee63939f-4593-4cb9-9f50-0eb9cac54497",
+    "birth_date": "1994-05-04",
     "birth_name": "Jung Soyeon",
     "birth_name_hangul": "정소연",
     "blood_type": "A",
     "height": 161,
+    "id": "5cc8a476-1d23-4829-82c3-88d0b447b8b8",
     "name": "Soyeon",
     "positions": [
         "main vocalist"

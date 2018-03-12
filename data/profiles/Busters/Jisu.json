@@ -1,9 +1,11 @@
 {
-    "birth_date": "2003-11-22 00:00:00",
+    "band_id": "d23b024e-14f6-49e8-99c1-60a5f634275e",
+    "birth_date": "2003-11-22",
     "birth_name": "Jeong Ji Su",
     "birth_name_hangul": "정지수",
     "color": "Green",
     "height": 171,
+    "id": "d3e643a3-930b-4499-98f9-718fde836930",
     "name": "Jisu",
     "name_hangul": "지수",
     "positions": [

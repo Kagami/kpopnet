@@ -1,9 +1,11 @@
 {
-    "birth_date": "1998-11-21 00:00:00",
+    "band_id": "5a94a10c-65a2-490f-ac60-9954915c5926",
+    "birth_date": "1998-11-21",
     "birth_name": "Jung Ha-yoon",
     "birth_name_hangul": "정하윤",
     "blood_type": "A",
     "height": 163,
+    "id": "ba6e9302-93df-4cc5-addc-8404b2a99628",
     "name": "Hayoon",
     "name_hangul": "하윤",
     "positions": [

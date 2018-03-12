@@ -1,9 +1,11 @@
 {
-    "birth_date": "2000-01-07 00:00:00",
+    "band_id": "d6ced719-1da9-41a3-b520-c34479f8a40b",
+    "birth_date": "2000-01-07",
     "birth_name": "Lee Seo-jeong",
     "birth_name_hangul": "이서정",
     "blood_type": "B",
     "height": 163,
+    "id": "06e94be8-e7b8-4c32-8fe2-137575b3a9ef",
     "name": "Sei",
     "name_hangul": "세이",
     "positions": [

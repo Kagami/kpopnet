@@ -1,9 +1,11 @@
 {
-    "birth_date": "1997-09-23 00:00:00",
+    "band_id": "4a076f66-a4f9-4206-b166-84ff5837eef3",
+    "birth_date": "1997-09-23",
     "birth_name": "Lee Ha-jeong",
     "birth_name_hangul": "이하정",
     "blood_type": "O",
     "height": 169,
+    "id": "5a184dd1-3f4f-4268-a53e-550747c034f2",
     "name": "Hajeong",
     "name_hangul": "하정",
     "positions": [

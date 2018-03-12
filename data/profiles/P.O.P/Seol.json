@@ -1,13 +1,15 @@
 {
-    "birth_date": "1997-01-01 00:00:00",
+    "band_id": "e2802e22-e26c-4612-afa1-1e5e9739df76",
+    "birth_date": "1997-01-01",
     "birth_name": "Min Ji Hye",
     "birth_name_hangul": "민지혜",
     "blood_type": "AB",
     "height": 166,
+    "id": "1b7be716-5bcc-4e17-b90d-0c71a9acb28d",
     "name": "Seol",
     "name_hangul": "설",
     "positions": [
-        "vocalist"
+        "sub-vocalist"
     ],
     "zodiac": "capricorn"
 }

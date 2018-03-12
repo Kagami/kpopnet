@@ -1,9 +1,11 @@
 {
-    "birth_date": "2000-11-20 00:00:00",
+    "band_id": "5a94a10c-65a2-490f-ac60-9954915c5926",
+    "birth_date": "2000-11-20",
     "birth_name": "Kim Da-yun",
     "birth_name_hangul": "김다윤",
     "blood_type": "A",
     "height": 164,
+    "id": "710fc7eb-4b43-445a-bf90-cc7f7c53e402",
     "name": "Dayun",
     "name_hangul": "다윤",
     "positions": [

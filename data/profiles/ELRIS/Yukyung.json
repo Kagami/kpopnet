@@ -1,9 +1,11 @@
 {
-    "birth_date": "1999-11-05 00:00:00",
+    "band_id": "6c86e9b8-bebd-4b99-81fa-87ed63d1ce04",
+    "birth_date": "1999-11-05",
     "birth_name": "Lee Yukyung",
     "birth_name_hangul": "이 유경",
     "blood_type": "B",
     "height": 157,
+    "id": "1198b44b-a3ac-42d9-8fa2-d2dc7485184f",
     "name": "Yukyung",
     "positions": [
         "main dancer",

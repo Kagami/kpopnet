@@ -1,9 +1,11 @@
 {
-    "birth_date": "1996-12-21 00:00:00",
+    "band_id": "b8e68da8-a6a4-4cb9-9d67-f0c20dc65671",
+    "birth_date": "1996-12-21",
     "birth_name": "Kim Do Hee",
     "birth_name_hangul": "김도희",
     "blood_type": "A",
     "height": 165,
+    "id": "dc0fc19a-5520-4ddc-8fff-85eb2eb95341",
     "name": "High.D",
     "name_hangul": "하이디",
     "positions": [

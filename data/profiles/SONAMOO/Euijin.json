@@ -1,9 +1,11 @@
 {
-    "birth_date": "1996-10-08 00:00:00",
+    "band_id": "b8e68da8-a6a4-4cb9-9d67-f0c20dc65671",
+    "birth_date": "1996-10-08",
     "birth_name": "Hong Eui Jin",
     "birth_name_hangul": "홍의진",
     "blood_type": "A",
     "height": 168,
+    "id": "c984ba43-9327-488e-b0ff-65cf4d1a8414",
     "name": "Euijin",
     "name_hangul": "의진",
     "positions": [

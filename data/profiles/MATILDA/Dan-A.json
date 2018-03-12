@@ -1,8 +1,10 @@
 {
-    "birth_date": "1993-06-26 00:00:00",
+    "band_id": "cf3cbd07-5acf-4e78-a368-314fb150c5ec",
+    "birth_date": "1993-06-26",
     "birth_name": "Park Seung Yeon",
     "birth_name_hangul": "박승연",
     "height": 160,
+    "id": "6b57c8bb-11f0-40b1-b45a-5dd49903bcbd",
     "name": "Dan-A",
     "name_hangul": "단아",
     "positions": [

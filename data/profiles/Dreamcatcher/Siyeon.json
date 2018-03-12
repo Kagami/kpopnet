@@ -1,9 +1,11 @@
 {
-    "birth_date": "1995-10-01 00:00:00",
+    "band_id": "087f4283-db90-4c99-9fa0-6d512e0b5516",
+    "birth_date": "1995-10-01",
     "birth_name": "Lee Si-yeon",
     "birth_name_hangul": "이시연",
     "blood_type": "A",
     "height": 168,
+    "id": "427f4b80-8b3f-4ff4-a322-222efcc80ada",
     "name": "Siyeon",
     "name_hangul": "시연",
     "positions": [

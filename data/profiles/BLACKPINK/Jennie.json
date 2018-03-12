@@ -1,10 +1,12 @@
 {
-    "birth_date": "1996-01-16 00:00:00",
+    "band_id": "e591c224-ce8c-41fd-95a4-d7a2cca29cab",
+    "birth_date": "1996-01-16",
     "birth_name": "Jennie Kim",
     "birth_name_hangul": "제니김",
     "birthplace": "South Korea",
     "blood_type": "B",
     "height": 163,
+    "id": "9a98e10a-f662-4d80-b8e3-8bb37a7c3aed",
     "name": "Jennie",
     "nickname": "Jendeukie",
     "positions": [

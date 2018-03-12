@@ -1,9 +1,11 @@
 {
-    "birth_date": "1998-12-13 00:00:00",
+    "band_id": "9ef3d987-a6f6-403c-879b-ea4d677888a0",
+    "birth_date": "1998-12-13",
     "birth_name": "Kang Se-hyung",
     "birth_name_hangul": "강세형",
     "blood_type": "B",
     "height": 169,
+    "id": "3c2e25ff-31c4-4c15-980e-8b49baef44b7",
     "name": "Sehyung",
     "name_hangul": "세형",
     "positions": [

@@ -1,9 +1,11 @@
 {
-    "birth_date": "1986-05-21 00:00:00",
+    "band_id": "33e2fd8d-0327-45f2-a619-88b8f181ce87",
+    "birth_date": "1986-05-21",
     "birth_name": "Park So Jin",
     "birth_name_hangul": "박소진",
     "blood_type": "AB",
     "height": 167,
+    "id": "c283d73e-fd23-41d8-8468-1de760289aec",
     "name": "Sojin",
     "name_hangul": "소진",
     "positions": [

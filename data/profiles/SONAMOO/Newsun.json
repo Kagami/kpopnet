@@ -1,9 +1,11 @@
 {
-    "birth_date": "1997-06-19 00:00:00",
+    "band_id": "b8e68da8-a6a4-4cb9-9d67-f0c20dc65671",
+    "birth_date": "1997-06-19",
     "birth_name": "Choi Yoon Sun",
     "birth_name_hangul": "최윤선",
     "blood_type": "O",
     "height": 174,
+    "id": "88eba6df-05e8-487a-9146-efe228e60ca2",
     "name": "Newsun",
     "name_hangul": "뉴썬",
     "positions": [

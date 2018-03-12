@@ -1,5 +1,6 @@
 {
-    "birth_date": "1999-03-05 00:00:00",
+    "band_id": "bdb764d4-7d12-49d3-a164-fab313e17063",
+    "birth_date": "1999-03-05",
     "birth_name": "Kim Ye Rim",
     "birth_name_hangul": "김예림",
     "blood_type": "O",
@@ -7,6 +8,7 @@
     "family": "Parents, three younger sisters.",
     "height": 160,
     "hometown": "Seoul, South Korea",
+    "id": "4c98710d-2531-46e8-b672-c771520be174",
     "name": "Yeri",
     "name_hangul": "예리",
     "positions": [

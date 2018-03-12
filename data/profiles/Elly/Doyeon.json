@@ -1,9 +1,11 @@
 {
-    "birth_date": "1999-12-04 00:00:00",
+    "band_id": "d6ced719-1da9-41a3-b520-c34479f8a40b",
+    "birth_date": "1999-12-04",
     "birth_name": "Kim Do-yeon",
     "birth_name_hangul": "김도연",
     "blood_type": "O",
     "height": 173,
+    "id": "f33cbf95-3645-4d50-aee1-c4fe080c1488",
     "name": "Doyeon",
     "name_hangul": "도연",
     "positions": [

@@ -1,9 +1,11 @@
 {
-    "birth_date": "1999-10-20 00:00:00",
+    "band_id": "83a4e974-85cf-4704-8123-e89446d543ac",
+    "birth_date": "1999-10-20",
     "birth_name": "Kim Jiwoo",
     "birth_name_hangul": "김지우",
     "blood_type": "A",
     "height": 160,
+    "id": "0efdff0a-15d3-4a91-990b-062ce4a92319",
     "name": "Chuu",
     "name_hangul": "츄",
     "zodiac": "libra"

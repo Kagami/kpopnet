@@ -1,11 +1,13 @@
 {
-    "birth_date": "1997-02-11 00:00:00",
+    "band_id": "e591c224-ce8c-41fd-95a4-d7a2cca29cab",
+    "birth_date": "1997-02-11",
     "birth_name": "Park Chae Young",
     "birth_name_hangul": "박채영",
     "birthplace": "New Zealand",
     "blood_type": "B",
     "english_name": "Roseanne Park",
     "height": 168,
+    "id": "7e566ec3-02be-401b-a9b5-96fb546a8a1c",
     "name": "Rose",
     "nickname": "Rose, Rosie, “Pasta”",
     "positions": [

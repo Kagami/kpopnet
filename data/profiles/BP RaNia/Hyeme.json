@@ -1,9 +1,11 @@
 {
-    "birth_date": "1995-12-22 00:00:00",
+    "band_id": "e6d86082-d2ce-4078-85f0-e11da0a1dc08",
+    "birth_date": "1995-12-22",
     "birth_name": "Kim Hye Mi",
     "birth_name_hangul": "김혜미",
     "blood_type": "B",
     "height": 170,
+    "id": "2e18599c-9f39-4ee1-aec5-54ce5ab3a0ad",
     "name": "Hyeme",
     "name_hangul": "혜미",
     "positions": [

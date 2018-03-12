@@ -1,9 +1,11 @@
 {
-    "birth_date": "1996-01-12 00:00:00",
+    "band_id": "e2adbb26-ce4c-4990-a042-8c7536d7ffb1",
+    "birth_date": "1996-01-12",
     "birth_name": "Lee Hye Bin",
     "birth_name_hangul": "이혜빈",
     "blood_type": "B",
     "height": 165,
+    "id": "f919c2ab-f0ee-4c43-9f8a-581180e4f05f",
     "name": "Hyebin",
     "name_hangul": "혜빈",
     "positions": [

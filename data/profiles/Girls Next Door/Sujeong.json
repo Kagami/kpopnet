@@ -1,9 +1,11 @@
 {
-    "birth_date": "1997-11-19 00:00:00",
+    "band_id": "8bdf7c0a-8dc4-4084-ba51-a3739571c727",
+    "birth_date": "1997-11-19",
     "birth_name": "Ryu Soo Jung",
     "birth_name_hangul": "류수정",
     "blood_type": "B",
     "height": 168,
+    "id": "755fd2e8-f334-498d-9ca2-e21545701eb6",
     "name": "Sujeong",
     "name_hangul": "수정",
     "place_of_birth": "Daejeon, South Korea",

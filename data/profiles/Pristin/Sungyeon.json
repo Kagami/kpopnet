@@ -1,8 +1,10 @@
 {
-    "birth_date": "1999-05-25 00:00:00",
+    "band_id": "dd0ca0b9-8603-4361-b5ab-350df43d1d02",
+    "birth_date": "1999-05-25",
     "birth_name": "Bae Sungyeon",
     "birth_name_hangul": "배성연",
     "height": 5,
+    "id": "306c5086-0da5-41df-b75e-88075bd81b15",
     "name": "Sungyeon",
     "probable_position": "Main Vocalist",
     "zodiac": "gemini"

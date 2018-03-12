@@ -1,9 +1,11 @@
 {
-    "birth_date": "1988-02-09 00:00:00",
+    "band_id": "3075f0c6-0774-4e55-ac2d-9991c621b692",
+    "birth_date": "1988-02-09",
     "birth_name": "Park Seo-a",
     "birth_name_hangul": "박서아",
     "blood_type": "A",
     "height": 170,
+    "id": "bfaf68eb-395e-44db-b573-52dc45ef01b8",
     "name": "Seoah",
     "positions": [
         "vocalist"

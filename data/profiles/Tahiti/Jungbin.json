@@ -1,9 +1,11 @@
 {
-    "birth_date": "1990-04-02 00:00:00",
+    "band_id": "c9832ede-897a-4cb4-b30d-6a941d7e177e",
+    "birth_date": "1990-04-02",
     "birth_name": "Yoon Jung Bin",
     "birth_name_hangul": "윤정빈",
     "blood_type": "A",
     "height": 168,
+    "id": "0ecf4e46-2c31-499b-85c4-f4e7dab5dc39",
     "name": "Jungbin",
     "name_hangul": "정빈",
     "nationality": "korean",

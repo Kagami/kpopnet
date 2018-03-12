@@ -1,9 +1,11 @@
 {
-    "birth_date": "1995-05-19 00:00:00",
+    "band_id": "ee63939f-4593-4cb9-9f50-0eb9cac54497",
+    "birth_date": "1995-05-19",
     "birth_name": "Yeom Haein",
     "birth_name_hangul": "염해인",
     "blood_type": "A",
     "height": 162,
+    "id": "f995868d-8425-4766-b322-73d4655ff576",
     "name": "Haein",
     "positions": [
         "vocalist"

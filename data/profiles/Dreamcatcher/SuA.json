@@ -1,9 +1,11 @@
 {
-    "birth_date": "1994-08-10 00:00:00",
+    "band_id": "087f4283-db90-4c99-9fa0-6d512e0b5516",
+    "birth_date": "1994-08-10",
     "birth_name": "Kim Bo Ra",
     "birth_name_hangul": "김보라",
     "blood_type": "O",
     "height": 162,
+    "id": "60dbf387-fd55-4d73-b405-9a64ba03514a",
     "name": "SuA",
     "name_hangul": "수아",
     "positions": [

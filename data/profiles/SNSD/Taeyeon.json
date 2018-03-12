@@ -1,10 +1,12 @@
 {
-    "birth_date": "1989-03-09 00:00:00",
+    "band_id": "b406c48f-78ed-477c-80a0-f9158db59af5",
+    "birth_date": "1989-03-09",
     "birth_name": "Kim Tae Yeon",
     "birth_place": "Jeonju, North Jeolla, South Korea",
     "blood_type": "A",
     "height": 158,
     "hobbies": "Watching movies, listening to music",
+    "id": "61c406e5-bc6e-4085-b2f8-7d4d718dbb83",
     "instagram": "taeyeon_ss",
     "name": "Taeyeon",
     "positions": [

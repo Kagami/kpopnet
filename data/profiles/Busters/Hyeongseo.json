@@ -1,9 +1,11 @@
 {
-    "birth_date": "2001-06-25 00:00:00",
+    "band_id": "d23b024e-14f6-49e8-99c1-60a5f634275e",
+    "birth_date": "2001-06-25",
     "birth_name": "Myeong Hyeong Seo",
     "birth_name_hangul": "명형서",
     "color": "Pink",
     "height": 160,
+    "id": "a4146738-3386-4900-a554-4070ce73f0fe",
     "name": "Hyeongseo",
     "name_hangul": "형서",
     "positions": [

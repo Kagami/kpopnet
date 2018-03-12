@@ -1,9 +1,11 @@
 {
-    "birth_date": "1987-10-15 00:00:00",
+    "band_id": "3075f0c6-0774-4e55-ac2d-9991c621b692",
+    "birth_date": "1987-10-15",
     "birth_name": "Park Eun-young",
     "birth_name_hangul": "박은영",
     "blood_type": "B",
     "height": 169,
+    "id": "ffa77188-72a9-4eca-a367-48fcd416113c",
     "name": "Eunyoung",
     "positions": [
         "lead vocalist",

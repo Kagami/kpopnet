@@ -1,9 +1,11 @@
 {
-    "birth_date": "1998-03-17 00:00:00",
+    "band_id": "d2829b91-fb2e-4803-9c93-f4a99b97646a",
+    "birth_date": "1998-03-17",
     "birth_name": "Kim Jikang",
     "birth_name_hangul": "김지강",
     "blood_type": "O",
     "height": 161,
+    "id": "15542d49-755b-443f-9bfd-f5c5a6bf79e3",
     "name": "JK",
     "name_hangul": "지강",
     "positions": [

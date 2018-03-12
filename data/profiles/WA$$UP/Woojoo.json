@@ -1,9 +1,11 @@
 {
-    "birth_date": "1996-08-12 00:00:00",
+    "band_id": "e048dd15-b44b-4fc4-90a5-61f1ad61d0f9",
+    "birth_date": "1996-08-12",
     "birth_name": "Kim Woo Joo",
     "birth_name_hangul": "김우주",
     "blood_type": "A",
     "height": 165,
+    "id": "3e1f78d7-ee71-4de9-98ba-8f10385d9394",
     "name": "Woojoo",
     "name_hangul": "우주",
     "positions": [

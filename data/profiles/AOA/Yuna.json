@@ -1,10 +1,12 @@
 {
     "angel_name": "Yunaria",
-    "birth_date": "1992-12-30 00:00:00",
+    "band_id": "759a4cb1-ffd4-4ae9-992a-614b5a72ba24",
+    "birth_date": "1992-12-30",
     "birth_name": "Seo Yu Na",
     "birth_name_hangul": "서유나",
     "blood_type": "0",
     "height": 163,
+    "id": "9db8f404-87a9-428f-a722-b941d7343fd2",
     "name": "Yuna",
     "positions": [
         "keyboardist",

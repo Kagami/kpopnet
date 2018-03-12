@@ -1,9 +1,11 @@
 {
-    "birth_date": "1997-04-04 00:00:00",
+    "band_id": "2254ec58-975e-42a7-b38b-37b9b5813922",
+    "birth_date": "1997-04-04",
     "birth_name": "Kim Jiho",
     "birth_name_hangul": "김지호",
     "blood_type": "A",
     "height": 165,
+    "id": "0a9e3420-0c2a-4241-a88e-5eda5aceb666",
     "name": "Jiho",
     "name_hangul": "지호",
     "positions": [

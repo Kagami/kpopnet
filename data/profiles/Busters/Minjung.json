@@ -1,9 +1,11 @@
 {
-    "birth_date": "2004-07-15 00:00:00",
+    "band_id": "d23b024e-14f6-49e8-99c1-60a5f634275e",
+    "birth_date": "2004-07-15",
     "birth_name": "Cha Min Jung",
     "birth_name_hangul": "차민정",
     "color": "Blue",
     "height": 162,
+    "id": "3e469857-6baa-49dc-b833-1493aedd720b",
     "name": "Minjung",
     "name_hangul": "민정",
     "positions": [

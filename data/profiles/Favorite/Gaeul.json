@@ -1,8 +1,10 @@
 {
-    "birth_date": "1999-03-08 00:00:00",
+    "band_id": "7d22a0dd-4ed4-4072-9c4c-f5584a1830e5",
+    "birth_date": "1999-05-08",
     "birth_name": "Park Gaeul",
     "birth_name_hangul": "박가을",
     "blood_type": "B",
+    "id": "fc1113f7-5f0a-4066-8633-e5a29b5f9a21",
     "name": "Gaeul",
     "name_hangul": "가을",
     "positions": [
@@ -10,5 +12,5 @@
         "main rapper",
         "vocalist"
     ],
-    "zodiac": "pisces"
+    "zodiac": "taurus"
 }

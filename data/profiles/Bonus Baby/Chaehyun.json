@@ -1,9 +1,11 @@
 {
-    "birth_date": "1999-09-29 00:00:00",
+    "band_id": "5a94a10c-65a2-490f-ac60-9954915c5926",
+    "birth_date": "1999-09-29",
     "birth_name": "Kim Chae-hyun",
     "birth_name_hangul": "김채현",
     "blood_type": "AB",
     "height": 163,
+    "id": "c23b03af-a981-4798-a741-3bf0a80649a2",
     "name": "Chaehyun",
     "name_hangul": "채현",
     "positions": [

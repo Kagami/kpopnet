@@ -1,14 +1,17 @@
 {
-    "birth_date": "1997-06-26 00:00:00",
-    "birth_name": "Song Yeon Ji",
+    "band_id": "e2802e22-e26c-4612-afa1-1e5e9739df76",
+    "birth_date": "1997-06-26",
+    "birth_name": "Jung Yeon Joo",
     "birth_name_hangul": "송연지",
     "blood_type": "A",
     "height": 8,
+    "id": "2aa83cc3-3556-4d47-b7cf-39798b627956",
     "name": "Yeonjoo",
     "name_hangul": "연주",
     "positions": [
         "main vocalist",
-        "maknae"
+        "maknae",
+        "visual"
     ],
     "zodiac": "cancer"
 }

@@ -1,9 +1,11 @@
 {
-    "birth_date": "1995-12-07 00:00:00",
+    "band_id": "74d5c90a-62aa-4d71-99e2-3440121f38ec",
+    "birth_date": "1995-12-07",
     "birth_name": "Kim So Jung",
     "birth_name_hangul": "김소정",
     "blood_type": "A",
     "height": 3,
+    "id": "5d347213-f1b0-4e27-852a-91ca493c1b93",
     "name": "Sowon",
     "positions": [
         "leader",

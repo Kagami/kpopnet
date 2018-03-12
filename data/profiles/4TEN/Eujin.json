@@ -1,9 +1,11 @@
 {
-    "birth_date": "1993-12-03 00:00:00",
+    "band_id": "4a076f66-a4f9-4206-b166-84ff5837eef3",
+    "birth_date": "1993-12-03",
     "birth_name": "Kang Yoo-jin",
     "birth_name_hangul": "강유진",
     "blood_type": "B",
     "height": 161,
+    "id": "f5b2613f-958c-4e89-b96e-839db9708efe",
     "name": "Eujin",
     "name_hangul": "유진",
     "positions": [

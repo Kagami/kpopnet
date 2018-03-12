@@ -1,7 +1,9 @@
 {
-    "birth_date": "1990-05-04 00:00:00",
+    "band_id": "51eff915-0a51-43b0-918c-262d459d7f6a",
+    "birth_date": "1990-05-04",
     "blood_type": "O",
     "height": 162,
+    "id": "dd4f94da-bfca-4431-9d89-751fe6be2af0",
     "name": "Daya",
     "positions": [
         "lead vocalist"

@@ -1,9 +1,11 @@
 {
-    "birth_date": "2000-11-15 00:00:00",
+    "band_id": "83a4e974-85cf-4704-8123-e89446d543ac",
+    "birth_date": "2000-11-15",
     "birth_name": "Kim Hyun-jin",
     "birth_name_hangul": "김현진",
     "blood_type": "AB",
     "height": 163,
+    "id": "e25cde9b-fcd8-4620-8cfd-9eb4b541a0d1",
     "name": "Hyunjin",
     "name_hangul": "현진",
     "nationality": "korean",

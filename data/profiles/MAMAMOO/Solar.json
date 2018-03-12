@@ -1,8 +1,10 @@
 {
-    "birth_date": "1991-02-21 00:00:00",
+    "band_id": "a97e28f0-7545-4be4-a12a-19e0212b1f64",
+    "birth_date": "1991-02-21",
     "birth_name": "Kim Yong Sun",
     "birth_name_hangul": "김용선",
     "height": 163,
+    "id": "5f14c1d3-68ef-406a-bbb3-0f583d9147a7",
     "name": "Solar",
     "name_hangul": "솔라",
     "positions": [

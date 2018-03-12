@@ -1,9 +1,11 @@
 {
-    "birth_date": "1995-04-10 00:00:00",
+    "band_id": "9ef3d987-a6f6-403c-879b-ea4d677888a0",
+    "birth_date": "1995-04-10",
     "birth_name": "Jeong Yi-ra",
     "birth_name_hangul": "정이라",
     "blood_type": "O",
     "height": 163,
+    "id": "cef49ec5-bf98-4a67-aa49-dab055a1590f",
     "name": "Iera",
     "name_hangul": "이라",
     "positions": [

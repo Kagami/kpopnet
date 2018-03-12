@@ -1,9 +1,11 @@
 {
-    "birth_date": "1997-12-20 00:00:00",
+    "band_id": "e2adbb26-ce4c-4990-a042-8c7536d7ffb1",
+    "birth_date": "1997-12-20",
     "birth_name": "Sung Ji Yeon",
     "birth_name_hangul": "성지연",
     "blood_type": "O",
     "height": 166,
+    "id": "8fa10b90-b649-495b-8318-cbb395a0374a",
     "name": "Jane",
     "name_hangul": "제인",
     "positions": [

@@ -1,9 +1,11 @@
 {
-    "birth_date": "1996-07-07 00:00:00",
+    "band_id": "56098c8a-b1dd-4f6f-b2b8-d6c1754bcc9e",
+    "birth_date": "1996-07-07",
     "birth_name": "Yoon Chae-kyung",
     "birth_name_hangul": "윤채경",
     "blood_type": "AB",
     "height": 160,
+    "id": "2b4e6f37-d181-4d89-887c-756de7750db0",
     "name": "Chaekyung",
     "name_hangul": "채경",
     "positions": [

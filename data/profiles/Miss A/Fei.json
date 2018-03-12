@@ -1,8 +1,10 @@
 {
-    "birth_date": "1987-04-27 00:00:00",
+    "band_id": "0d162a9d-b3f6-4fb4-9414-f3713b292eab",
+    "birth_date": "1987-04-27",
     "birth_name": "Wang Fei Fei",
     "blood_type": "B",
     "height": 165,
+    "id": "dc66cc65-da5a-41e6-b22e-ff177f1e6326",
     "name": "Fei",
     "nationality": "chinese",
     "positions": [

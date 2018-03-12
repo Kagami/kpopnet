@@ -1,9 +1,11 @@
 {
-    "birth_date": "1999-02-03 00:00:00",
+    "band_id": "087f4283-db90-4c99-9fa0-6d512e0b5516",
+    "birth_date": "1999-02-03",
     "birth_name": "Lee Ga-hyeon",
     "birth_name_hangul": "이가현",
     "blood_type": "AB",
     "height": 164,
+    "id": "dc55f5d3-2df9-4dbd-828c-28dfce9a4387",
     "name": "Gahyeon",
     "name_hangul": "가현",
     "positions": [

@@ -1,9 +1,11 @@
 {
-    "birth_date": "1998-02-25 00:00:00",
+    "band_id": "9ef3d987-a6f6-403c-879b-ea4d677888a0",
+    "birth_date": "1998-02-25",
     "birth_name": "Kim Hyeon-jeong",
     "birth_name_hangul": "김현정",
     "blood_type": "A",
     "height": 167,
+    "id": "bf3ec183-b4fb-44c5-9d21-37760c5e018d",
     "name": "Daye",
     "name_hangul": "다예",
     "positions": [

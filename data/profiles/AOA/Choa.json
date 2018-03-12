@@ -1,10 +1,12 @@
 {
     "angel_name": "Choaya",
-    "birth_date": "1990-03-06 00:00:00",
+    "band_id": "759a4cb1-ffd4-4ae9-992a-614b5a72ba24",
+    "birth_date": "1990-03-06",
     "birth_name": "Park Cho Ah",
     "birth_name_hangul": "박초아",
     "blood_type": "O",
     "height": 160,
+    "id": "b5d9d8dc-f435-4aeb-b388-fbb5d7737b79",
     "name": "Choa",
     "positions": [
         "guitarist",

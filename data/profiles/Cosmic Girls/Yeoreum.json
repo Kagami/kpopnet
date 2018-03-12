@@ -1,9 +1,11 @@
 {
-    "birth_date": "1999-01-10 00:00:00",
+    "band_id": "27b8d514-6907-44b8-b420-94e2eec3b8f9",
+    "birth_date": "1999-01-10",
     "birth_name": "Lee Jin Suk",
     "birth_name_hangul": "이진숙",
     "blood_type": "A",
     "height": 161,
+    "id": "43383db4-c5fd-45dd-a85a-8c7222621aa8",
     "name": "Yeoreum",
     "name_hangul": "여름",
     "positions": [

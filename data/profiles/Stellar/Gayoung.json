@@ -1,9 +1,11 @@
 {
-    "birth_date": "1991-12-02 00:00:00",
+    "band_id": "3fb253ad-d262-45b7-9416-ecbdf506fe52",
+    "birth_date": "1991-12-02",
     "birth_name": "Kim Ga-young",
     "birth_name_hangul": "김가영",
     "blood_type": "O",
     "height": 170,
+    "id": "091937ce-e79e-4711-ba3d-ed1465c938c1",
     "name": "Gayoung",
     "name_hangul": "가영",
     "positions": [

@@ -1,9 +1,11 @@
 {
-    "birth_date": "1997-08-24 00:00:00",
+    "band_id": "56098c8a-b1dd-4f6f-b2b8-d6c1754bcc9e",
+    "birth_date": "1997-08-24",
     "birth_name": "Han Hye-ri",
     "birth_name_hangul": "한혜리",
     "blood_type": "A",
     "height": 159,
+    "id": "a7cae612-d558-46e5-b6cb-ebfa43851991",
     "name": "Hyeri",
     "name_hangul": "혜리",
     "positions": [

@@ -1,9 +1,11 @@
 {
-    "birth_date": "1995-09-10 00:00:00",
+    "band_id": "b8e68da8-a6a4-4cb9-9d67-f0c20dc65671",
+    "birth_date": "1995-09-10",
     "birth_name": "Jo Eun Ae",
     "birth_name_hangul": "조은애",
     "blood_type": "B",
     "height": 170,
+    "id": "b13f6402-5865-4bfe-b648-03d94407cd5d",
     "name": "D.ana",
     "name_hangul": "디애나",
     "positions": [

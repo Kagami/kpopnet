@@ -1,10 +1,12 @@
 {
     "angel_name": "Minaring",
-    "birth_date": "1993-09-21 00:00:00",
+    "band_id": "759a4cb1-ffd4-4ae9-992a-614b5a72ba24",
+    "birth_date": "1993-09-21",
     "birth_name": "Kwon Min A",
     "birth_name_hangul": "권민아",
     "blood_type": "AB",
     "height": 160,
+    "id": "b07aa4ef-6440-4ce1-85f3-f9798578961e",
     "name": "Mina",
     "positions": [
         "bassist",

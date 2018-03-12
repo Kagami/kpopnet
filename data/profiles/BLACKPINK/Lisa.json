@@ -1,10 +1,12 @@
 {
-    "birth_date": "1997-03-27 00:00:00",
+    "band_id": "e591c224-ce8c-41fd-95a4-d7a2cca29cab",
+    "birth_date": "1997-03-27",
     "birth_name": "Lalisa Manoban",
     "birth_name_hangul": "ลลิสา มโนบาล",
     "birthplace": "Bangkok, Thailand",
     "blood_type": "O",
     "height": 167,
+    "id": "7ada53a9-2387-419e-a354-b123f40afe4c",
     "name": "Lisa",
     "nicknames": "Lalice, Laliz, Pokpak",
     "positions": [

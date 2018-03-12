@@ -1,9 +1,11 @@
 {
-    "birth_date": "1991-08-15 00:00:00",
+    "band_id": "3fb253ad-d262-45b7-9416-ecbdf506fe52",
+    "birth_date": "1991-08-15",
     "birth_name": "Cho Young-jin",
     "birth_name_hangul": "조영진",
     "blood_type": "A",
     "height": 166,
+    "id": "c4bebe6e-6b12-41d2-9936-908f1c4e5928",
     "name": "JoA",
     "name_hangul": "조아",
     "positions": [
