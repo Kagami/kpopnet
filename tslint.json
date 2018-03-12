@@ -7,8 +7,7 @@
   "rules": {
     "curly": [true, "ignore-same-line"],
     "object-literal-sort-keys": false,
-    "max-classes-per-file": false,
-    "member-ordering": false
+    "max-classes-per-file": false
   },
   "rulesDirectory": []
 }

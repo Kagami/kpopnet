@@ -6,6 +6,7 @@
     "jsx": "React",
     "jsxFactory": "h",
     "strict": true,
+    "strictNullChecks": false,
     "noUnusedLocals": true,
     "allowJs": true
   }
