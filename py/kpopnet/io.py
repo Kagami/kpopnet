@@ -43,10 +43,10 @@ def get_band_path_by_name(name):
     return path.join(get_profiles_path(), name, fname)
 
 
-def get_member_path(band, member):
+def get_idol_path(band, idol):
     check_name(band['name'])
-    check_name(member['name'])
-    fname = '{}.json'.format(member['name'])
+    check_name(idol['name'])
+    fname = '{}.json'.format(idol['name'])
     return path.join(get_profiles_path(), band['name'], fname)
 
 
@@ -122,19 +122,19 @@ def save_band(updates):
         f.write(dump_json(band))
 
 
-def save_member(band, updates):
-    mpath = get_member_path(band, updates)
-    os.makedirs(path.dirname(mpath), exist_ok=True)
+def save_idol(band, updates):
+    ipath = get_idol_path(band, updates)
+    os.makedirs(path.dirname(ipath), exist_ok=True)
     try:
-        member = load_json(open(mpath, 'rb').read())
+        idol = load_json(open(ipath, 'rb').read())
     except OSError:
-        member = {}
-    update_profile(member, updates)
-    with open(mpath, 'wb') as f:
-        f.write(dump_json(member))
+        idol = {}
+    update_profile(idol, updates)
+    with open(ipath, 'wb') as f:
+        f.write(dump_json(idol))
 
 
-def get_all_member_names():
+def get_all_idol_names():
     try:
         bnames = os.listdir(get_profiles_path())
     except OSError:
@@ -143,45 +143,45 @@ def get_all_member_names():
         if bname == INDEX_NAME:
             continue
         try:
-            mnames = os.listdir(path.join(get_profiles_path(), bname))
+            inames = os.listdir(path.join(get_profiles_path(), bname))
         except OSError:
             continue
-        for mname in mnames:
-            mname = strip_json_ext(mname)
-            if mname == INDEX_NAME:
+        for iname in inames:
+            iname = strip_json_ext(iname)
+            if iname == INDEX_NAME:
                 continue
-            yield bname, mname
+            yield bname, iname
 
 
-_collected_member_images = False
-_all_members_with_images = set()
+_collected_idol_images = False
+_all_idols_with_images = set()
 
 
-def has_images_by_name(bname, mname):
-    global _collected_member_images
-    if not _collected_member_images:
-        _collected_member_images = True
+def has_images_by_name(bname, iname):
+    global _collected_idol_images
+    if not _collected_idol_images:
+        _collected_idol_images = True
         bnames = []
         with suppress(OSError):
             bnames = os.listdir(get_images_path())
         for bname in bnames:
-            mnames = []
+            inames = []
             with suppress(OSError):
-                mnames = os.listdir(path.join(get_images_path(), bname))
-            for mname in mnames:
-                _all_members_with_images.add((bname, mname))
-    return (bname, mname) in _all_members_with_images
+                inames = os.listdir(path.join(get_images_path(), bname))
+            for iname in inames:
+                _all_idols_with_images.add((bname, iname))
+    return (bname, iname) in _all_idols_with_images
 
 
-def save_image_by_name(bname, mname, data):
-    _all_members_with_images.add((bname, mname))
+def save_image_by_name(bname, iname, data):
+    _all_idols_with_images.add((bname, iname))
     md5 = hashlib.md5(data).hexdigest()
     # We only use JPEG files for simplicity.
     fname = '{}.jpg'.format(md5)
-    ipath = path.join(get_images_path(), bname, mname, fname)
-    os.makedirs(path.dirname(ipath), exist_ok=True)
+    fpath = path.join(get_images_path(), bname, iname, fname)
+    os.makedirs(path.dirname(fpath), exist_ok=True)
     try:
-        open(ipath, 'xb').write(data)
+        open(fpath, 'xb').write(data)
     except FileExistsError:
         return False
     else:

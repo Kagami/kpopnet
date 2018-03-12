@@ -20,9 +20,9 @@ class GoogleimagesSpider(ImageSpider):
         'REFERRER_POLICY': 'no-referrer',
     }
 
-    def build_search_url(self, bname, mname):
+    def build_search_url(self, bname, iname):
         return 'https://www.google.com/search?' + urlencode([
-            ('q', '{} {}'.format(bname, mname)),  # Search query
+            ('q', '{} {}'.format(bname, iname)),  # Search query
             ('espv', '2'),
             ('biw', '1366'),
             ('bih', '667'),
@@ -37,11 +37,11 @@ class GoogleimagesSpider(ImageSpider):
 
     def start_requests(self):
         self.search_reqs = []
-        for bname, mname in self.get_all_member_names():
-            if not self.update_all and self.has_images_by_name(bname, mname):
+        for bname, iname in self.get_all_idol_names():
+            if not self.update_all and self.has_images_by_name(bname, iname):
                 continue
-            url = self.build_search_url(bname, mname)
-            meta = {'_knet_bname': bname, '_knet_mname': mname}
+            url = self.build_search_url(bname, iname)
+            meta = {'_knet_bname': bname, '_knet_iname': iname}
             req = Request(url, dont_filter=True, meta=meta, priority=-1)
             self.search_reqs.append(req)
         with suppress(IndexError):
@@ -54,13 +54,13 @@ class GoogleimagesSpider(ImageSpider):
         response.meta['_knet_items'] = response.css('.rg_meta')
         # Do first N requests in parallel.
         response.meta['_knet_parallel'] = True
-        for _ in range(self.MAX_IMAGES_PER_MEMBER):
+        for _ in range(self.MAX_IMAGES_PER_IDOL):
             yield self.parse_item(response.meta)
         with suppress(IndexError):
             yield self.search_reqs.pop(0)
 
     def parse_item(self, meta):
-        if meta['_knet_reqs']['saved'] >= self.MAX_IMAGES_PER_MEMBER:
+        if meta['_knet_reqs']['saved'] >= self.MAX_IMAGES_PER_IDOL:
             return
         try:
             item = meta['_knet_items'].pop(0)
@@ -68,7 +68,7 @@ class GoogleimagesSpider(ImageSpider):
             self.logger.warning('Saved only {} images for {} - {}'.format(
                 meta['_knet_reqs']['saved'],
                 meta['_knet_bname'],
-                meta['_knet_mname']))
+                meta['_knet_iname']))
             return
         try:
             item_text = item.css('::text').extract_first()
@@ -95,7 +95,7 @@ class GoogleimagesSpider(ImageSpider):
     def finally_item(self, meta):
         meta['_knet_reqs']['all'] += 1
         if meta['_knet_parallel']:
-            if meta['_knet_reqs']['all'] < self.MAX_IMAGES_PER_MEMBER:
+            if meta['_knet_reqs']['all'] < self.MAX_IMAGES_PER_IDOL:
                 return
             # Fetch remaining.
             meta['_knet_parallel'] = False

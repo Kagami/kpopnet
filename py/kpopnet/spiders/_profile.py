@@ -2,7 +2,7 @@ from uuid import uuid4
 
 import scrapy
 
-from ..io import has_band_by_url, save_band, save_member
+from ..io import has_band_by_url, save_band, save_idol
 
 
 class ProfileSpider(scrapy.Spider):
@@ -20,5 +20,5 @@ class ProfileSpider(scrapy.Spider):
     def save_band(self, band):
         return save_band(band)
 
-    def save_member(self, band, member):
-        return save_member(band, member)
+    def save_idol(self, band, idol):
+        return save_idol(band, idol)

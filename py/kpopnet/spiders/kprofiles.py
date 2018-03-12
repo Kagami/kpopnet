@@ -36,15 +36,15 @@ class KprofilesSpider(ProfileSpider):
                 band['id'] = self.uuid()
                 band['name'] = name
                 band['urls'] = [response.meta['_knet_url']]
-            # Member info paragraph.
+            # Idol info paragraph.
             elif p.css('span::text').\
                     re_first(r'(?i)(stage|real|birth)\s+name'):
-                self.parse_member(response, band, p)
+                self.parse_idol(response, band, p)
         assert band, 'No band'
         self.save_band(band)
 
-    def parse_member(self, response, band, p):
-        member = {}
+    def parse_idol(self, response, band, p):
+        idol = {}
         for span in p.css('span'):
             key = span.css('::text').extract_first()
             if not key:
@@ -61,17 +61,17 @@ class KprofilesSpider(ProfileSpider):
             # Can check only this late.
             if not key.endswith(':') and not val.startswith(':'):
                 continue
-            key = self.normalize_member_key(key)
-            val = self.normalize_member_val(key, val)
+            key = self.normalize_idol_key(key)
+            val = self.normalize_idol_val(key, val)
             if key and val:
-                member[key] = val
-        # if not member.get('name'):
+                idol[key] = val
+        # if not idol.get('name'):
         #     from IPython import embed; embed()
-        assert member.get('name'), 'No member name'
-        member = self.normalize_member(member)
-        member['id'] = self.uuid()
-        member['band_id'] = band['id']
-        self.save_member(band, member)
+        assert idol.get('name'), 'No idol name'
+        idol = self.normalize_idol(idol)
+        idol['id'] = self.uuid()
+        idol['band_id'] = band['id']
+        self.save_idol(band, idol)
 
     def normalize_band_name(self, name):
         orig = name
@@ -89,7 +89,7 @@ class KprofilesSpider(ProfileSpider):
 
         return name
 
-    def normalize_member_key(self, key):
+    def normalize_idol_key(self, key):
         key = key.lower()
         key = re.sub(r'\s*:$', '', key)
         key = re.sub(r'\s+', '_', key)
@@ -109,7 +109,7 @@ class KprofilesSpider(ProfileSpider):
             key = 'twitter'
         return key
 
-    def normalize_member_val(self, key, val):
+    def normalize_idol_val(self, key, val):
         val = re.sub(r'^:\s*', '', val)
         val = re.sub(r'’', "'", val)
 
@@ -153,12 +153,12 @@ class KprofilesSpider(ProfileSpider):
 
         return val
 
-    def normalize_member(self, member):
-        member = member.copy()
+    def normalize_idol(self, idol):
+        idol = idol.copy()
 
         # Name field must always present.
         with suppress(AttributeError):
-            name = member['name']
+            name = idol['name']
             name, name_hangul = re.\
                 match(r'(.*?)\s*\((.*?)\)', name).\
                 groups()
@@ -167,25 +167,25 @@ class KprofilesSpider(ProfileSpider):
             if name == 'EXY':
                 name = 'Exy'
 
-            member['name'] = name
-            member['name_hangul'] = name_hangul
+            idol['name'] = name
+            idol['name_hangul'] = name_hangul
 
         # Normalize birth name if any.
         with suppress(KeyError, AttributeError):
-            birth_name = member['birth_name']
+            birth_name = idol['birth_name']
             birth_name, birth_name_hangul = re.\
                 match(r'(.*?)\s*\((.*?)\)', birth_name).\
                 groups()
-            member['birth_name'] = birth_name
-            member['birth_name_hangul'] = birth_name_hangul
+            idol['birth_name'] = birth_name
+            idol['birth_name_hangul'] = birth_name_hangul
 
         # Normalize korean name if any.
         with suppress(KeyError, AttributeError):
-            korean_name = member['korean_name']
+            korean_name = idol['korean_name']
             korean_name, korean_name_hangul = re.\
                 match(r'(.*?)\s*\((.*?)\)', korean_name).\
                 groups()
-            member['korean_name'] = korean_name
-            member['korean_name_hangul'] = korean_name_hangul
+            idol['korean_name'] = korean_name
+            idol['korean_name_hangul'] = korean_name_hangul
 
-        return member
+        return idol

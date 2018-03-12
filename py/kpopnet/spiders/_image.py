@@ -3,7 +3,7 @@ import io
 import scrapy
 from PIL import Image
 
-from ..io import has_images_by_name, get_all_member_names, save_image_by_name
+from ..io import has_images_by_name, get_all_idol_names, save_image_by_name
 
 
 def is_valid_jpeg(data):
@@ -25,13 +25,13 @@ class ImageSpider(scrapy.Spider):
     Useful wrappers and common image spider methods.
     """
 
-    MAX_IMAGES_PER_MEMBER = 10
+    MAX_IMAGES_PER_IDOL = 10
 
-    def has_images_by_name(self, bname, mname):
-        return has_images_by_name(bname, mname)
+    def has_images_by_name(self, bname, iname):
+        return has_images_by_name(bname, iname)
 
-    def get_all_member_names(self):
-        return get_all_member_names()
+    def get_all_idol_names(self):
+        return get_all_idol_names()
 
     def save_image(self, response):
         # TODO(Kagami): Ensure there is only single face in the image.
@@ -39,5 +39,5 @@ class ImageSpider(scrapy.Spider):
         if not is_valid_jpeg(response.body):
             return False
         bname = response.meta['_knet_bname']
-        mname = response.meta['_knet_mname']
-        return save_image_by_name(bname, mname, response.body)
+        iname = response.meta['_knet_iname']
+        return save_image_by_name(bname, iname, response.body)
