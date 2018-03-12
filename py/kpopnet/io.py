@@ -3,6 +3,7 @@ from os import path
 from contextlib import suppress
 import json
 import hashlib
+from datetime import datetime
 
 
 INDEX_NAME = 'index'
@@ -59,9 +60,15 @@ def load_json(b):
     return json.loads(b, encoding='utf-8')
 
 
+def default_encoder(o):
+    if isinstance(o, datetime):
+        return o.strftime('%Y-%m-%d')
+    raise TypeError('Unknown type')
+
+
 def dump_json(d):
     s = json.dumps(d, ensure_ascii=False, sort_keys=True, indent=4,
-                   default=str)
+                   default=default_encoder)
     s += '\n'
     return s.encode('utf-8')
 
