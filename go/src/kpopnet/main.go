@@ -24,13 +24,15 @@ func main() {
 		&webRoot,
 		"w",
 		"./dist",
-		"site dist directory location",
+		"site directory location",
 	)
+	// Designed to be integrated into meguca (cutechan) therefore the
+	// default connection parameters choice.
 	flag.StringVar(
 		&connStr,
 		"c",
 		"user=meguca password=meguca dbname=meguca sslmode=disable",
-		"PostgreSQL connection arguments",
+		"PostgreSQL connection string",
 	)
 	flag.Parse()
 
