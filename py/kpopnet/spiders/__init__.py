@@ -38,7 +38,6 @@ class HttpErrorMiddleware:
 
 
 def run_spider(spider, bail=False, **kwargs):
-
     def process_spider_error(failure, response, spider):
         nonlocal had_error
         had_error = True
