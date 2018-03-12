@@ -1,12 +1,27 @@
 // Useful helper functions for working with database.
 package db
 
+import (
+	"database/sql"
+)
+
 func exec(queryId string) (err error) {
 	_, err = db.Exec(getQuery(queryId))
 	return
 }
 
-func scanBool(queryId string, args ...interface{}) (val bool, err error) {
-	err = db.QueryRow(getQuery(queryId), args...).Scan(&val)
+func getTx() (tx *sql.Tx, err error) {
+	return db.Begin()
+}
+
+func getRoTx() (tx *sql.Tx, err error) {
+	tx, err = getTx()
+	if err != nil {
+		return
+	}
+	_, err = tx.Exec("SET TRANSACTION READ ONLY")
+	if err != nil {
+		err = tx.Rollback()
+	}
 	return
 }
