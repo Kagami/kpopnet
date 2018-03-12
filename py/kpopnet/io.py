@@ -73,7 +73,7 @@ def dump_json(d):
     return s.encode('utf-8')
 
 
-def deep_update(a, b):
+def update_profile(a, b):
     for k, v in b.items():
         if isinstance(v, list):
             try:
@@ -82,6 +82,8 @@ def deep_update(a, b):
                 a[k] = sorted(s)
             except (KeyError, TypeError):
                 a[k] = sorted(v)
+        elif k in ('id', 'band_id') and k in a:
+            continue
         else:
             a[k] = v
 
@@ -115,7 +117,7 @@ def save_band(updates):
         band = load_json(open(bpath, 'rb').read())
     except OSError:
         band = {}
-    deep_update(band, updates)
+    update_profile(band, updates)
     with open(bpath, 'wb') as f:
         f.write(dump_json(band))
 
@@ -127,7 +129,7 @@ def save_member(band, updates):
         member = load_json(open(mpath, 'rb').read())
     except OSError:
         member = {}
-    deep_update(member, updates)
+    update_profile(member, updates)
     with open(mpath, 'wb') as f:
         f.write(dump_json(member))
 

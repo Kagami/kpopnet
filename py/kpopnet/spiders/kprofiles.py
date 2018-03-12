@@ -19,7 +19,7 @@ class KprofilesSpider(ProfileSpider):
                 yield response.follow(url, self.parse_band, meta=meta)
 
     def parse_band(self, response):
-        band = {}
+        band = {'id': self.uuid()}
         for p in response.css('.entry-content > p'):
             # First paragraph contains band info.
             if not band:
@@ -43,7 +43,7 @@ class KprofilesSpider(ProfileSpider):
         self.save_band(band)
 
     def parse_member(self, response, band, p):
-        member = {}
+        member = {'id': self.uuid(), 'band_id': band['id']}
         for span in p.css('span'):
             key = span.css('::text').extract_first()
             if not key:
@@ -63,6 +63,7 @@ class KprofilesSpider(ProfileSpider):
             key = self.normalize_member_key(key)
             val = self.normalize_member_val(key, val)
             if key and val:
+                assert key not in ('id', 'band_id')
                 member[key] = val
         # if not member.get('name'):
         #     from IPython import embed; embed()
