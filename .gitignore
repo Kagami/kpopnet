@@ -6,6 +6,8 @@
 /go/bin/
 /go/pkg/
 !/go/src/kpopnet/
+bin_data.go
+/tags
 
 /node_modules/
 /package-lock.json

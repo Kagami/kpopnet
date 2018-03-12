@@ -2,7 +2,9 @@ package main
 
 import (
 	"flag"
+	"log"
 
+	"kpopnet/db"
 	"kpopnet/server"
 )
 
@@ -10,6 +12,7 @@ func main() {
 	var (
 		address string
 		webRoot string
+		connStr string
 	)
 	flag.StringVar(
 		&address,
@@ -23,11 +26,23 @@ func main() {
 		"./dist",
 		"site dist directory location",
 	)
+	flag.StringVar(
+		&connStr,
+		"c",
+		"user=meguca password=meguca dbname=meguca sslmode=disable",
+		"PostgreSQL connection arguments",
+	)
 	flag.Parse()
 
-	opts := server.Options{
+	err := db.Start(connStr)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	serverOpts := server.Options{
 		Address: address,
 		WebRoot: webRoot,
 	}
-	server.Start(opts)
+	log.Printf("Listening on %v", address)
+	log.Fatal(server.Start(serverOpts))
 }

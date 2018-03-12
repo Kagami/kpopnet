@@ -1,4 +1,5 @@
 export GOPATH = $(PWD)/go
+export PATH := $(PATH):$(PWD)/go/bin
 
 all: pydeps tsdeps go/bin/kpopnet
 
@@ -20,7 +21,12 @@ tswatch:
 tslint:
 	npm test
 
-go/bin/kpopnet: go/src/kpopnet/**/*
+go/bin/go-bindata:
+	go get github.com/jteeuwen/go-bindata/...
+
+GODEPS = $(shell find go/src/kpopnet -type f)
+go/bin/kpopnet: go/bin/go-bindata $(GODEPS)
+	go generate kpopnet/...
 	go get -v kpopnet
 
 goserve: go/bin/kpopnet
@@ -28,3 +34,6 @@ goserve: go/bin/kpopnet
 
 gofmt:
 	go fmt kpopnet/...
+
+gotags:
+	ctags -R go/src/kpopnet

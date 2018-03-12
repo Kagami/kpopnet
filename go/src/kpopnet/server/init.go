@@ -1,7 +1,6 @@
 package server
 
 import (
-	"log"
 	"net/http"
 	"path/filepath"
 
@@ -13,16 +12,21 @@ type Options struct {
 	WebRoot string
 }
 
-func Start(o Options) {
-	router := createRouter(o)
-	log.Printf("Listening on %v", o.Address)
-	log.Fatal(http.ListenAndServe(o.Address, router))
+func Start(o Options) (err error) {
+	router, err := createRouter(o)
+	if err != nil {
+		return
+	}
+	return http.ListenAndServe(o.Address, router)
 }
 
-func createRouter(o Options) http.Handler {
+func createRouter(o Options) (h http.Handler, err error) {
 	r := httptreemux.NewContextMux()
 
-	webRoot, _ := filepath.Abs(o.WebRoot)
+	webRoot, err := filepath.Abs(o.WebRoot)
+	if err != nil {
+		return
+	}
 	indexPath := filepath.Join(webRoot, "index.html")
 	faviconPath := filepath.Join(webRoot, "favicon.ico")
 	staticRoot := filepath.Join(webRoot, "static")
@@ -36,6 +40,6 @@ func createRouter(o Options) http.Handler {
 	r.Handler("GET", "/static/*", http.StripPrefix("/static/",
 		http.FileServer(http.Dir(staticRoot))))
 
-	h := http.Handler(r)
-	return h
+	h = http.Handler(r)
+	return
 }
