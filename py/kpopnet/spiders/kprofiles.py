@@ -19,7 +19,7 @@ class KprofilesSpider(ProfileSpider):
                 yield response.follow(url, self.parse_band, meta=meta)
 
     def parse_band(self, response):
-        band = {'id': self.uuid()}
+        band = {}
         for p in response.css('.entry-content > p'):
             # First paragraph contains band info.
             if not band:
@@ -33,6 +33,7 @@ class KprofilesSpider(ProfileSpider):
                 name = self.normalize_band_name(name_node.extract_first())
                 assert name, 'No band name'
                 # TODO(Kagami): Parse more info.
+                band['id'] = self.uuid()
                 band['name'] = name
                 band['urls'] = [response.meta['_knet_url']]
             # Member info paragraph.
@@ -43,7 +44,7 @@ class KprofilesSpider(ProfileSpider):
         self.save_band(band)
 
     def parse_member(self, response, band, p):
-        member = {'id': self.uuid(), 'band_id': band['id']}
+        member = {}
         for span in p.css('span'):
             key = span.css('::text').extract_first()
             if not key:
@@ -63,12 +64,13 @@ class KprofilesSpider(ProfileSpider):
             key = self.normalize_member_key(key)
             val = self.normalize_member_val(key, val)
             if key and val:
-                assert key not in ('id', 'band_id')
                 member[key] = val
         # if not member.get('name'):
         #     from IPython import embed; embed()
         assert member.get('name'), 'No member name'
         member = self.normalize_member(member)
+        member['id'] = self.uuid()
+        member['band_id'] = band['id']
         self.save_member(band, member)
 
     def normalize_band_name(self, name):
