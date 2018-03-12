@@ -31,7 +31,7 @@ def main():
             return profiles.update(
                 args['-s'] or 'kprofiles',
                 update_all=args['--all'],
-                bail=args['--bail'])
+                bail=True)
     elif args['image']:
         from . import images
         if args['update']:
