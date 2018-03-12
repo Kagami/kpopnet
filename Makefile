@@ -2,6 +2,7 @@ export GOPATH = $(PWD)/go
 export PATH := $(PATH):$(PWD)/go/bin
 
 all: pydeps tsdeps go/bin/kpopnet
+test: pylint tslint gofmt-staged go/bin/kpopnet
 
 py/env:
 	virtualenv -p python3 --system-site-packages $@
@@ -19,7 +20,7 @@ tswatch:
 	npm start
 
 tslint:
-	npm test
+	npm -s test
 
 go/bin/go-bindata:
 	go get github.com/jteeuwen/go-bindata/...
@@ -34,6 +35,9 @@ goserve: go/bin/kpopnet
 
 gofmt:
 	go fmt kpopnet/...
+
+gofmt-staged:
+	./gofmt-staged.sh
 
 gotags:
 	ctags -R go/src/kpopnet
