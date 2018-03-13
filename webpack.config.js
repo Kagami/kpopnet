@@ -1,4 +1,5 @@
 const path = require("path");
+const WebpackNotifierPlugin = require("webpack-notifier");
 const LiveReloadPlugin = require("webpack-livereload-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
@@ -28,6 +29,7 @@ module.exports = {
     ],
   },
   plugins: [
+    new WebpackNotifierPlugin(),
     new LiveReloadPlugin(),
     new CleanWebpackPlugin(["dist"]),
     new ExtractTextPlugin(`static/${CSS_NAME}`),
