@@ -4,21 +4,21 @@ import (
 	"fmt"
 	"log"
 
-	"kpopnet/db"
-	"kpopnet/server"
+	"kpopnetd/db"
+	"kpopnetd/server"
 
 	"github.com/docopt/docopt-go"
 )
 
 const VERSION = "0.0.0"
 const USAGE = `
-K-pop neural network backend and utilities.
+K-pop neural network backend.
 
 Usage:
-  kpopnet profile import [options]
-  kpopnet serve [options]
-  kpopnet [-h | --help]
-  kpopnet [-V | --version]
+  kpopnetd profile import [options]
+  kpopnetd serve [options]
+  kpopnetd [-h | --help]
+  kpopnetd [-V | --version]
 
 Options:
   -h --help     Show this screen.
@@ -28,7 +28,7 @@ Options:
   -c <conn>     PostgreSQL connection string
                 [default: user=meguca password=meguca dbname=meguca sslmode=disable].
   -s <sitedir>  Site directory location [default: ./dist].
-  -d <datadir>  Site directory location [default: ./data].
+  -d <datadir>  Data directory location [default: ./data].
 `
 
 type config struct {

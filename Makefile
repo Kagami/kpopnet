@@ -1,8 +1,8 @@
 export GOPATH = $(PWD)/go
 export PATH := $(PATH):$(PWD)/go/bin
 
-all: pydeps tsdeps go/bin/kpopnet
-test: pylint tslint gofmt-staged go/bin/kpopnet
+all: pydeps tsdeps go/bin/kpopnetd
+test: pylint tslint gofmt-staged go/bin/kpopnetd
 
 py/env:
 	virtualenv -p python3 --system-site-packages $@
@@ -25,19 +25,19 @@ tslint:
 go/bin/go-bindata:
 	go get github.com/jteeuwen/go-bindata/...
 
-GODEPS = $(shell find go/src/kpopnet -type f)
-go/bin/kpopnet: go/bin/go-bindata $(GODEPS)
-	go generate kpopnet/...
-	go get -v kpopnet
+GODEPS = $(shell find go/src/kpopnetd -type f)
+go/bin/kpopnetd: go/bin/go-bindata $(GODEPS)
+	go generate kpopnetd/...
+	go get -v kpopnetd
 
-goserve: go/bin/kpopnet
+goserve: go/bin/kpopnetd
 	$< serve
 
 gofmt:
-	go fmt kpopnet/...
+	go fmt kpopnetd/...
 
 gofmt-staged:
 	./gofmt-staged.sh
 
 gotags:
-	ctags -R go/src/kpopnet
+	ctags -R go/src/kpopnetd
