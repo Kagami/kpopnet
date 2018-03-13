@@ -16,13 +16,13 @@ var (
 	errInternal = fmt.Errorf("internal-error")
 )
 
-func serveData(w http.ResponseWriter, r *http.Request, data interface{}) {
-	buf, err := json.Marshal(data)
+func serveData(w http.ResponseWriter, r *http.Request, v interface{}) {
+	data, err := json.Marshal(v)
 	if err != nil {
 		handle500(w, r, err)
 		return
 	}
-	etag := fmt.Sprintf("\"%s\"", hashBytes(buf))
+	etag := fmt.Sprintf("\"%s\"", hashBytes(data))
 	if checkEtag(w, r, etag) {
 		return
 	}
@@ -30,7 +30,7 @@ func serveData(w http.ResponseWriter, r *http.Request, data interface{}) {
 	head.Set("Cache-Control", "no-cache")
 	head.Set("Content-Type", "application/json")
 	head.Set("ETag", etag)
-	w.Write(buf)
+	w.Write(data)
 }
 
 func serveError(w http.ResponseWriter, r *http.Request, err error, code int) {

@@ -28,7 +28,7 @@ func prepare() (err error) {
 		case strings.HasPrefix(name, "init_"):
 			// Do nothing.
 		case strings.HasPrefix(name, "fn_"):
-			if err = exec(id); err != nil {
+			if err = execQ(id); err != nil {
 				return fmt.Errorf("Error preparing %s: %v", name, err)
 			}
 		default:
@@ -45,7 +45,7 @@ func Start(connStr string) (err error) {
 		return
 	}
 
-	if err = exec("init_db"); err != nil {
+	if err = execQ("init_db"); err != nil {
 		return fmt.Errorf("Error initializing: %v", err)
 	}
 

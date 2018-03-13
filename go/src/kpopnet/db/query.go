@@ -10,11 +10,11 @@ import (
 // Get all profiles.
 // FIXME(Kagami): Cache it!
 func GetProfiles() (ps *profile.Profiles, err error) {
-	tx, err := getTx()
+	tx, err := beginTx()
 	if err != nil {
 		return
 	}
-	defer tx.Rollback()
+	defer endTx(tx, &err)
 	if err = setReadOnly(tx); err != nil {
 		return
 	}
@@ -77,7 +77,58 @@ func GetProfiles() (ps *profile.Profiles, err error) {
 	return
 }
 
+// Prepare band structure to be stored in DB.
+// ID fields are removed to avoid duplication.
+func getBandData(band profile.Band) (data []byte, err error) {
+	delete(band, "id")
+	delete(band, "urls") // Don't need this
+	data, err = json.Marshal(band)
+	return
+}
+
+// Prepare idol structure to be stored in DB.
+// ID fields are removed to avoid duplication.
+func getIdolData(idol profile.Idol) (data []byte, err error) {
+	delete(idol, "id")
+	delete(idol, "band_id")
+	data, err = json.Marshal(idol)
+	return
+}
+
 // Insert/update database profiles.
 func UpdateProfiles(ps *profile.Profiles) (err error) {
+	tx, err := beginTx()
+	if err != nil {
+		return
+	}
+	defer endTx(tx, &err)
+
+	st := tx.Stmt(prepared["upsert_band"])
+	for _, band := range ps.Bands {
+		id := band["id"]
+		var data []byte
+		data, err = getBandData(band)
+		if err != nil {
+			return
+		}
+		if _, err = st.Exec(id, data); err != nil {
+			return
+		}
+	}
+
+	st = tx.Stmt(prepared["upsert_idol"])
+	for _, idol := range ps.Idols {
+		id := idol["id"]
+		bandId := idol["band_id"]
+		var data []byte
+		data, err = getIdolData(idol)
+		if err != nil {
+			return
+		}
+		if _, err = st.Exec(id, bandId, data); err != nil {
+			return
+		}
+	}
+
 	return
 }

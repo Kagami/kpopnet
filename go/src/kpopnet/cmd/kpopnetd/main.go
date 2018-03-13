@@ -43,7 +43,7 @@ type config struct {
 	Datadir string `docopt:"-d"`
 }
 
-func profileImport(conf config) {
+func importProfiles(conf config) {
 	err := db.Start(conf.Conn)
 	if err != nil {
 		log.Fatal(err)
@@ -86,7 +86,7 @@ func main() {
 	}
 
 	if conf.Profile && conf.Import {
-		profileImport(conf)
+		importProfiles(conf)
 	} else if conf.Serve {
 		serve(conf)
 	} else {
