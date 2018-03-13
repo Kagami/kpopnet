@@ -43,6 +43,38 @@ type config struct {
 	Datadir string `docopt:"-d"`
 }
 
+func profileImport(conf config) {
+	err := db.Start(conf.Conn)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Importing profiles from %s", conf.Datadir)
+	ps, err := profile.ReadAll(conf.Datadir)
+	if err != nil {
+		err = fmt.Errorf("Error reading profiles: %v", err)
+		log.Fatal(err)
+	}
+	err = db.UpdateProfiles(ps)
+	if err != nil {
+		err = fmt.Errorf("Error updating DB profiles: %v", err)
+		log.Fatal(err)
+	}
+	log.Print("Done.")
+}
+
+func serve(conf config) {
+	err := db.Start(conf.Conn)
+	if err != nil {
+		log.Fatal(err)
+	}
+	opts := server.Options{
+		Address: fmt.Sprintf("%v:%v", conf.Host, conf.Port),
+		WebRoot: conf.Sitedir,
+	}
+	log.Printf("Listening on %v", opts.Address)
+	log.Fatal(server.Start(opts))
+}
+
 func main() {
 	opts, err := docopt.ParseArgs(USAGE, nil, VERSION)
 	if err != nil {
@@ -54,31 +86,9 @@ func main() {
 	}
 
 	if conf.Profile && conf.Import {
-		err := db.Start(conf.Conn)
-		if err != nil {
-			log.Fatal(err)
-		}
-		log.Printf("Importing profiles from %s", conf.Datadir)
-		ps, err := profile.ReadAll(conf.Datadir)
-		if err != nil {
-			log.Fatal(err)
-		}
-		err = db.UpdateProfiles(ps)
-		if err != nil {
-			log.Fatal(err)
-		}
-		log.Print("Done.")
+		profileImport(conf)
 	} else if conf.Serve {
-		err := db.Start(conf.Conn)
-		if err != nil {
-			log.Fatal(err)
-		}
-		serverOpts := server.Options{
-			Address: fmt.Sprintf("%v:%v", conf.Host, conf.Port),
-			WebRoot: conf.Sitedir,
-		}
-		log.Printf("Listening on %v", serverOpts.Address)
-		log.Fatal(server.Start(serverOpts))
+		serve(conf)
 	} else {
 		log.Fatal("No command selected, try --help.")
 	}
