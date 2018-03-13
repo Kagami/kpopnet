@@ -1,17 +1,7 @@
 import { Component, h, render } from "preact";
+import { getProfiles, Profiles } from "../api";
+import Search from "../search";
 import "./index.css";
-
-class Search extends Component<any, any> {
-  public render() {
-    return (
-      <input
-        class="search"
-        placeholder="Search for idol or band"
-        autofocus
-      />
-    );
-  }
-}
 
 class Dropzone extends Component<any, any> {
   private fileEl: HTMLInputElement = null;
@@ -95,17 +85,30 @@ class Idol extends Component<any, any> {
 }
 
 class Index extends Component<any, any> {
+  private profiles: Profiles = null;
   constructor() {
     super();
     this.state = {
+      loading: true,
       file: null,
     };
   }
-  public render({}, { file }: any) {
+  public componentDidMount() {
+    // FIXME(Kagami): Error handling.
+    getProfiles().then((profiles) => {
+      this.profiles = profiles;
+      this.setState({loading: false});
+      console.log(this.profiles);  // tslint:disable-line
+    });
+  }
+  public render({}, { loading, file }: any) {
     return (
       <div class="index">
         <div class="index__inner">
-          <Search />
+          <Search
+            loading={loading}
+            onChange={this.handleSearch}
+          />
           {!file && <Dropzone onLoad={this.handleLoad} />}
           {file && <Idol file={file} />}
         </div>
@@ -127,6 +130,9 @@ class Index extends Component<any, any> {
   }
   private handleLoad = (file: File) => {
     this.setState({file});
+  }
+  private handleSearch = (s: string) => {
+    /* skip */
   }
 }
 

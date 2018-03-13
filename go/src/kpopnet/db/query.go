@@ -8,7 +8,6 @@ import (
 )
 
 // Get all profiles.
-// FIXME(Kagami): Cache it!
 func GetProfiles() (ps *profile.Profiles, err error) {
 	tx, err := beginTx()
 	if err != nil {
@@ -63,7 +62,7 @@ func GetProfiles() (ps *profile.Profiles, err error) {
 			return
 		}
 		idol["id"] = id
-		idol["bandId"] = bandId
+		idol["band_id"] = bandId
 		idols = append(idols, idol)
 	}
 	if err = rs2.Err(); err != nil {

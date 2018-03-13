@@ -29,22 +29,6 @@ body {
   min-height: 100%;
 }
 
-.search {
-  background: none;
-  font-size: 30px;
-  border: 1px solid #ccc;
-  width: 800px;
-  height: 50px;
-  text-align: center;
-  outline: none;
-  margin-top: 30px;
-  margin-bottom: 100px;
-}
-
-.search::placeholder {
-  color: #999;
-}
-
 .dropzone {
   display: flex;
   align-items: center;

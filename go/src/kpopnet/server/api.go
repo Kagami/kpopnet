@@ -46,6 +46,7 @@ func handle500(w http.ResponseWriter, r *http.Request, err error) {
 	serveError(w, r, errInternal, 500)
 }
 
+// FIXME(Kagami): Cache it!
 func serveProfiles(w http.ResponseWriter, r *http.Request) {
 	ps, err := db.GetProfiles()
 	if err != nil {
