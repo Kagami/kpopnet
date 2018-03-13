@@ -11,6 +11,10 @@ html, body {
   height: 100%;
 }
 
+html {
+  overflow-y: scroll;
+}
+
 body {
   color: #333;
   background: #ebeaeb;
