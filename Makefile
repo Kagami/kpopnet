@@ -31,7 +31,7 @@ go/bin/kpopnet: go/bin/go-bindata $(GODEPS)
 	go get -v kpopnet
 
 goserve: go/bin/kpopnet
-	$<
+	$< serve
 
 gofmt:
 	go fmt kpopnet/...

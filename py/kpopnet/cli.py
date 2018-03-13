@@ -1,5 +1,5 @@
 """
-K-pop face recognition neural network and utilities.
+K-pop neural network spiders and utilities.
 
 Usage:
   kpopnet profile update [options]
