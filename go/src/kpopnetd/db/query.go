@@ -39,10 +39,10 @@ func GetProfiles() (ps *Profiles, err error) {
 		return
 	}
 	defer tx.Rollback()
-	if setReadOnly(tx) != nil {
+	if err = setReadOnly(tx); err != nil {
 		return
 	}
-	if setRepeatableRead(tx) != nil {
+	if err = setRepeatableRead(tx); err != nil {
 		return
 	}
 
