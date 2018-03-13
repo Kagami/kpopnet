@@ -7,7 +7,7 @@ import (
 	"io"
 	"net/http"
 
-	"kpopnetd/db"
+	"kpopnet/db"
 )
 
 var (

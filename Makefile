@@ -25,19 +25,19 @@ tslint:
 go/bin/go-bindata:
 	go get github.com/jteeuwen/go-bindata/...
 
-GODEPS = $(shell find go/src/kpopnetd -type f)
+GODEPS = $(shell find go/src/kpopnet -type f)
 go/bin/kpopnetd: go/bin/go-bindata $(GODEPS)
-	go generate kpopnetd/...
-	go get -v kpopnetd
+	go generate kpopnet/...
+	go get -v kpopnet/...
 
 goserve: go/bin/kpopnetd
 	$< serve
 
 gofmt:
-	go fmt kpopnetd/...
+	go fmt kpopnet/...
 
 gofmt-staged:
 	./gofmt-staged.sh
 
 gotags:
-	ctags -R go/src/kpopnetd
+	ctags -R go/src/kpopnet

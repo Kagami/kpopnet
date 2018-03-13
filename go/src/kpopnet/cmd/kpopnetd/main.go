@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"kpopnetd/db"
-	"kpopnetd/server"
+	"kpopnet/db"
+	"kpopnet/server"
 
 	"github.com/docopt/docopt-go"
 )
