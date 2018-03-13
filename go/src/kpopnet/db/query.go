@@ -2,38 +2,14 @@
 package db
 
 import (
-	"bytes"
 	"encoding/json"
+
+	"kpopnet/profile"
 )
-
-type Profiles struct {
-	Bands []json.RawMessage `json:"bands"`
-	Idols []json.RawMessage `json:"idols"`
-}
-
-// Add ID key to encoded JSON data.
-func fixBandData(buf []byte, id string) []byte {
-	return bytes.Join([][]byte{
-		[]byte("{\"id\":\""),
-		[]byte(id),
-		[]byte("\","),
-		buf[1:]}, nil)
-}
-
-// Add ID and band ID keys to encoded JSON data.
-func fixIdolData(buf []byte, id string, bandId string) []byte {
-	return bytes.Join([][]byte{
-		[]byte("{\"id\":\""),
-		[]byte(id),
-		[]byte("\",\"band_id\":\""),
-		[]byte(bandId),
-		[]byte("\","),
-		buf[1:]}, nil)
-}
 
 // Get all profiles.
 // FIXME(Kagami): Cache it!
-func GetProfiles() (ps *Profiles, err error) {
+func GetProfiles() (ps *profile.Profiles, err error) {
 	tx, err := getTx()
 	if err != nil {
 		return
@@ -51,14 +27,19 @@ func GetProfiles() (ps *Profiles, err error) {
 		return
 	}
 	defer rs.Close()
-	bands := []json.RawMessage{}
+	bands := []profile.Band{}
 	for rs.Next() {
 		var id string
 		var data []byte
+		var band profile.Band
 		if err = rs.Scan(&id, &data); err != nil {
 			return
 		}
-		bands = append(bands, fixBandData(data, id))
+		if err = json.Unmarshal(data, &band); err != nil {
+			return
+		}
+		band["id"] = id
+		bands = append(bands, band)
 	}
 	if err = rs.Err(); err != nil {
 		return
@@ -69,23 +50,34 @@ func GetProfiles() (ps *Profiles, err error) {
 		return
 	}
 	defer rs2.Close()
-	idols := []json.RawMessage{}
+	idols := []profile.Idol{}
 	for rs2.Next() {
 		var id string
 		var bandId string
 		var data []byte
+		var idol profile.Idol
 		if err = rs2.Scan(&id, &bandId, &data); err != nil {
 			return
 		}
-		idols = append(idols, fixIdolData(data, id, bandId))
+		if err = json.Unmarshal(data, &idol); err != nil {
+			return
+		}
+		idol["id"] = id
+		idol["bandId"] = bandId
+		idols = append(idols, idol)
 	}
 	if err = rs2.Err(); err != nil {
 		return
 	}
 
-	ps = &Profiles{
+	ps = &profile.Profiles{
 		Bands: bands,
 		Idols: idols,
 	}
+	return
+}
+
+// Insert/update database profiles.
+func UpdateProfiles(ps *profile.Profiles) (err error) {
 	return
 }

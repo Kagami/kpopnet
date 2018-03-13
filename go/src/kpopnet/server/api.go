@@ -47,10 +47,10 @@ func handle500(w http.ResponseWriter, r *http.Request, err error) {
 }
 
 func serveProfiles(w http.ResponseWriter, r *http.Request) {
-	profiles, err := db.GetProfiles()
+	ps, err := db.GetProfiles()
 	if err != nil {
 		handle500(w, r, err)
 		return
 	}
-	serveData(w, r, profiles)
+	serveData(w, r, ps)
 }

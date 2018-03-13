@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"kpopnet/db"
+	"kpopnet/profile"
 	"kpopnet/server"
 
 	"github.com/docopt/docopt-go"
@@ -53,6 +54,20 @@ func main() {
 	}
 
 	if conf.Profile && conf.Import {
+		err := db.Start(conf.Conn)
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Printf("Importing profiles from %s", conf.Datadir)
+		ps, err := profile.ReadAll(conf.Datadir)
+		if err != nil {
+			log.Fatal(err)
+		}
+		err = db.UpdateProfiles(ps)
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Print("Done.")
 	} else if conf.Serve {
 		err := db.Start(conf.Conn)
 		if err != nil {
