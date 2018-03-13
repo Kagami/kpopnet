@@ -5,6 +5,7 @@ from .kprofiles import KprofilesSpider
 from .nowkpop import NowkpopSpider
 from .kpopinfo114 import Kpopinfo114Spider
 from .wikipedia import WikipediaSpider
+from .dbkpop import DbkpopSpider
 from .googleimages import GoogleimagesSpider
 
 
@@ -20,6 +21,7 @@ for spider in [
     NowkpopSpider,
     Kpopinfo114Spider,
     WikipediaSpider,
+    DbkpopSpider,
 ]:
     profile_spiders[spider.name] = spider
 
