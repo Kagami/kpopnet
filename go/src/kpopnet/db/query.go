@@ -46,40 +46,40 @@ func GetProfiles() (ps *Profiles, err error) {
 		return
 	}
 
-	r, err := tx.Stmt(prepared["get_bands"]).Query()
+	rs, err := tx.Stmt(prepared["get_bands"]).Query()
 	if err != nil {
 		return
 	}
-	defer r.Close()
+	defer rs.Close()
 	bands := []json.RawMessage{}
-	for r.Next() {
+	for rs.Next() {
 		var id string
 		var data []byte
-		if err = r.Scan(&id, &data); err != nil {
+		if err = rs.Scan(&id, &data); err != nil {
 			return
 		}
 		bands = append(bands, fixBandData(data, id))
 	}
-	if err = r.Err(); err != nil {
+	if err = rs.Err(); err != nil {
 		return
 	}
 
-	r2, err := tx.Stmt(prepared["get_idols"]).Query()
+	rs2, err := tx.Stmt(prepared["get_idols"]).Query()
 	if err != nil {
 		return
 	}
-	defer r2.Close()
+	defer rs2.Close()
 	idols := []json.RawMessage{}
-	for r2.Next() {
+	for rs2.Next() {
 		var id string
 		var bandId string
 		var data []byte
-		if err = r2.Scan(&id, &bandId, &data); err != nil {
+		if err = rs2.Scan(&id, &bandId, &data); err != nil {
 			return
 		}
 		idols = append(idols, fixIdolData(data, id, bandId))
 	}
-	if err = r2.Err(); err != nil {
+	if err = rs2.Err(); err != nil {
 		return
 	}
 
