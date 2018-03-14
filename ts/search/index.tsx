@@ -1,6 +1,6 @@
 import { Component, h } from "preact";
 import Spinner from "../spinner";
-import "./index.css";
+import "./index.less";
 
 class Search extends Component<any, any> {
   private inputEl: HTMLInputElement = null;

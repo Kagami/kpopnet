@@ -4,7 +4,7 @@
 
 import { Component, h } from "preact";
 import { getIdolPreviewUrl, Idol, Profiles } from "../api";
-import "./index.css";
+import "./index.less";
 
 interface ItemProps {
   info: Idol;

@@ -7,7 +7,7 @@
  */
 
 import { h } from "preact";
-import "./index.css";
+import "./index.less";
 
 function Spinner() {
   return (

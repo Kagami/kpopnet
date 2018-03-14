@@ -23,8 +23,8 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.css$/,
-        use: ExtractTextPlugin.extract({use: "css-loader"}),
+        test: /\.less$/,
+        use: ExtractTextPlugin.extract(["css-loader", "less-loader"]),
         exclude: /node_modules/,
       },
     ],

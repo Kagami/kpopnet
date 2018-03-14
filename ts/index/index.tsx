@@ -3,7 +3,7 @@ import { getProfiles, Profiles } from "../api";
 import Dropzone from "../dropzone";
 import IdolList from "../idol-list";
 import Search from "../search";
-import "./index.css";
+import "./index.less";
 
 class Index extends Component<any, any> {
   private profiles: Profiles = null;

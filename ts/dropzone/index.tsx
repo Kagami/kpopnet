@@ -1,5 +1,5 @@
 import { Component, h } from "preact";
-import "./index.css";
+import "./index.less";
 
 class Dropzone extends Component<any, any> {
   private fileEl: HTMLInputElement = null;
