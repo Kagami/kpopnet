@@ -31,10 +31,24 @@ export interface Profiles {
   idols: Idol[];
 }
 
+// Defined in webpack's config.
+declare const API_PREFIX: string;
+
+function get(resource: string): Promise<Response> {
+  return fetch(`${API_PREFIX}/api/${resource}`, {credentials: "same-origin"});
+}
+
 /**
  * Get all profiles. ~47kb gzipped currently.
  */
 export function getProfiles(): Promise<Profiles> {
-  return fetch("/api/profiles", {credentials: "same-origin"})
-    .then((res) => res.json());
+  return get("profiles").then((res) => res.json());
+}
+
+/**
+ * Get URL of the idol's preview image. Safe to use in <img> element
+ * right away.
+ */
+export function getIdolPreviewUrl(id: string): string {
+  return `${API_PREFIX}/api/idols/${id}/preview`;
 }

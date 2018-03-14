@@ -3,16 +3,20 @@
  */
 
 import { Component, h } from "preact";
+import { getIdolPreviewUrl, Idol, Profiles } from "../api";
 import "./index.css";
 
-class Idol extends Component<any, any> {
-  private url = "";
-  public render() {
+interface ItemProps {
+  info: Idol;
+}
+
+class IdolItem extends Component<ItemProps, any> {
+  public render({ info }: ItemProps) {
     return (
-      <div class="idol">
+      <section class="idol">
         <img
-          class="idol__img"
-          src={this.url}
+          class="idol__preview"
+          src={getIdolPreviewUrl(info.id)}
           draggable={0 as any}
           onDragStart={this.handleDragStart}
         />
@@ -26,7 +30,7 @@ class Idol extends Component<any, any> {
           <p class="idol__info-line">Weight: 48 kg</p>
           <p class="idol__info-line">Blood Type: B</p>
         </div>
-      </div>
+      </section>
     );
   }
   private handleDragStart = (e: DragEvent) => {
@@ -34,9 +38,24 @@ class Idol extends Component<any, any> {
   }
 }
 
-class IdolList extends Component<any, any> {
-  public render() {
-    return <Idol/>;
+interface ListProps {
+  profiles: Profiles;
+  query: string;
+}
+
+class IdolList extends Component<ListProps, any> {
+  public render({ profiles }: ListProps) {
+    const idols = profiles.idols.slice(0, 10);
+    return (
+      <article class="idol-list">
+        {idols.map((info: Idol) =>
+          <IdolItem
+            key={info.id}
+            info={info}
+          />,
+        )}
+      </article>
+    );
   }
 }
 

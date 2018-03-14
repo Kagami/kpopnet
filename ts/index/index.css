@@ -35,25 +35,6 @@ body {
   flex-direction: column;
 }
 
-.dropzone {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  width: 800px;
-  height: 400px;
-  margin-bottom: 30px;
-  font-size: 30px;
-  color: #999;
-  border: 2px dashed #ccc;
-  cursor: pointer;
-  user-select: none;
-}
-
-.dropzone__file {
-  display: none;
-}
-
 .footer {
   height: 51px;
   line-height: 50px;

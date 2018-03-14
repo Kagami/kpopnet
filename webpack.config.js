@@ -1,4 +1,5 @@
 const path = require("path");
+const DefinePlugin = require("webpack").DefinePlugin;
 const WebpackNotifierPlugin = require("webpack-notifier");
 const LiveReloadPlugin = require("webpack-livereload-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
@@ -32,6 +33,7 @@ module.exports = {
     new WebpackNotifierPlugin(),
     new LiveReloadPlugin(),
     new CleanWebpackPlugin(["dist"]),
+    new DefinePlugin({API_PREFIX: `""`}),
     new ExtractTextPlugin(`static/${CSS_NAME}`),
     new HtmlWebpackPlugin({
       title: "K-pop idols network | Profiles, images and face recognition",

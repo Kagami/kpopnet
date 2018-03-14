@@ -1,25 +1,6 @@
 import { Component, h } from "preact";
+import Spinner from "../spinner";
 import "./index.css";
-
-// https://loading.io/css/
-function Spinnder() {
-  return (
-    <div class="spinner">
-      <div class="spinner__lobe" />
-      <div class="spinner__lobe" />
-      <div class="spinner__lobe" />
-      <div class="spinner__lobe" />
-      <div class="spinner__lobe" />
-      <div class="spinner__lobe" />
-      <div class="spinner__lobe" />
-      <div class="spinner__lobe" />
-      <div class="spinner__lobe" />
-      <div class="spinner__lobe" />
-      <div class="spinner__lobe" />
-      <div class="spinner__lobe" />
-    </div>
-  );
-}
 
 class Search extends Component<any, any> {
   private inputEl: HTMLInputElement = null;
@@ -36,9 +17,9 @@ class Search extends Component<any, any> {
           class="search__input"
           placeholder="Search for idol or band"
           disabled={loading}
-          autofocus
+          onInput={this.handleChange}
         />
-        {loading && <Spinnder/>}
+        {loading && <Spinner/>}
       </div>
     );
   }
@@ -46,6 +27,9 @@ class Search extends Component<any, any> {
     if (this.inputEl) {
       this.inputEl.focus();
     }
+  }
+  private handleChange = (e: Event) => {
+    this.props.onChange((e.target as HTMLInputElement).value);
   }
 }
 
