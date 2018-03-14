@@ -7,12 +7,18 @@ import (
 	"github.com/dimfeld/httptreemux"
 )
 
+var (
+	idolApi string
+)
+
 type Options struct {
 	Address string
 	WebRoot string
+	IdolApi string
 }
 
 func Start(o Options) (err error) {
+	idolApi = o.IdolApi
 	router, err := createRouter(o)
 	if err != nil {
 		return
@@ -32,6 +38,7 @@ func createRouter(o Options) (h http.Handler, err error) {
 	staticRoot := filepath.Join(webRoot, "static")
 
 	r.GET("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Cache-Control", "no-cache")
 		http.ServeFile(w, r, indexPath)
 	})
 	r.GET("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {
@@ -42,6 +49,7 @@ func createRouter(o Options) (h http.Handler, err error) {
 
 	api := r.NewGroup("/api")
 	api.GET("/profiles", serveProfiles)
+	api.GET("/idols/*path", serveIdolApi)
 
 	h = http.Handler(r)
 	return

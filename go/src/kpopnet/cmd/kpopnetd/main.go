@@ -30,6 +30,7 @@ Options:
                 [default: user=meguca password=meguca dbname=meguca sslmode=disable].
   -s <sitedir>  Site directory location [default: ./dist].
   -d <datadir>  Data directory location [default: ./data].
+  -i <idolapi>  Idol API location [default: http://localhost:8001/api/idols].
 `
 
 type config struct {
@@ -39,8 +40,9 @@ type config struct {
 	Host    string `docopt:"-H"`
 	Port    int    `docopt:"-p"`
 	Conn    string `docopt:"-c"`
-	Sitedir string `docopt:"-s"`
-	Datadir string `docopt:"-d"`
+	SiteDir string `docopt:"-s"`
+	DataDir string `docopt:"-d"`
+	IdolApi string `docopt:"-i"`
 }
 
 func importProfiles(conf config) {
@@ -48,8 +50,8 @@ func importProfiles(conf config) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Importing profiles from %s", conf.Datadir)
-	ps, err := profile.ReadAll(conf.Datadir)
+	log.Printf("Importing profiles from %s", conf.DataDir)
+	ps, err := profile.ReadAll(conf.DataDir)
 	if err != nil {
 		err = fmt.Errorf("Error reading profiles: %v", err)
 		log.Fatal(err)
@@ -69,7 +71,8 @@ func serve(conf config) {
 	}
 	opts := server.Options{
 		Address: fmt.Sprintf("%v:%v", conf.Host, conf.Port),
-		WebRoot: conf.Sitedir,
+		WebRoot: conf.SiteDir,
+		IdolApi: conf.IdolApi,
 	}
 	log.Printf("Listening on %v", opts.Address)
 	log.Fatal(server.Start(opts))

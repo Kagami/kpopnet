@@ -25,8 +25,8 @@ tslint:
 go/bin/go-bindata:
 	go get github.com/jteeuwen/go-bindata/...
 
-GODEPS = $(shell find go/src/kpopnet -type f)
-go/bin/kpopnetd: go/bin/go-bindata $(GODEPS)
+GOSRC = $(shell find go/src/kpopnet -type f)
+go/bin/kpopnetd: go/bin/go-bindata $(GOSRC)
 	go generate kpopnet/...
 	go get -v kpopnet/...
 

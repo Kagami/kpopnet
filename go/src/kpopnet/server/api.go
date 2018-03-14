@@ -16,6 +16,12 @@ var (
 	errInternal = fmt.Errorf("internal-error")
 )
 
+func setApiHeaders(w http.ResponseWriter) {
+	head := w.Header()
+	head.Set("Cache-Control", "no-cache")
+	head.Set("Content-Type", "application/json")
+}
+
 func serveData(w http.ResponseWriter, r *http.Request, v interface{}) {
 	data, err := json.Marshal(v)
 	if err != nil {
@@ -26,17 +32,13 @@ func serveData(w http.ResponseWriter, r *http.Request, v interface{}) {
 	if checkEtag(w, r, etag) {
 		return
 	}
-	head := w.Header()
-	head.Set("Cache-Control", "no-cache")
-	head.Set("Content-Type", "application/json")
-	head.Set("ETag", etag)
+	setApiHeaders(w)
+	w.Header().Set("ETag", etag)
 	w.Write(data)
 }
 
 func serveError(w http.ResponseWriter, r *http.Request, err error, code int) {
-	head := w.Header()
-	head.Set("Cache-Control", "no-cache")
-	head.Set("Content-Type", "application/json")
+	setApiHeaders(w)
 	w.WriteHeader(code)
 	io.WriteString(w, fmt.Sprintf("{\"error\": \"%v\"}", err))
 }
@@ -54,4 +56,10 @@ func serveProfiles(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	serveData(w, r, ps)
+}
+
+// Idol API is served by cutechan-compatible backend.
+func serveIdolApi(w http.ResponseWriter, r *http.Request) {
+	url := idolApi + "/" + getParam(r, "path")
+	http.Redirect(w, r, url, 302)
 }
