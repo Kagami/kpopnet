@@ -1,5 +1,6 @@
 import { Component, h, render } from "preact";
 import { getProfiles, Profiles } from "../api";
+import IdolList from "../idol-list";
 import Search from "../search";
 import "./index.css";
 
@@ -49,47 +50,13 @@ class Dropzone extends Component<any, any> {
   }
 }
 
-class Idol extends Component<any, any> {
-  private url: string = null;
-  public componentWillMount() {
-    this.url = URL.createObjectURL(this.props.file);
-  }
-  public componentWillUnmount() {
-    URL.revokeObjectURL(this.url);
-  }
-  public render() {
-    return (
-      <div class="idol">
-        <img
-          class="idol__img"
-          src={this.url}
-          draggable={0 as any}
-          onDragStart={this.handleDragStart}
-        />
-        <div class="idol__info">
-          <p class="idol__info-line">Stage name: Eunwoo</p>
-          <p class="idol__info-line">Real name: Jung Eunwoo (정은우)</p>
-          <p class="idol__info-line">Position: Main Vocalist</p>
-          <p class="idol__info-line">Birthday: July 1, 1998</p>
-          <p class="idol__info-line">Zodiac sign: Cancer</p>
-          <p class="idol__info-line">Height: 166.6 cm</p>
-          <p class="idol__info-line">Weight: 48 kg</p>
-          <p class="idol__info-line">Blood Type: B</p>
-        </div>
-      </div>
-    );
-  }
-  private handleDragStart = (e: DragEvent) => {
-    e.preventDefault();
-  }
-}
-
 class Index extends Component<any, any> {
   private profiles: Profiles = null;
   constructor() {
     super();
     this.state = {
       loading: true,
+      search: "",
       file: null,
     };
   }
@@ -98,19 +65,18 @@ class Index extends Component<any, any> {
     getProfiles().then((profiles) => {
       this.profiles = profiles;
       this.setState({loading: false});
-      console.log(this.profiles);  // tslint:disable-line
     });
   }
-  public render({}, { loading, file }: any) {
+  public render({}, { loading, search, file }: any) {
     return (
-      <div class="index">
+      <main class="index">
         <div class="index__inner">
           <Search
             loading={loading}
             onChange={this.handleSearch}
           />
           {!file && <Dropzone onLoad={this.handleLoad} />}
-          {file && <Idol file={file} />}
+          {search && <IdolList profiles={this.profiles} search={search} />}
         </div>
         <footer class="footer">
           <div class="footer__inner">
@@ -125,14 +91,14 @@ class Index extends Component<any, any> {
             </a>
           </div>
         </footer>
-      </div>
+      </main>
     );
   }
   private handleLoad = (file: File) => {
     this.setState({file});
   }
-  private handleSearch = (s: string) => {
-    /* skip */
+  private handleSearch = (search: string) => {
+    this.setState({search});
   }
 }
 

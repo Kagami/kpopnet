@@ -54,28 +54,6 @@ body {
   display: none;
 }
 
-.idol {
-  display: flex;
-  align-items: flex-start;
-  width: 800px;
-}
-
-.idol__img {
-  display: block;
-  width: 500px;
-  user-select: none;
-}
-
-.idol__info {
-  padding-left: 30px;
-  font-size: 18px;
-}
-
-.idol__info-line {
-  margin: 0;
-  white-space: nowrap;
-}
-
 .footer {
   height: 51px;
   line-height: 50px;
