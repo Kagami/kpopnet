@@ -43,7 +43,7 @@ class Dropzone extends Component<any, any> {
     }
   }
   private handleFile(file: File) {
-    this.props.onLoad(file);
+    this.props.onChange(file);
   }
 }
 

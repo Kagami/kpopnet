@@ -1,5 +1,5 @@
 /**
- * Profile types/interfaces and accompaying functions.
+ * Profile types/interfaces and accompanying functions.
  *
  * @module kpopnet/api/profiles
  */
@@ -135,18 +135,13 @@ function renderLineCtx(idol: Idol, [key, val]: InfoLine): RenderLine {
   return [key, val];
 }
 
-// Convert YYYY-MM-DD to JS Date object.
-// Backend guarantees to return birtday only in this format.
-function birtday2date(birthday: string): Date {
-  const [y, m, d] = birthday.split(/-/, 3);
-  return new Date(+y, +m - 1, +d);
-}
-
 const MILLISECONDS_IN_YEAR = 1000 * 365 * 24 * 60 * 60;
 
 export function getAge(birthday: string): number {
   const now = Date.now();
-  const born = birtday2date(birthday).getTime();
+  // Birthday is always in YYYY-MM-DD form and can be parsed as
+  // simplified ISO 8601 format.
+  const born = new Date(birthday).getTime();
   return Math.floor((now - born) / MILLISECONDS_IN_YEAR);
 }
 
@@ -154,4 +149,25 @@ function compareIdols(a: Idol, b: Idol): number {
   const ageA = a.birth_date ? getAge(a.birth_date as string) : 0;
   const ageB = b.birth_date ? getAge(b.birth_date as string) : 0;
   return ageB - ageA;
+}
+
+/**
+ * Find idols matching given query.
+ *
+ * Use simple match for a moment, should support complex queries like
+ * "nayoung band:pristin" in future.
+ */
+export function searchIdols(
+  query: string, profiles: Profiles, bandMap: BandMap,
+): Idol[] {
+  query = query.toLowerCase();
+  const result = profiles.idols.filter((idol) => {
+    return idol.name.toLowerCase().includes(query);
+  });
+  profiles.bands.forEach((band) => {
+    if (band.name.toLowerCase().includes(query)) {
+      result.push(...bandMap.get(band.id).idols);
+    }
+  });
+  return result;
 }

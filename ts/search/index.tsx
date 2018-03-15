@@ -19,7 +19,7 @@ class Search extends Component<any, any> {
           disabled={loading}
           onInput={this.handleChange}
         />
-        {loading && <Spinner/>}
+        {loading && <Spinner />}
       </div>
     );
   }

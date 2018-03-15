@@ -1,3 +1,10 @@
+.idols__incomplete {
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 30px;
+  line-height: 1.1;
+}
+
 .idol {
   display: flex;
   align-items: flex-start;
@@ -6,7 +13,7 @@
   border-bottom: 1px dashed #ccc;
   margin-bottom: 15px;
 }
-.idol:last-child {
+.idol:last-of-type {
   border: 0;
 }
 
@@ -24,4 +31,7 @@
 .idol__info-line {
   margin: 0;
   white-space: nowrap;
+}
+.idol__info-line:first-child {
+  font-weight: bold;
 }

@@ -33,7 +33,7 @@ class Index extends Component<any, any> {
             onChange={this.handleSearch}
           />
           {(!file && !query) &&
-            <Dropzone onLoad={this.handleLoad} />
+            <Dropzone onChange={this.handleFile} />
           }
           {(!loading && query) &&
             <IdolList
@@ -59,7 +59,7 @@ class Index extends Component<any, any> {
       </main>
     );
   }
-  private handleLoad = (file: File) => {
+  private handleFile = (file: File) => {
     this.setState({file});
   }
   private handleSearch = (query: string) => {

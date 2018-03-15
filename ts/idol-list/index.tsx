@@ -4,7 +4,8 @@
 
 import { Component, h } from "preact";
 import {
-  Band, BandMap, getIdolPreviewUrl, Idol, Profiles, renderIdol,
+  Band, BandMap, getIdolPreviewUrl, Idol, Profiles,
+  renderIdol, searchIdols,
 } from "../api";
 import "./index.less";
 
@@ -39,6 +40,15 @@ class IdolItem extends Component<ItemProps, any> {
   }
 }
 
+function IncompleteList() {
+  return (
+    <div class="idols__incomplete">
+      <div>Some results were skipped,</div>
+      <div>please clarify request</div>
+    </div>
+  );
+}
+
 interface ListProps {
   profiles: Profiles;
   bandMap: BandMap;
@@ -46,13 +56,19 @@ interface ListProps {
 }
 
 class IdolList extends Component<ListProps, any> {
+  private MAX_ITEMS_COUNT = 10;
   public shouldComponentUpdate(nextProps: ListProps) {
     return this.props.query !== nextProps.query;
   }
-  public render({ profiles, bandMap }: ListProps) {
-    const idols = profiles.idols.slice(0, 10);
+  public render({ query, profiles, bandMap }: ListProps) {
+    let idols = searchIdols(query, profiles, bandMap);
+    let complete = true;
+    if (idols.length > this.MAX_ITEMS_COUNT) {
+      idols = idols.slice(0, this.MAX_ITEMS_COUNT);
+      complete = false;
+    }
     return (
-      <article class="idol-list">
+      <article class="idols">
         {idols.map((idol) =>
           <IdolItem
             key={idol.id}
@@ -60,6 +76,7 @@ class IdolList extends Component<ListProps, any> {
             band={bandMap.get(idol.band_id).band}
           />,
         )}
+        {!complete && <IncompleteList />}
       </article>
     );
   }

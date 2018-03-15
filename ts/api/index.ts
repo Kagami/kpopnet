@@ -6,6 +6,7 @@
  *
  * @module kpopnet/api
  */
+
 // NOTE(Kagami): Make sure to import only essential modules here to keep
 // build size small.
 
@@ -15,6 +16,7 @@ export {
   ProfileValue, Band, Idol, Profiles,
   RenderLine, Rendered, renderIdol,
   BandMap, getBandMap,
+  searchIdols,
 } from "./profiles";
 
 // Defined in webpack's config.
