@@ -1,5 +1,5 @@
 import { Component, h, render } from "preact";
-import { getProfiles, Profiles } from "../api";
+import { BandMap, getBandMap, getProfiles, Profiles } from "../api";
 import Dropzone from "../dropzone";
 import IdolList from "../idol-list";
 import Search from "../search";
@@ -7,6 +7,7 @@ import "./index.less";
 
 class Index extends Component<any, any> {
   private profiles: Profiles = null;
+  private bandMap: BandMap = null;
   constructor() {
     super();
     this.state = {
@@ -19,6 +20,7 @@ class Index extends Component<any, any> {
     // FIXME(Kagami): Error handling.
     getProfiles().then((profiles) => {
       this.profiles = profiles;
+      this.bandMap = getBandMap(profiles);
       this.setState({loading: false});
     });
   }
@@ -30,8 +32,16 @@ class Index extends Component<any, any> {
             loading={loading}
             onChange={this.handleSearch}
           />
-          {(!file && !query) && <Dropzone onLoad={this.handleLoad} />}
-          {query && <IdolList profiles={this.profiles} query={query} />}
+          {(!file && !query) &&
+            <Dropzone onLoad={this.handleLoad} />
+          }
+          {(!loading && query) &&
+            <IdolList
+              profiles={this.profiles}
+              bandMap={this.bandMap}
+              query={query}
+            />
+          }
         </div>
         <footer class="footer">
           <div class="footer__inner">
