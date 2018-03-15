@@ -1,5 +1,4 @@
-// Working with profile structures.
-package profile
+package kpopnet
 
 import (
 	"encoding/json"
@@ -73,7 +72,7 @@ func readBandIdols(d string, bname string) (idols []Idol, err error) {
 }
 
 // Read all profiles from JSON-encoded files in provided directory.
-func ReadAll(d string) (ps *Profiles, err error) {
+func ReadProfiles(d string) (ps *Profiles, err error) {
 	var bands []Band
 	var idols []Idol
 

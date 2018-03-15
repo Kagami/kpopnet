@@ -1,15 +1,8 @@
-// Useful helper functions for working with database.
-package db
+package kpopnet
 
 import (
 	"database/sql"
-	"log"
-	"runtime/debug"
 )
-
-func logError(err error) {
-	log.Printf("db: %s\n%s\n", err, debug.Stack())
-}
 
 func execQ(queryId string) (err error) {
 	_, err = db.Exec(getQuery(queryId))

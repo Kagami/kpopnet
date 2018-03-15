@@ -1,4 +1,4 @@
-package server
+package kpopnet
 
 import (
 	"net/http"
@@ -11,13 +11,13 @@ var (
 	idolApi string
 )
 
-type Options struct {
+type ServerOptions struct {
 	Address string
 	WebRoot string
 	IdolApi string
 }
 
-func Start(o Options) (err error) {
+func StartServer(o ServerOptions) (err error) {
 	idolApi = o.IdolApi
 	router, err := createRouter(o)
 	if err != nil {
@@ -26,7 +26,7 @@ func Start(o Options) (err error) {
 	return http.ListenAndServe(o.Address, router)
 }
 
-func createRouter(o Options) (h http.Handler, err error) {
+func createRouter(o ServerOptions) (h http.Handler, err error) {
 	r := httptreemux.NewContextMux()
 
 	webRoot, err := filepath.Abs(o.WebRoot)
@@ -47,7 +47,7 @@ func createRouter(o Options) (h http.Handler, err error) {
 	r.Handler("GET", "/static/*", http.StripPrefix("/static/",
 		http.FileServer(http.Dir(staticRoot))))
 
-	r.GET("/api/profiles", serveProfiles)
+	r.GET("/api/profiles", ServeProfiles)
 	r.GET("/api/idols/*path", serveIdolApi)
 
 	h = http.Handler(r)

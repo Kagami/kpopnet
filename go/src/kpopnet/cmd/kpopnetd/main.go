@@ -4,9 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"kpopnet/db"
-	"kpopnet/profile"
-	"kpopnet/server"
+	"kpopnet"
 
 	"github.com/docopt/docopt-go"
 )
@@ -46,17 +44,17 @@ type config struct {
 }
 
 func importProfiles(conf config) {
-	err := db.Start(conf.Conn)
+	err := kpopnet.StartDb(conf.Conn)
 	if err != nil {
 		log.Fatal(err)
 	}
 	log.Printf("Importing profiles from %s", conf.DataDir)
-	ps, err := profile.ReadAll(conf.DataDir)
+	ps, err := kpopnet.ReadProfiles(conf.DataDir)
 	if err != nil {
 		err = fmt.Errorf("Error reading profiles: %v", err)
 		log.Fatal(err)
 	}
-	err = db.UpdateProfiles(ps)
+	err = kpopnet.UpdateProfiles(ps)
 	if err != nil {
 		err = fmt.Errorf("Error updating DB profiles: %v", err)
 		log.Fatal(err)
@@ -65,17 +63,17 @@ func importProfiles(conf config) {
 }
 
 func serve(conf config) {
-	err := db.Start(conf.Conn)
+	err := kpopnet.StartDb(conf.Conn)
 	if err != nil {
 		log.Fatal(err)
 	}
-	opts := server.Options{
+	opts := kpopnet.ServerOptions{
 		Address: fmt.Sprintf("%v:%v", conf.Host, conf.Port),
 		WebRoot: conf.SiteDir,
 		IdolApi: conf.IdolApi,
 	}
 	log.Printf("Listening on %v", opts.Address)
-	log.Fatal(server.Start(opts))
+	log.Fatal(kpopnet.StartServer(opts))
 }
 
 func main() {

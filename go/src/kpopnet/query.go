@@ -1,14 +1,11 @@
-// Database queries.
-package db
+package kpopnet
 
 import (
 	"encoding/json"
-
-	"kpopnet/profile"
 )
 
 // Get all profiles.
-func GetProfiles() (ps *profile.Profiles, err error) {
+func GetProfiles() (ps *Profiles, err error) {
 	tx, err := beginTx()
 	if err != nil {
 		return
@@ -26,11 +23,11 @@ func GetProfiles() (ps *profile.Profiles, err error) {
 		return
 	}
 	defer rs.Close()
-	bands := []profile.Band{}
+	bands := []Band{}
 	for rs.Next() {
 		var id string
 		var data []byte
-		var band profile.Band
+		var band Band
 		if err = rs.Scan(&id, &data); err != nil {
 			return
 		}
@@ -49,12 +46,12 @@ func GetProfiles() (ps *profile.Profiles, err error) {
 		return
 	}
 	defer rs2.Close()
-	idols := []profile.Idol{}
+	idols := []Idol{}
 	for rs2.Next() {
 		var id string
 		var bandId string
 		var data []byte
-		var idol profile.Idol
+		var idol Idol
 		if err = rs2.Scan(&id, &bandId, &data); err != nil {
 			return
 		}
@@ -69,7 +66,7 @@ func GetProfiles() (ps *profile.Profiles, err error) {
 		return
 	}
 
-	ps = &profile.Profiles{
+	ps = &Profiles{
 		Bands: bands,
 		Idols: idols,
 	}
@@ -78,7 +75,7 @@ func GetProfiles() (ps *profile.Profiles, err error) {
 
 // Prepare band structure to be stored in DB.
 // ID fields are removed to avoid duplication.
-func getBandData(band profile.Band) (data []byte, err error) {
+func getBandData(band Band) (data []byte, err error) {
 	delete(band, "id")
 	delete(band, "urls") // Don't need this
 	data, err = json.Marshal(band)
@@ -87,7 +84,7 @@ func getBandData(band profile.Band) (data []byte, err error) {
 
 // Prepare idol structure to be stored in DB.
 // ID fields are removed to avoid duplication.
-func getIdolData(idol profile.Idol) (data []byte, err error) {
+func getIdolData(idol Idol) (data []byte, err error) {
 	delete(idol, "id")
 	delete(idol, "band_id")
 	data, err = json.Marshal(idol)
@@ -95,7 +92,7 @@ func getIdolData(idol profile.Idol) (data []byte, err error) {
 }
 
 // Insert/update database profiles.
-func UpdateProfiles(ps *profile.Profiles) (err error) {
+func UpdateProfiles(ps *Profiles) (err error) {
 	tx, err := beginTx()
 	if err != nil {
 		return

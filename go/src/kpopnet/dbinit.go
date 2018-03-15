@@ -1,6 +1,6 @@
-//go:generate go-bindata -o bin_data.go --pkg db --nometadata --prefix sql sql/...
+//go:generate go-bindata -o bin_data.go --pkg kpopnet --nometadata --prefix sql sql/...
 
-package db
+package kpopnet
 
 import (
 	"database/sql"
@@ -40,7 +40,7 @@ func prepare() (err error) {
 	return
 }
 
-func Start(connStr string) (err error) {
+func StartDb(connStr string) (err error) {
 	if db, err = sql.Open("postgres", connStr); err != nil {
 		return
 	}

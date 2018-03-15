@@ -1,13 +1,10 @@
-// Server API handlers.
-package server
+package kpopnet
 
 import (
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
-
-	"kpopnet/db"
 )
 
 var (
@@ -49,8 +46,8 @@ func handle500(w http.ResponseWriter, r *http.Request, err error) {
 }
 
 // FIXME(Kagami): Cache it!
-func serveProfiles(w http.ResponseWriter, r *http.Request) {
-	ps, err := db.GetProfiles()
+func ServeProfiles(w http.ResponseWriter, r *http.Request) {
+	ps, err := GetProfiles()
 	if err != nil {
 		handle500(w, r, err)
 		return

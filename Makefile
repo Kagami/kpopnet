@@ -23,7 +23,7 @@ tslint:
 	npm -s test
 
 go/bin/go-bindata:
-	go get github.com/jteeuwen/go-bindata/...
+	go get github.com/kevinburke/go-bindata/...
 
 GOSRC = $(shell find go/src/kpopnet -type f)
 go/bin/kpopnetd: go/bin/go-bindata $(GOSRC)

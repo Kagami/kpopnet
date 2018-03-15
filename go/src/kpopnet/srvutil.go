@@ -1,4 +1,4 @@
-package server
+package kpopnet
 
 import (
 	"crypto/md5"
@@ -11,7 +11,7 @@ import (
 )
 
 func logError(err error) {
-	log.Printf("server: %s\n%s\n", err, debug.Stack())
+	log.Printf("kpopnet: %s\n%s\n", err, debug.Stack())
 }
 
 func hashBytes(buf []byte) string {
