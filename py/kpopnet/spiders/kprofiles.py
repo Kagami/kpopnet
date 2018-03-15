@@ -103,8 +103,6 @@ class KprofilesSpider(ProfileSpider):
             key = 'positions'
         elif key == 'specialty' or key == 'speciality' or key == 'instruments':
             key = 'specialties'
-        elif key == 'zodiac_sign':
-            key = 'zodiac'
         elif key == 'twitter_account':
             key = 'twitter'
         return key
@@ -131,8 +129,8 @@ class KprofilesSpider(ProfileSpider):
                 val = int(re.search(r'(\d+)\s*kg', val).group(1))
             except AttributeError:
                 val = None
-        elif key == 'zodiac':
-            val = val.lower()
+        elif key == 'zodiac_sign':
+            val = None
         elif key == 'nationality':
             val = val.lower()
         elif key == 'positions' or key == 'specialties':

@@ -115,9 +115,6 @@ function denormalizeVal(key: string, val: ProfileValue, idol: Idol): string {
     return hangul2 ? `${val} (${hangul2})` : val as string;
   case "birth_date":
     return `${val} (${getAge(val as string)})`;
-  case "zodiac":
-    const zodiac = idol.zodiac;
-    return zodiac ? `${val} (${zodiac})` : val as string;
   case "height":
     return val + " cm";
   case "weight":
