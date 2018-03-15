@@ -129,7 +129,7 @@ class KprofilesSpider(ProfileSpider):
                 val = int(re.search(r'(\d+)\s*kg', val).group(1))
             except AttributeError:
                 val = None
-        elif key == 'zodiac_sign':
+        elif key == 'zodiac_sign' or key == 'zodiac':
             val = None
         elif key == 'nationality':
             val = val.lower()
