@@ -60,6 +60,6 @@ func serveProfiles(w http.ResponseWriter, r *http.Request) {
 
 // Idol API is served by cutechan-compatible backend.
 func serveIdolApi(w http.ResponseWriter, r *http.Request) {
-	url := idolApi + "/" + getParam(r, "path")
+	url := idolApi + "/api/idols/" + getParam(r, "path")
 	http.Redirect(w, r, url, 302)
 }

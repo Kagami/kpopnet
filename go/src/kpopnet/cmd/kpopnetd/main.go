@@ -30,7 +30,7 @@ Options:
                 [default: user=meguca password=meguca dbname=meguca sslmode=disable].
   -s <sitedir>  Site directory location [default: ./dist].
   -d <datadir>  Data directory location [default: ./data].
-  -i <idolapi>  Idol API location [default: http://localhost:8001/api/idols].
+  -i <idolapi>  Idol API location [default: http://localhost:8001].
 `
 
 type config struct {

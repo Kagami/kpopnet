@@ -19,7 +19,7 @@ export {
   searchIdols,
 } from "./profiles";
 
-// Defined in webpack's config.
+// Defined in webpack's config, empty (current host) by default.
 declare const API_PREFIX: string;
 
 function get(resource: string): Promise<Response> {
