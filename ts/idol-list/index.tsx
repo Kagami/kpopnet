@@ -3,32 +3,27 @@
  */
 
 import { Component, h } from "preact";
-import { getIdolPreviewUrl, Idol, Profiles } from "../api";
+import { getIdolPreviewUrl, Idol, Profiles, showIdol } from "../api";
 import "./index.less";
 
 interface ItemProps {
-  info: Idol;
+  idol: Idol;
 }
 
 class IdolItem extends Component<ItemProps, any> {
-  public render({ info }: ItemProps) {
+  public render({ idol }: ItemProps) {
     return (
       <section class="idol">
         <img
           class="idol__preview"
-          src={getIdolPreviewUrl(info.id)}
+          src={getIdolPreviewUrl(idol.id)}
           draggable={0 as any}
           onDragStart={this.handleDragStart}
         />
         <div class="idol__info">
-          <p class="idol__info-line">Stage name: Eunwoo</p>
-          <p class="idol__info-line">Real name: Jung Eunwoo (정은우)</p>
-          <p class="idol__info-line">Position: Main Vocalist</p>
-          <p class="idol__info-line">Birthday: July 1, 1998</p>
-          <p class="idol__info-line">Zodiac sign: Cancer</p>
-          <p class="idol__info-line">Height: 166.6 cm</p>
-          <p class="idol__info-line">Weight: 48 kg</p>
-          <p class="idol__info-line">Blood Type: B</p>
+          {showIdol(idol).map(([key, val]) =>
+            <p class="idol__info-line">{key}: {val}</p>,
+          )}
         </div>
       </section>
     );
@@ -48,10 +43,10 @@ class IdolList extends Component<ListProps, any> {
     const idols = profiles.idols.slice(0, 10);
     return (
       <article class="idol-list">
-        {idols.map((info: Idol) =>
+        {idols.map((idol: Idol) =>
           <IdolItem
-            key={info.id}
-            info={info}
+            key={idol.id}
+            idol={idol}
           />,
         )}
       </article>

@@ -11,7 +11,7 @@ const JS_NAME = DEBUG ? "index.js" : "[chunkhash:10].js";
 const CSS_NAME = DEBUG ? "index.css" : "[contenthash:10].css";
 
 module.exports = {
-  entry: "./ts/index/index.tsx",
+  entry: "./ts/index",
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
   },
