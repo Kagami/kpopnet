@@ -19,13 +19,13 @@ class IdolItem extends Component<ItemProps, any> {
     return false;
   }
   public render({ idol, band }: ItemProps) {
+    const previewUrl = getIdolPreviewUrl(idol.id);
+    const style = {backgroundImage: `url(${previewUrl})`};
     return (
       <section class="idol">
-        <img
+        <div
           class="idol__preview"
-          src={getIdolPreviewUrl(idol.id)}
-          draggable={0 as any}
-          onDragStart={this.handleDragStart}
+          style={style}
         />
         <div class="idol__info">
           {renderIdol(idol, band).map(([key, val]) =>
@@ -34,9 +34,6 @@ class IdolItem extends Component<ItemProps, any> {
         </div>
       </section>
     );
-  }
-  private handleDragStart = (e: DragEvent) => {
-    e.preventDefault();
   }
 }
 

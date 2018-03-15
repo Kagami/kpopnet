@@ -151,21 +151,29 @@ function compareIdols(a: Idol, b: Idol): number {
   return ageB - ageA;
 }
 
+// TODO(Kagami): Remove special chars.
+function normalizeName(name: string): string {
+  return name.replace(/[ .]/g, "").toLowerCase();
+}
+
 /**
  * Find idols matching given query.
- *
- * Use simple match for a moment, should support complex queries like
- * "nayoung band:pristin" in future.
  */
 export function searchIdols(
   query: string, profiles: Profiles, bandMap: BandMap,
 ): Idol[] {
-  query = query.toLowerCase();
+  // TODO(Kagami): Complex queries e.g. "nayoung band:pristin".
+  // TODO(Kagami): Is this too slow? O(BIG_C * N)
+  query = normalizeName(query);
+  if (!query) return [];
   const result = profiles.idols.filter((idol) => {
-    return idol.name.toLowerCase().includes(query);
+    const name1 = normalizeName(idol.name);
+    const name2 = normalizeName(idol.birth_name as string || "");
+    return name1.includes(query) || (name2 && name2.includes(query));
   });
   profiles.bands.forEach((band) => {
-    if (band.name.toLowerCase().includes(query)) {
+    const name = normalizeName(band.name);
+    if (name.includes(query)) {
       result.push(...bandMap.get(band.id).idols);
     }
   });
