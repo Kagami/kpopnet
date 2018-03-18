@@ -29,7 +29,10 @@ class IdolItem extends Component<ItemProps, any> {
         />
         <div class="idol__info">
           {renderIdol(idol, band).map(([key, val]) =>
-            <p class="idol__info-line">{key}: {val}</p>,
+            <p class="idol__info-line">
+              <span class="idol__info-key">{key}:</span>
+              <span class="idol__info-val">{val}</span>
+            </p>,
           )}
         </div>
       </section>

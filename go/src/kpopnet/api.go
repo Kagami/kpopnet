@@ -2,6 +2,7 @@ package kpopnet
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -10,7 +11,7 @@ import (
 var (
 	// Client errors.
 	// TODO(Kagami): Use custom class to store error context.
-	errInternal = fmt.Errorf("internal-error")
+	errInternal = errors.New("internal-error")
 )
 
 func setApiHeaders(w http.ResponseWriter) {

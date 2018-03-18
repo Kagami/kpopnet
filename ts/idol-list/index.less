@@ -7,21 +7,23 @@
 
 .idol {
   display: flex;
-  align-items: flex-start;
   width: 800px;
   margin-bottom: 50px;
 }
 
 .idol__preview {
-  width: 400px;
-  min-width: 400px;
-  min-height: 400px;
+  min-width: 350px;
+  min-height: 350px;
+  background-position: center;
   background-repeat: no-repeat;
   user-select: none;
 }
 
 .idol__info {
-  padding-left: 30px;
+  width: 100%;
+  margin-left: 10px;
+  border-left: 1px solid #d5d5d5;
+  padding-left: 20px;
   font-size: 18px;
 }
 
@@ -30,7 +32,17 @@
   white-space: nowrap;
 }
 .idol__info-line:first-child {
-  font-weight: bold;
-  font-size: 30px;
-  line-height: 2;
+  font-size: 36px;
+  border-bottom: 5px solid #6b6c9a;
+  margin-bottom: 12px;
+
+  .idol__info-key {
+    display: none;
+  }
+}
+
+.idol__info-key {
+  display: inline-block;
+  width: 115px;
+  color: #bbb;
 }
