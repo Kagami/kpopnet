@@ -28,8 +28,8 @@
 }
 
 .idol__info-line {
+  display: flex;
   margin: 0;
-  white-space: nowrap;
 }
 .idol__info-line:first-child {
   font-size: 36px;
@@ -42,7 +42,11 @@
 }
 
 .idol__info-key {
-  display: inline-block;
-  width: 115px;
+  flex: 0 0 115px;
   color: #bbb;
+  word-break: break-word;
+}
+
+.idol__info-val {
+  word-break: break-word;
 }
