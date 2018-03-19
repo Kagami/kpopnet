@@ -19,7 +19,7 @@ class Search extends Component<any, any> {
           disabled={loading}
           onInput={this.handleChange}
         />
-        {loading && <Spinner />}
+        {loading && <Spinner/>}
       </div>
     );
   }
@@ -28,8 +28,8 @@ class Search extends Component<any, any> {
       this.inputEl.focus();
     }
   }
-  private handleChange = (e: Event) => {
-    this.props.onChange((e.target as HTMLInputElement).value);
+  private handleChange = () => {
+    this.props.onChange(this.inputEl.value);
   }
 }
 

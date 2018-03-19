@@ -168,11 +168,12 @@ export function searchIdols(
     const name2 = normalizeName(idol.birth_name as string || "");
     return name1.includes(query) || (name2 && name2.includes(query));
   });
-  profiles.bands.forEach((band) => {
+  for (const band of profiles.bands) {
     const name = normalizeName(band.name);
     if (name.includes(query)) {
       result.push(...bandMap.get(band.id).idols);
+      break;
     }
-  });
+  }
   return result;
 }

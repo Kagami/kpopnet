@@ -40,3 +40,11 @@ export function getProfiles(): Promise<Profiles> {
 export function getIdolPreviewUrl(id: string): string {
   return `${API_PREFIX}/api/idols/${id}/preview`;
 }
+
+/**
+ * Get URL of the smaller version of idol's preview image. Safe to use
+ * in <img> element right away.
+ */
+export function getSmallIdolPreviewUrl(id: string): string {
+  return `${API_PREFIX}/api/idols/${id}/preview/small`;
+}
