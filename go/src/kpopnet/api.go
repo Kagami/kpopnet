@@ -20,12 +20,8 @@ func setApiHeaders(w http.ResponseWriter) {
 	head.Set("Content-Type", "application/json")
 }
 
-func serveData(w http.ResponseWriter, r *http.Request, v interface{}) {
-	data, err := json.Marshal(v)
-	if err != nil {
-		handle500(w, r, err)
-		return
-	}
+func serveData(w http.ResponseWriter, r *http.Request, data []byte) {
+	// Will need to hash on each request but this seems to be <1ms.
 	etag := fmt.Sprintf("\"%s\"", hashBytes(data))
 	if checkEtag(w, r, etag) {
 		return
@@ -46,14 +42,20 @@ func handle500(w http.ResponseWriter, r *http.Request, err error) {
 	serveError(w, r, errInternal, 500)
 }
 
-// FIXME(Kagami): Cache it!
 func ServeProfiles(w http.ResponseWriter, r *http.Request) {
-	ps, err := GetProfiles()
+	v, err := cached(profileCacheKey, func() (v interface{}, err error) {
+		ps, err := GetProfiles()
+		if err != nil {
+			return
+		}
+		// Takes ~5ms so better to store encoded.
+		return json.Marshal(ps)
+	})
 	if err != nil {
 		handle500(w, r, err)
 		return
 	}
-	serveData(w, r, ps)
+	serveData(w, r, v.([]byte))
 }
 
 // Idol API is served by cutechan-compatible backend.
