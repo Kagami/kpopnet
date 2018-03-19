@@ -10,7 +10,7 @@ const DEBUG = process.env.NODE_ENV !== "production";
 const JS_NAME = DEBUG ? "index.js" : "[chunkhash:10].js";
 const CSS_NAME = DEBUG ? "index.css" : "[contenthash:10].css";
 
-module.exports = {
+module.exports = (env = {}) => ({
   entry: "./ts/index",
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
@@ -33,7 +33,9 @@ module.exports = {
     new WebpackNotifierPlugin(),
     new LiveReloadPlugin(),
     new CleanWebpackPlugin(["dist"]),
-    new DefinePlugin({API_PREFIX: `""`}),
+    new DefinePlugin({
+      "window.KNET_API_PREFIX": JSON.stringify(env.api_prefix),
+    }),
     new ExtractTextPlugin(`static/${CSS_NAME}`),
     new HtmlWebpackPlugin({
       title: "K-pop idols network | Profiles, images and face recognition",
@@ -45,4 +47,4 @@ module.exports = {
     filename: `static/${JS_NAME}`,
     publicPath: "/",
   },
-};
+});

@@ -19,8 +19,12 @@ export {
   searchIdols,
 } from "./profiles";
 
-// Defined in webpack's config, empty (current host) by default.
-declare const API_PREFIX: string;
+declare global {
+  interface Window {
+    KNET_API_PREFIX?: string;
+  }
+}
+const API_PREFIX = window.KNET_API_PREFIX || "";
 
 function get(resource: string): Promise<Response> {
   return fetch(`${API_PREFIX}/api/${resource}`, {credentials: "same-origin"});
