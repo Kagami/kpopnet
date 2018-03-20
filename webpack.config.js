@@ -11,6 +11,10 @@ module.exports = (env = {}, opts) => {
   const JS_NAME = DEBUG ? "index.js" : "[chunkhash:10].js";
   const CSS_NAME = DEBUG ? "index.css" : "[contenthash:10].css";
   return {
+    stats: {
+      children: false,
+      modules: false,
+    },
     entry: path.resolve(__dirname, "ts/index/index.tsx"),
     resolve: {
       extensions: [".tsx", ".ts", ".js"],
@@ -31,13 +35,18 @@ module.exports = (env = {}, opts) => {
     },
     plugins: [
       // Common plugins.
-      new CleanWebpackPlugin([env.output || DIST_DIR], {allowExternal: true}),
-      new DefinePlugin({"window.KNET_API_PREFIX": JSON.stringify(env.api_prefix)}),
-      new ExtractTextPlugin(`static/${CSS_NAME}`),
+      new CleanWebpackPlugin([env.output || DIST_DIR], {
+        allowExternal: true,
+        verbose: false,
+      }),
+      new DefinePlugin({
+        "window.KNET_API_PREFIX": JSON.stringify(env.api_prefix),
+      }),
       new HtmlWebpackPlugin({
         title: "K-pop idols network | Profiles, images and face recognition",
         favicon: path.resolve(__dirname, "ts/index/favicon.ico"),
       }),
+      new ExtractTextPlugin(`static/${CSS_NAME}`),
     ].concat(DEBUG ? [
       // Development only.
       new (require("webpack-notifier")),
