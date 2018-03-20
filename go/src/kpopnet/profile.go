@@ -2,6 +2,7 @@ package kpopnet
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"path/filepath"
 	"strings"
@@ -107,6 +108,24 @@ func ReadProfiles(d string) (ps *Profiles, err error) {
 	ps = &Profiles{
 		Bands: bands,
 		Idols: idols,
+	}
+	return
+}
+
+// Read and update profiles in database.
+func ImportProfiles(connStr string, dataDir string) (err error) {
+	if err = StartDb(connStr); err != nil {
+		return
+	}
+	ps, err := ReadProfiles(dataDir)
+	if err != nil {
+		err = fmt.Errorf("Error reading profiles: %v", err)
+		return
+	}
+	err = UpdateProfiles(ps)
+	if err != nil {
+		err = fmt.Errorf("Error updating DB profiles: %v", err)
+		return
 	}
 	return
 }

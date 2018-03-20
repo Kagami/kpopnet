@@ -44,19 +44,8 @@ type config struct {
 }
 
 func importProfiles(conf config) {
-	err := kpopnet.StartDb(conf.Conn)
-	if err != nil {
-		log.Fatal(err)
-	}
 	log.Printf("Importing profiles from %s", conf.DataDir)
-	ps, err := kpopnet.ReadProfiles(conf.DataDir)
-	if err != nil {
-		err = fmt.Errorf("Error reading profiles: %v", err)
-		log.Fatal(err)
-	}
-	err = kpopnet.UpdateProfiles(ps)
-	if err != nil {
-		err = fmt.Errorf("Error updating DB profiles: %v", err)
+	if err := kpopnet.ImportProfiles(conf.Conn, conf.DataDir); err != nil {
 		log.Fatal(err)
 	}
 	log.Print("Done.")
