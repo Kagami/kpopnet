@@ -14,7 +14,7 @@ const USAGE = `
 K-pop neural network backend.
 
 Usage:
-  kpopnetd profile import [-c <conn>] [-d <datadir>]
+  kpopnetd profile import [options]
   kpopnetd serve [options]
   kpopnetd [-h | --help]
   kpopnetd [-V | --version]
