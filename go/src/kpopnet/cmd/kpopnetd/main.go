@@ -28,7 +28,6 @@ Options:
                 [default: user=meguca password=meguca dbname=meguca sslmode=disable].
   -s <sitedir>  Site directory location [default: ./dist].
   -d <datadir>  Data directory location [default: ./data].
-  -i <idolapi>  Idol API location [default: http://localhost:8001].
 `
 
 type config struct {
@@ -40,7 +39,6 @@ type config struct {
 	Conn    string `docopt:"-c"`
 	SiteDir string `docopt:"-s"`
 	DataDir string `docopt:"-d"`
-	IdolApi string `docopt:"-i"`
 }
 
 func importProfiles(conf config) {
@@ -59,7 +57,6 @@ func serve(conf config) {
 	opts := kpopnet.ServerOptions{
 		Address: fmt.Sprintf("%v:%v", conf.Host, conf.Port),
 		WebRoot: conf.SiteDir,
-		IdolApi: conf.IdolApi,
 	}
 	log.Printf("Listening on %v", opts.Address)
 	log.Fatal(kpopnet.StartServer(opts))

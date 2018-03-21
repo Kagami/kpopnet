@@ -1,29 +1,17 @@
 package kpopnet
 
 import (
+	"database/sql"
 	"encoding/json"
 )
 
-// Get all profiles.
-func GetProfiles() (ps *Profiles, err error) {
-	tx, err := beginTx()
-	if err != nil {
-		return
-	}
-	defer endTx(tx, &err)
-	if err = setReadOnly(tx); err != nil {
-		return
-	}
-	if err = setRepeatableRead(tx); err != nil {
-		return
-	}
-
+// Get all bands.
+func getBands(tx *sql.Tx) (bands []Band, err error) {
 	rs, err := tx.Stmt(prepared["get_bands"]).Query()
 	if err != nil {
 		return
 	}
 	defer rs.Close()
-	bands := []Band{}
 	for rs.Next() {
 		var id string
 		var data []byte
@@ -40,19 +28,23 @@ func GetProfiles() (ps *Profiles, err error) {
 	if err = rs.Err(); err != nil {
 		return
 	}
+	return
+}
 
-	rs2, err := tx.Stmt(prepared["get_idols"]).Query()
+// Get all idols.
+func getIdols(tx *sql.Tx) (idols []Idol, idolById map[string]Idol, err error) {
+	idolById = make(map[string]Idol)
+	rs, err := tx.Stmt(prepared["get_idols"]).Query()
 	if err != nil {
 		return
 	}
-	defer rs2.Close()
-	idols := []Idol{}
-	for rs2.Next() {
+	defer rs.Close()
+	for rs.Next() {
 		var id string
 		var bandId string
 		var data []byte
 		var idol Idol
-		if err = rs2.Scan(&id, &bandId, &data); err != nil {
+		if err = rs.Scan(&id, &bandId, &data); err != nil {
 			return
 		}
 		if err = json.Unmarshal(data, &idol); err != nil {
@@ -61,8 +53,61 @@ func GetProfiles() (ps *Profiles, err error) {
 		idol["id"] = id
 		idol["band_id"] = bandId
 		idols = append(idols, idol)
+		idolById[id] = idol
 	}
-	if err = rs2.Err(); err != nil {
+	if err = rs.Err(); err != nil {
+		return
+	}
+	return
+}
+
+// Get and set idol preview property.
+func setIdolPreviews(tx *sql.Tx, idolById map[string]Idol) (err error) {
+	rs, err := tx.Stmt(prepared["get_previews"]).Query()
+	if err != nil {
+		return
+	}
+	defer rs.Close()
+	for rs.Next() {
+		var idolId string
+		var imageId string
+		if err = rs.Scan(&idolId, &imageId); err != nil {
+			return
+		}
+		if idol, ok := idolById[idolId]; ok {
+			idol["image_id"] = imageId
+		}
+	}
+	if err = rs.Err(); err != nil {
+		return
+	}
+	return
+}
+
+// Get all profiles.
+func GetProfiles() (ps *Profiles, err error) {
+	tx, err := beginTx()
+	if err != nil {
+		return
+	}
+	defer endTx(tx, &err)
+	if err = setReadOnly(tx); err != nil {
+		return
+	}
+	if err = setRepeatableRead(tx); err != nil {
+		return
+	}
+
+	bands, err := getBands(tx)
+	if err != nil {
+		return
+	}
+	idols, idolById, err := getIdols(tx)
+	if err != nil {
+		return
+	}
+	err = setIdolPreviews(tx, idolById)
+	if err != nil {
 		return
 	}
 

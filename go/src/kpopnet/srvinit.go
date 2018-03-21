@@ -7,18 +7,12 @@ import (
 	"github.com/dimfeld/httptreemux"
 )
 
-var (
-	idolApi string
-)
-
 type ServerOptions struct {
 	Address string
 	WebRoot string
-	IdolApi string
 }
 
 func StartServer(o ServerOptions) (err error) {
-	idolApi = o.IdolApi
 	router, err := createRouter(o)
 	if err != nil {
 		return
@@ -48,7 +42,6 @@ func createRouter(o ServerOptions) (h http.Handler, err error) {
 		http.FileServer(http.Dir(staticRoot))))
 
 	r.GET("/api/profiles", ServeProfiles)
-	r.GET("/api/idols/*path", serveIdolApi)
 
 	h = http.Handler(r)
 	return

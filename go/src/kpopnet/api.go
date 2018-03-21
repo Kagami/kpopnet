@@ -21,7 +21,6 @@ func setApiHeaders(w http.ResponseWriter) {
 }
 
 func serveData(w http.ResponseWriter, r *http.Request, data []byte) {
-	// Will need to hash on each request but this seems to be <1ms.
 	etag := fmt.Sprintf("\"%s\"", hashBytes(data))
 	if checkEtag(w, r, etag) {
 		return
@@ -43,6 +42,8 @@ func handle500(w http.ResponseWriter, r *http.Request, err error) {
 }
 
 func ServeProfiles(w http.ResponseWriter, r *http.Request) {
+	// FIXME(Kagami): For some reason cached request is not fast enough.
+	// TODO(Kagami): Use some trigger to invalidate cache.
 	v, err := cached(profileCacheKey, func() (v interface{}, err error) {
 		ps, err := GetProfiles()
 		if err != nil {
@@ -56,10 +57,4 @@ func ServeProfiles(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	serveData(w, r, v.([]byte))
-}
-
-// Idol API is served by cutechan-compatible backend.
-func serveIdolApi(w http.ResponseWriter, r *http.Request) {
-	url := idolApi + "/api/idols/" + getParam(r, "path")
-	http.Redirect(w, r, url, 302)
 }

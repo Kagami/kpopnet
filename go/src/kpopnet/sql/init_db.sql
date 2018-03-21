@@ -10,3 +10,14 @@ CREATE TABLE IF NOT EXISTS idols (
   data jsonb NOT NULL,
   CHECK (NOT(data ? 'id') AND NOT(data ? 'band_id') AND data ? 'name')
 );
+
+-- XXX(Kagami): Part of cutechan.
+CREATE TABLE IF NOT EXISTS images (
+  sha1 char(40) PRIMARY KEY
+);
+
+CREATE TABLE IF NOT EXISTS idol_previews (
+  idol_id uuid REFERENCES idols ON DELETE CASCADE,
+  image_id char(40) REFERENCES images ON DELETE CASCADE,
+  PRIMARY KEY (idol_id, image_id)
+);
