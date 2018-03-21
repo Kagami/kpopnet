@@ -18,6 +18,7 @@ export interface Idol {
   // Mandatory props.
   id: string;
   band_id: string;
+  image_id?: string;
   name: string;
   // Other props.
   [key: string]: ProfileValue;

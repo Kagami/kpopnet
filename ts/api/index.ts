@@ -10,7 +10,7 @@
 // NOTE(Kagami): Make sure to import only essential modules here to keep
 // build size small.
 
-import { Profiles } from "./profiles";
+import { Idol, Profiles } from "./profiles";
 
 export {
   ProfileValue, Band, Idol, Profiles,
@@ -19,36 +19,37 @@ export {
   searchIdols,
 } from "./profiles";
 
-declare global {
-  interface Window {
-    KNET_API_PREFIX?: string;
-  }
-}
-const API_PREFIX = window.KNET_API_PREFIX || "";
-
-function get(resource: string): Promise<Response> {
-  return fetch(`${API_PREFIX}/api/${resource}`, {credentials: "same-origin"});
+export interface ApiOpts {
+  prefix?: string;
 }
 
 /**
  * Get all profiles. ~47kb gzipped currently.
  */
-export function getProfiles(): Promise<Profiles> {
-  return get("profiles").then((res) => res.json());
+export function getProfiles(opts: ApiOpts = {}): Promise<Profiles> {
+  const prefix = opts.prefix || "/api";
+  return fetch(`${prefix}/profiles`, {credentials: "same-origin"})
+    .then((res) => res.json());
+}
+
+export interface FileOpts {
+  small?: boolean;
+  prefix?: string;
+  fallback?: string;
 }
 
 /**
  * Get URL of the idol's preview image. Safe to use in <img> element
  * right away.
  */
-export function getIdolPreviewUrl(id: string): string {
-  return `${API_PREFIX}/api/idols/${id}/preview`;
-}
-
-/**
- * Get URL of the smaller version of idol's preview image. Safe to use
- * in <img> element right away.
- */
-export function getSmallIdolPreviewUrl(id: string): string {
-  return `${API_PREFIX}/api/idols/${id}/preview/small`;
+export function getIdolPreviewUrl(idol: Idol, opts: FileOpts = {}): string {
+  const prefix = opts.prefix || "/uploads";
+  const fallback = opts.fallback || "/static/img/no-preview.svg";
+  const sizeDir = opts.small ? "thumb" : "src";
+  const sha1 = idol.image_id;
+  // NOTE(Kagami): This assumes that filetype of the preview image is
+  // always JPEG. This must be ensured by Idol API service.
+  return sha1
+    ? `${prefix}/${sizeDir}/${sha1.slice(0, 2)}/${sha1.slice(2)}.jpg`
+    : fallback;
 }

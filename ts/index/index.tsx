@@ -5,6 +5,8 @@ import IdolList from "../idol-list";
 import Search from "../search";
 import "./index.less";
 
+declare const API_PREFIX: string;
+
 class Index extends Component<any, any> {
   private profiles: Profiles = null;
   private bandMap: BandMap = null;
@@ -18,7 +20,7 @@ class Index extends Component<any, any> {
   }
   public componentDidMount() {
     // FIXME(Kagami): Error handling.
-    getProfiles().then((profiles) => {
+    getProfiles({prefix: API_PREFIX}).then((profiles) => {
       this.profiles = profiles;
       this.bandMap = getBandMap(profiles);
       this.setState({loading: false});

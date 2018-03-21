@@ -2,12 +2,18 @@
  * Filterable idol list.
  */
 
+// tslint:disable-next-line:no-reference
+/// <reference path="./index.d.ts" />
+
 import { Component, h } from "preact";
 import {
   Band, BandMap, getIdolPreviewUrl, Idol, Profiles,
   renderIdol, searchIdols,
 } from "../api";
 import "./index.less";
+import previewFallbackUrl from "./no-preview.svg";
+
+declare const FILE_PREFIX: string;
 
 interface ItemProps {
   idol: Idol;
@@ -19,7 +25,8 @@ class IdolItem extends Component<ItemProps, any> {
     return false;
   }
   public render({ idol, band }: ItemProps) {
-    const previewUrl = getIdolPreviewUrl(idol.id);
+    const opts = {prefix: FILE_PREFIX, fallback: previewFallbackUrl};
+    const previewUrl = getIdolPreviewUrl(idol, opts);
     const style = {backgroundImage: `url(${previewUrl})`};
     return (
       <section class="idol">
