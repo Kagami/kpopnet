@@ -41,7 +41,7 @@ func createRouter(o ServerOptions) (h http.Handler, err error) {
 	r.Handler("GET", "/static/*", http.StripPrefix("/static/",
 		http.FileServer(http.Dir(staticRoot))))
 
-	r.GET("/api/profiles", ServeProfiles)
+	r.GET("/api/idols/profiles", ServeProfiles)
 
 	h = http.Handler(r)
 	return

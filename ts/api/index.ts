@@ -28,7 +28,7 @@ export interface ApiOpts {
  */
 export function getProfiles(opts: ApiOpts = {}): Promise<Profiles> {
   const prefix = opts.prefix || "/api";
-  return fetch(`${prefix}/profiles`, {credentials: "same-origin"})
+  return fetch(`${prefix}/idols/profiles`, {credentials: "same-origin"})
     .then((res) => res.json());
 }
 
