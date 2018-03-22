@@ -19,6 +19,35 @@ export {
   searchIdols,
 } from "./profiles";
 
+function handleResponse(res: Response): Promise<any> {
+  return res.ok ? res.json() : handleErrorCode(res);
+}
+
+function handleErrorCode(res: Response): Promise<any> {
+  const unknown = "unknown error";
+  const ctype = res.headers.get("Content-Type");
+  const isHtml = ctype.startsWith("text/html");
+  const isJson = ctype.startsWith("application/json");
+  if (isHtml) {
+    // Probably 404/500 page, not bother parsing.
+    throw new Error(unknown);
+  } else if (isJson) {
+    // Probably standardly-shaped JSON error.
+    return res.json().then((data) => {
+      throw new Error(data && data.error || unknown);
+    });
+  } else {
+    // Probably text/plain or something like this.
+    return res.text().then((data) => {
+      throw new Error(data || unknown);
+    });
+  }
+}
+
+function handleError(err: Error) {
+  throw new Error(err.message || "unknown error");
+}
+
 export interface ApiOpts {
   prefix?: string;
 }
@@ -29,7 +58,7 @@ export interface ApiOpts {
 export function getProfiles(opts: ApiOpts = {}): Promise<Profiles> {
   const prefix = opts.prefix || "/api";
   return fetch(`${prefix}/idols/profiles`, {credentials: "same-origin"})
-    .then((res) => res.json());
+    .then(handleResponse, handleError);
 }
 
 export interface FileOpts {
@@ -69,5 +98,5 @@ export function setIdolPreview(idol: Idol, file: File, opts: ApiOpts = {}): Prom
     credentials: "same-origin",
     method: "POST",
     body: form,
-  }).then((res) => res.json());
+  }).then(handleResponse, handleError);
 }
