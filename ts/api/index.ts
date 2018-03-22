@@ -48,7 +48,7 @@ export function getIdolPreviewUrl(idol: Idol, opts: FileOpts = {}): string {
   const sizeDir = opts.small ? "thumb" : "src";
   const sha1 = idol.image_id;
   // NOTE(Kagami): This assumes that filetype of the preview image is
-  // always JPEG. This must be ensured by Idol API service.
+  // always JPEG. It must be ensured by Idol API service.
   return sha1
     ? `${prefix}/${sizeDir}/${sha1.slice(0, 2)}/${sha1.slice(2)}.jpg`
     : fallback;

@@ -50,7 +50,7 @@ func importProfiles(conf config) {
 }
 
 func serve(conf config) {
-	err := kpopnet.StartDb(conf.Conn)
+	err := kpopnet.StartDb(nil, conf.Conn)
 	if err != nil {
 		log.Fatal(err)
 	}

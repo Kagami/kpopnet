@@ -40,9 +40,13 @@ func prepare() (err error) {
 	return
 }
 
-func StartDb(connStr string) (err error) {
-	if db, err = sql.Open("postgres", connStr); err != nil {
-		return
+func StartDb(openedDb *sql.DB, connStr string) (err error) {
+	if openedDb == nil {
+		if db, err = sql.Open("postgres", connStr); err != nil {
+			return
+		}
+	} else {
+		db = openedDb
 	}
 
 	if err = execQ("init_db"); err != nil {

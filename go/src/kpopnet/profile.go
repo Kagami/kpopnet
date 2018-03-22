@@ -114,7 +114,7 @@ func ReadProfiles(d string) (ps *Profiles, err error) {
 
 // Read and update profiles in database.
 func ImportProfiles(connStr string, dataDir string) (err error) {
-	if err = StartDb(connStr); err != nil {
+	if err = StartDb(nil, connStr); err != nil {
 		return
 	}
 	ps, err := ReadProfiles(dataDir)
