@@ -53,3 +53,21 @@ export function getIdolPreviewUrl(idol: Idol, opts: FileOpts = {}): string {
     ? `${prefix}/${sizeDir}/${sha1.slice(0, 2)}/${sha1.slice(2)}.jpg`
     : fallback;
 }
+
+export interface ImageIdData {
+  SHA1: string;
+}
+
+/**
+ * Set idol's preview.
+ */
+export function setIdolPreview(idol: Idol, file: File, opts: ApiOpts = {}): Promise<ImageIdData> {
+  const prefix = opts.prefix || "/api";
+  const form = new FormData();
+  form.append("files[]", file);
+  return fetch(`${prefix}/idols/${idol.id}/preview`, {
+    credentials: "same-origin",
+    method: "POST",
+    body: form,
+  }).then((res) => res.json());
+}
