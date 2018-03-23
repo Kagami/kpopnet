@@ -30,3 +30,9 @@ func cached(key Key, makev func() (interface{}, error)) (v interface{}, err erro
 	cache[key] = v
 	return
 }
+
+func ClearProfilesCache() {
+	mu.Lock()
+	defer mu.Unlock()
+	delete(cache, profileCacheKey)
+}
