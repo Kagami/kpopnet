@@ -17,7 +17,6 @@ CREATE TABLE IF NOT EXISTS images (
 );
 
 CREATE TABLE IF NOT EXISTS idol_previews (
-  idol_id uuid REFERENCES idols ON DELETE CASCADE,
-  image_id char(40) REFERENCES images ON DELETE CASCADE,
-  PRIMARY KEY (idol_id, image_id)
+  id uuid PRIMARY KEY REFERENCES idols ON DELETE CASCADE,
+  image_id char(40) NOT NULL REFERENCES images ON DELETE CASCADE
 );

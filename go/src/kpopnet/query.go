@@ -62,8 +62,8 @@ func getIdols(tx *sql.Tx) (idols []Idol, idolById map[string]Idol, err error) {
 }
 
 // Get and set idol preview property.
-func setIdolPreviews(tx *sql.Tx, idolById map[string]Idol) (err error) {
-	rs, err := tx.Stmt(prepared["get_previews"]).Query()
+func getIdolPreviews(tx *sql.Tx, idolById map[string]Idol) (err error) {
+	rs, err := tx.Stmt(prepared["get_idol_previews"]).Query()
 	if err != nil {
 		return
 	}
@@ -106,7 +106,7 @@ func GetProfiles() (ps *Profiles, err error) {
 	if err != nil {
 		return
 	}
-	err = setIdolPreviews(tx, idolById)
+	err = getIdolPreviews(tx, idolById)
 	if err != nil {
 		return
 	}
