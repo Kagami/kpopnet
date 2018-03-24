@@ -39,7 +39,7 @@ class HttpErrorMiddleware:
             raise Exception('HTTP error {}'.format(response))
 
 
-def run_spider(spider, bail=False, **kwargs):
+def run_spider(spider, bail=False, debug=False, **kwargs):
     def process_spider_error(failure, response, spider):
         nonlocal had_error
         had_error = True
@@ -49,6 +49,7 @@ def run_spider(spider, bail=False, **kwargs):
     if bail:
         spider_middlewares['kpopnet.spiders.HttpErrorMiddleware'] = 1
     process = CrawlerProcess({
+        'LOG_LEVEL': 'DEBUG' if debug else 'WARNING',
         'USER_AGENT': USER_AGENT,
         'CLOSESPIDER_ERRORCOUNT': 1 if bail else 0,
         'CONCURRENT_REQUESTS_PER_DOMAIN': 3,

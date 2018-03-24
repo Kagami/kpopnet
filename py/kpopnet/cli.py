@@ -10,6 +10,7 @@ Usage:
 Options:
   -h --help     Show this screen.
   -V --version  Show version.
+  --debug       Enable debug logging.
   -s SPIDER     Select spider.
   --all         Update already collected data.
   --bail        Exit on first error.
@@ -32,14 +33,16 @@ def main():
                 args['-s'] or 'kprofiles',
                 update_all=args['--all'],
                 bnames=args['BAND'],
-                bail=True)
+                bail=True,
+                debug=args['--debug'])
     elif args['image']:
         from . import images
         if args['update']:
             return images.update(
                 args['-s'] or 'googleimages',
                 update_all=args['--all'],
-                bail=args['--bail'])
+                bail=args['--bail'],
+                debug=args['--debug'])
 
     print('No command selected, try --help.', file=sys.stderr)
     sys.exit(1)

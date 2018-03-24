@@ -55,6 +55,9 @@ class KprofilesSpider(ProfileSpider):
                 self.parse_idol(response, band, p)
         assert band, 'No band'
         self.save_band(band)
+        # Technically not a warning but scrapy dumps a lot with INFO
+        # level so we use WARNING to avoid that.
+        self.logger.warning('Updated {}'.format(band['name']))
 
     def parse_idol(self, response, band, p):
         idol = {}
@@ -163,6 +166,8 @@ class KprofilesSpider(ProfileSpider):
             val = 'Jisun'
         elif key == 'name' and val == 'ROSÉ':
             val = 'Rose'
+        elif key == 'birth_name' and val.startswith('Nam Ji Hyun, but she'):
+            val = 'Nam Ji Hyun'
 
         return val
 
