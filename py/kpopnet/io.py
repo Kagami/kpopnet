@@ -89,10 +89,10 @@ def update_profile(a, b):
 
 
 _collected_band_urls = False
-_all_band_urls = set()
+_all_band_urls = dict()
 
 
-def has_band_by_url(url):
+def get_band_by_url(url):
     global _collected_band_urls
     if not _collected_band_urls:
         _collected_band_urls = True
@@ -105,12 +105,12 @@ def has_band_by_url(url):
                 bpath = get_band_path_by_name(name)
                 with suppress(OSError, KeyError):
                     band = load_json(open(bpath, 'rb').read())
-                    _all_band_urls.update(band['urls'])
-    return url in _all_band_urls
+                    for url in band['urls']:
+                        _all_band_urls[url] = band
+    return _all_band_urls[url]
 
 
 def save_band(updates):
-    _all_band_urls.update(updates['urls'])
     bpath = get_band_path(updates)
     os.makedirs(path.dirname(bpath), exist_ok=True)
     try:

@@ -12,11 +12,24 @@ class KprofilesSpider(ProfileSpider):
     def parse(self, response):
         urls = response.css('.entry-content > p > a::attr(href)').extract()
         for url in sorted(set(urls)):
-            if not self.update_all and self.has_band_by_url(url):
+            if not url.endswith('-profile/'):
                 continue
-            if url.endswith('-profile/'):
-                meta = {'_knet_url': url}
-                yield response.follow(url, self.parse_band, meta=meta)
+            if not self.update_all:
+                try:
+                    band = self.get_band_by_url(url)
+                except KeyError:
+                    if self.bnames:
+                        continue
+                else:
+                    found = False
+                    for bname in self.bnames:
+                        if band['name'] == bname:
+                            found = True
+                            break
+                    if not found:
+                        continue
+            meta = {'_knet_url': url}
+            yield response.follow(url, self.parse_band, meta=meta)
 
     def parse_band(self, response):
         band = {}
@@ -121,12 +134,14 @@ class KprofilesSpider(ProfileSpider):
                 val = None
         elif key == 'height':
             try:
-                val = int(re.search(r'(\d+)\s*cm', val).group(1))
+                val = re.search(r'([\d.]+)\s*cm', val).group(1)
+                val = float(val) if '.' in val else int(val)
             except AttributeError:
                 val = None
         elif key == 'weight':
             try:
-                val = int(re.search(r'(\d+)\s*kg', val).group(1))
+                val = re.search(r'([\d.]+)\s*kg', val).group(1)
+                val = float(val) if '.' in val else int(val)
             except AttributeError:
                 val = None
         elif key == 'zodiac_sign' or key == 'zodiac':
@@ -153,10 +168,18 @@ class KprofilesSpider(ProfileSpider):
 
     def normalize_idol(self, idol):
         idol = idol.copy()
+        name = idol['name']
 
-        # Name field must always present.
+        # Alt names.
         with suppress(AttributeError):
-            name = idol['name']
+            name, alt_name = re.\
+                match(r'(.*?)\s*\(.*?known\s+as\s+(.*?)\)', name).\
+                groups()
+            idol['name'] = name
+            idol['alt_names'] = [alt_name]
+
+        # Normalize hangul name if any.
+        with suppress(AttributeError):
             name, name_hangul = re.\
                 match(r'(.*?)\s*\((.*?)\)', name).\
                 groups()
@@ -174,6 +197,11 @@ class KprofilesSpider(ProfileSpider):
             birth_name, birth_name_hangul = re.\
                 match(r'(.*?)\s*\((.*?)\)', birth_name).\
                 groups()
+
+            # Fix profile bugs.
+            if birth_name == 'Kang Yaebin':
+                birth_name = 'Kang Yebin'
+
             idol['birth_name'] = birth_name
             idol['birth_name_hangul'] = birth_name_hangul
 

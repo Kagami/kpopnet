@@ -2,7 +2,7 @@
 K-pop neural network spiders and utilities.
 
 Usage:
-  kpopnet profile update [options]
+  kpopnet profile update [BAND...] [options]
   kpopnet image update [options]
   kpopnet [-h | --help]
   kpopnet [-V | --version]
@@ -10,7 +10,7 @@ Usage:
 Options:
   -h --help     Show this screen.
   -V --version  Show version.
-  -s <spider>   Select spider.
+  -s SPIDER     Select spider.
   --all         Update already collected data.
   --bail        Exit on first error.
 """
@@ -31,6 +31,7 @@ def main():
             return profiles.update(
                 args['-s'] or 'kprofiles',
                 update_all=args['--all'],
+                bnames=args['BAND'],
                 bail=True)
     elif args['image']:
         from . import images

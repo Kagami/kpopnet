@@ -1,4 +1,7 @@
 {
+    "alt_names": [
+        "Siyeon"
+    ],
     "band_id": "dd0ca0b9-8603-4361-b5ab-350df43d1d02",
     "birth_date": "2000-11-14",
     "birth_name": "Park Junghyeon",
@@ -7,7 +10,6 @@
     "height": 163,
     "id": "d913c925-478c-4c0e-b457-1ecd78a773d9",
     "name": "Xiyeon",
-    "name_hangul": "formerly known as Siyeon",
     "probable_position": "Lead Vocalist, Lead Dancer, Lead Rapper, Visual, Center",
     "weight": 51
 }
