@@ -37,7 +37,7 @@ class IdolItem extends Component<ItemProps, any> {
         <div class="idol__info">
           {renderIdol(idol, band).map(([key, val]) =>
             <p class="idol__info-line">
-              <span class="idol__info-key">{key}:</span>
+              <span class="idol__info-key">{key}</span>
               <span class="idol__info-val">{val}</span>
             </p>,
           )}
@@ -47,15 +47,6 @@ class IdolItem extends Component<ItemProps, any> {
   }
 }
 
-function IncompleteList() {
-  return (
-    <div class="idols__incomplete">
-      <div>Some results were skipped,</div>
-      <div>please clarify request</div>
-    </div>
-  );
-}
-
 interface ListProps {
   profiles: Profiles;
   bandMap: BandMap;
@@ -63,27 +54,28 @@ interface ListProps {
 }
 
 class IdolList extends Component<ListProps, any> {
-  private MAX_ITEMS_COUNT = 10;
   public shouldComponentUpdate(nextProps: ListProps) {
     return this.props.query !== nextProps.query;
   }
   public render({ query, profiles, bandMap }: ListProps) {
-    let idols = searchIdols(query, profiles, bandMap);
-    let complete = true;
-    if (idols.length > this.MAX_ITEMS_COUNT) {
-      idols = idols.slice(0, this.MAX_ITEMS_COUNT);
-      complete = false;
-    }
+    const idols = searchIdols(query, profiles, bandMap).slice(0, 20);
+    if (!idols.length) return this.renderEmpty();
     return (
       <article class="idols">
         {idols.map((idol) =>
           <IdolItem
             key={idol.id}
             idol={idol}
-            band={bandMap.get(idol.band_id).band}
+            band={bandMap.get(idol.band_id)}
           />,
         )}
-        {!complete && <IncompleteList />}
+      </article>
+    );
+  }
+  public renderEmpty() {
+    return (
+      <article class="idols idols_empty">
+        No results
       </article>
     );
   }

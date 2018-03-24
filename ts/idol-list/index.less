@@ -1,8 +1,9 @@
-.idols__incomplete {
-  font-style: italic;
-  text-align: center;
-  margin-bottom: 50px;
-  line-height: 1.1;
+.idols {
+}
+
+.idols_empty {
+  font-size: 30px;
+  color: #999;
 }
 
 .idol {
@@ -47,6 +48,9 @@
   flex: 0 0 115px;
   color: #bbb;
   word-break: break-word;
+  &::after {
+    content: ":";
+  }
 }
 
 .idol__info-val {

@@ -30,21 +30,12 @@ export interface Profiles {
   idols: Idol[];
 }
 
-export interface BandInfo {
-  band: Band;
-  idols: Idol[];
-}
-export type BandMap = Map<string, BandInfo>;
+export type BandMap = Map<string, Band>;
 
 export function getBandMap(profiles: Profiles): BandMap {
   const bandMap = new Map();
   profiles.bands.forEach((band) => {
-    bandMap.set(band.id, { band, idols: [] });
-  });
-  profiles.idols.forEach((idol) => {
-    // Backend guarantees every idol has associated band.
-    // But not the other way around: band can have no members.
-    bandMap.get(idol.band_id).idols.push(idol);
+    bandMap.set(band.id, band);
   });
   return bandMap;
 }
@@ -222,7 +213,7 @@ export function searchIdols(
   // TODO(Kagam): Sort idols?
   // console.time("searchIdols");
   const result = profiles.idols.filter((idol) => {
-    const { band } = bandMap.get(idol.band_id);
+    const band = bandMap.get(idol.band_id);
     if (q.name) {
       if (normalize(idol.name).includes(q.name)) {
         return true;

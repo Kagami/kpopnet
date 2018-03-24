@@ -1,6 +1,6 @@
 import { Component, h, render } from "preact";
 import { BandMap, getBandMap, getProfiles, Profiles } from "../api";
-import Dropzone from "../dropzone";
+// import Dropzone from "../dropzone";
 import IdolList from "../idol-list";
 import Search from "../search";
 import "./index.less";
@@ -19,11 +19,14 @@ class Index extends Component<any, any> {
     };
   }
   public componentDidMount() {
-    // FIXME(Kagami): Error handling.
     getProfiles({prefix: API_PREFIX}).then((profiles) => {
       this.profiles = profiles;
       this.bandMap = getBandMap(profiles);
       this.setState({loading: false});
+    }, (err) => {
+      this.setState({loading: false});
+      // TODO(Kagami): Something better.
+      alert("Error getting profiles");
     });
   }
   public render({}, { loading, query, file }: any) {
@@ -35,15 +38,15 @@ class Index extends Component<any, any> {
             onChange={this.handleSearch}
           />
           {(!file && !query) &&
-            <Dropzone onChange={this.handleFile} />
+            {/*<Dropzone onChange={this.handleFile} />*/}
           }
-          {(!loading && query) &&
+          {/*{(!loading && query) &&*/}
             <IdolList
               profiles={this.profiles}
               bandMap={this.bandMap}
               query={query}
             />
-          }
+          {/*}*/}
         </div>
         <footer class="footer">
           <div class="footer__inner">
@@ -61,9 +64,9 @@ class Index extends Component<any, any> {
       </main>
     );
   }
-  private handleFile = (file: File) => {
-    this.setState({file});
-  }
+  // private handleFile = (file: File) => {
+  //   this.setState({file});
+  // }
   private handleSearch = (query: string) => {
     this.setState({query});
   }
