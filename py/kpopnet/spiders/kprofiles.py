@@ -11,6 +11,7 @@ class KprofilesSpider(ProfileSpider):
 
     keep_only = {
         'I.O.I': set(['Chungha', 'Doyeon', 'Sohye', 'Somi', 'Yoojung']),
+        'I.B.I': set(['Haein', 'Hyeri', 'Sohee', 'Suhyun']),
     }
 
     def parse(self, response):
