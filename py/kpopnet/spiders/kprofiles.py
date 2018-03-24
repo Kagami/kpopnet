@@ -138,10 +138,7 @@ class KprofilesSpider(ProfileSpider):
         val = re.sub(r'^:\s*', '', val)
         val = re.sub(r'’', "'", val)
 
-        if key == 'name':
-            # Ara / Yooara
-            val = re.sub(r'\s*/.*', '', val)
-        elif key == 'birth_date':
+        if key == 'birth_date':
             try:
                 val = datetime.strptime(val, '%B %d, %Y')
             except ValueError:
@@ -178,7 +175,7 @@ class KprofilesSpider(ProfileSpider):
         elif key == 'name' and val == 'ROSÉ':
             val = 'Rose'
         elif key == 'birth_name' and val.startswith('Nam Ji Hyun, but she'):
-            val = 'Nam Ji Hyun'
+            val = 'Nam Jihyun'
 
         return val
 
@@ -186,10 +183,18 @@ class KprofilesSpider(ProfileSpider):
         idol = idol.copy()
         name = idol['name']
 
-        # Alt names.
+        # Alt names var 1.
         with suppress(AttributeError):
             name, alt_name = re.\
                 match(r'(.*?)\s*\(.*?known\s+as\s+(.*?)\)', name).\
+                groups()
+            idol['name'] = name
+            idol['alt_names'] = [alt_name]
+
+        # Alt names var 2.
+        with suppress(AttributeError):
+            name, alt_name = re.\
+                match(r'(.*?)\s*/\s*(.*)', name).\
                 groups()
             idol['name'] = name
             idol['alt_names'] = [alt_name]
