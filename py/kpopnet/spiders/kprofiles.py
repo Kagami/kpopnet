@@ -203,6 +203,14 @@ class KprofilesSpider(ProfileSpider):
             idol['name'] = name
             idol['alt_names'] = [alt_name]
 
+        # Alt name var 3.
+        with suppress(AttributeError):
+            name, alt_name = re.\
+                match(r'(.*?)\s+or\s+(.*)', name).\
+                groups()
+            idol['name'] = name
+            idol['alt_names'] = [alt_name]
+
         # Hangul name.
         with suppress(AttributeError):
             name, name_hangul = re.\
