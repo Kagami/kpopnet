@@ -50,6 +50,7 @@ class KprofilesSpider(ProfileSpider):
                     or p.css('img + strong::text') \
                     or p.css('img + b::text') \
                     or p.xpath('strong/img/following-sibling::text()') \
+                    or p.xpath('b/img/following-sibling::text()') \
                     or p.xpath('img/following::p/strong/text()') \
                     or p.xpath('following::p/img/following::p/strong/text()')
                 name = self.normalize_band_name(name_node.extract_first())
