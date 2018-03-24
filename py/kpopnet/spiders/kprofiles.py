@@ -10,10 +10,11 @@ class KprofilesSpider(ProfileSpider):
     start_urls = ['http://kprofiles.com/k-pop-girl-groups/']
 
     keep_only = {
-        'I.O.I': set(['Chungha', 'Doyeon', 'Sohye', 'Somi', 'Yoojung']),
+        'I.O.I': set(['Doyeon', 'Sohye', 'Somi', 'Yoojung']),
         'I.B.I': set(['Haein', 'Hyeri', 'Sohee', 'Suhyun']),
         'Orange Caramel': set(),
         'Girls Next Door': set(),
+        '4Minute': set(['Gayoon', 'Jihyun', 'Jiyoon', 'Sohyun']),
     }
 
     def parse(self, response):
