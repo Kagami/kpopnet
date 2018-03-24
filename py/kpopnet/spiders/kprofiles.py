@@ -9,6 +9,10 @@ class KprofilesSpider(ProfileSpider):
     name = 'kprofiles'
     start_urls = ['http://kprofiles.com/k-pop-girl-groups/']
 
+    keep_only = {
+        'I.O.I': set(['Chungha', 'Doyeon', 'Sohye', 'Somi', 'Yoojung']),
+    }
+
     def parse(self, response):
         urls = response.css('.entry-content > p > a::attr(href)').extract()
         for url in sorted(set(urls)):
@@ -29,6 +33,7 @@ class KprofilesSpider(ProfileSpider):
                     if not found:
                         continue
             meta = {'_knet_url': url}
+            self.logger.warning('Crawling {}'.format(url))
             yield response.follow(url, self.parse_band, meta=meta)
 
     def parse_band(self, response):
@@ -81,9 +86,12 @@ class KprofilesSpider(ProfileSpider):
             val = self.normalize_idol_val(key, val)
             if key and val:
                 idol[key] = val
-        # if not idol.get('name'):
-        #     from IPython import embed; embed()
+
         assert idol.get('name'), 'No idol name'
+        with suppress(KeyError):
+            if idol['name'] not in self.keep_only[band['name']]:
+                return
+
         idol = self.normalize_idol(idol)
         idol['id'] = self.uuid()
         idol['band_id'] = band['id']
