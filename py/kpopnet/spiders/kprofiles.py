@@ -106,11 +106,13 @@ class KprofilesSpider(ProfileSpider):
         name = re.sub(r'’', "'", name)
 
         # Fix profile bugs.
-        # TODO(Kagami): Better normalization.
+        # TODO(Kagami): Normalize more special chars in names.
         if orig == 'F(x)':
             name = 'f(x)'
         elif name == 'Dal\u2605Shabet':
             name = 'Dal Shabet'
+        elif name == 'Cosmic Girls':
+            name = 'WJSN'
 
         return name
 
