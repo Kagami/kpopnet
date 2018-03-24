@@ -50,13 +50,13 @@ class Index extends Component<any, any> {
         </div>
         <footer class="footer">
           <div class="footer__inner">
-            <a class="footer__link" href="https://kpop.re/">
+            <a class="footer__link" target="_blank" href="https://kpop.re/">
               Kpop.re
             </a>
-            <a class="footer__link" href="https://github.com/Kagami/kpopnet">
+            <a class="footer__link" target="_blank" href="https://github.com/Kagami/kpopnet">
               Source code
             </a>
-            <a class="footer__link" href="https://github.com/Kagami/kpopnet/issues">
+            <a class="footer__link" target="_blank" href="https://github.com/Kagami/kpopnet/issues">
               Feedback
             </a>
           </div>
