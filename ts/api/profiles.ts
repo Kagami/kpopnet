@@ -215,9 +215,21 @@ export function searchIdols(
     }
     // Don't use iterators because this should be reliably fast.
     // tslint:disable-next-line:prefer-for-of
-    for (let i = 0; i < q.props.length; i++) {
+    for (let i = 0; matched && i < q.props.length; i++) {
       const [key, val] = q.props[i];
       switch (key) {
+      case "n":
+        if (normalize(idol.name).includes(val)) {
+          matched = matched && true;
+          continue;
+        }
+        break;
+      case "rn":
+        if (normalize(idol.birth_name || "").includes(val)) {
+          matched = matched && true;
+          continue;
+        }
+        break;
       case "b":
         if (normalize(band.name).includes(val)) {
           matched = matched && true;
