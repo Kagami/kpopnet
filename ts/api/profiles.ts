@@ -7,7 +7,7 @@
 export type ProfileValue = string | number | string[];
 
 export interface Band {
-  // Mandatory props.
+  // Known props.
   id: string;
   name: string;
   // Other props.
@@ -15,11 +15,12 @@ export interface Band {
 }
 
 export interface Idol {
-  // Mandatory props.
+  // Known props.
   id: string;
+  name: string;
   band_id: string;
   image_id?: string;
-  name: string;
+  birth_name?: string;
   // Other props.
   [key: string]: ProfileValue;
 }
@@ -45,9 +46,6 @@ export function getBandMap(profiles: Profiles): BandMap {
     // But not the other way around: band can have no members.
     bandMap.get(idol.band_id).idols.push(idol);
   });
-  for (const { idols } of bandMap.values()) {
-    idols.sort(compareIdols);
-  }
   return bandMap;
 }
 
@@ -143,16 +141,77 @@ export function getAge(birthday: string): number {
   return Math.floor((now - born) / MILLISECONDS_IN_YEAR);
 }
 
-function compareIdols(a: Idol, b: Idol): number {
-  const ageA = a.birth_date ? getAge(a.birth_date as string) : 0;
-  const ageB = b.birth_date ? getAge(b.birth_date as string) : 0;
-  return ageB - ageA;
+// Remove symbols which doesn't make sense for fuzzy search.
+function normalize(s: string): string {
+  return s.replace(/[ .-]/g, "").toLowerCase();
 }
 
-// TODO(Kagami): Remove special chars.
-function normalizeName(name: string): string {
-  return name.replace(/[ .]/g, "").toLowerCase();
+// Minimal meaningful length.
+const MIN_QUERY_LENGTH = 3;
+
+function checkQuery(query: string): boolean {
+  return query.length >= MIN_QUERY_LENGTH;
 }
+
+interface Query {
+  name: string;
+  props: Array<[string, string]>;
+}
+
+// Split query into main component and property-tagged parts.
+// Example: "name words prop1:prop words prop2:more words"
+function parseQuery(query: string): Query {
+  let name = "";
+  const props = [] as Array<[string, string]>;
+  let lastKey = "";
+  while (true) {
+    // Search for prop1[:]
+    const colonIdx = query.indexOf(":");
+    if (colonIdx >= 1) {
+      // Search for [ ]prop1:
+      const spaceIdx = query.lastIndexOf(" ", colonIdx);
+      if (spaceIdx >= 0) {
+        // [name words] prop1:
+        const lastVal = normalize(query.slice(0, spaceIdx));
+        if (lastKey) {
+          if (checkQuery(lastVal)) {
+            props.push([lastKey, lastVal]);
+          }
+        } else {
+          name = lastVal;
+        }
+        // [prop1]:...
+        lastKey = query.slice(spaceIdx + 1, colonIdx);
+        // prop1:[name words...]
+        query = query.slice(colonIdx + 1);
+      } else {
+        // prop1:word:prop2
+        if (lastKey) break;
+        // Allow to start with []prop1:word
+        lastKey = query.slice(0, colonIdx);
+        // prop1:[name words...]
+        query = query.slice(colonIdx + 1);
+      }
+    } else {
+      // prop2:[more words]
+      const lastVal = normalize(query);
+      if (lastKey) {
+        if (checkQuery(lastVal)) {
+          props.push([lastKey, lastVal]);
+        }
+      } else {
+        name = lastVal;
+      }
+      break;
+    }
+  }
+  return {name, props};
+}
+
+// All allowed search props.
+const propsMap = new Map([
+  ["b", "band"],
+]);
 
 /**
  * Find idols matching given query.
@@ -160,21 +219,34 @@ function normalizeName(name: string): string {
 export function searchIdols(
   query: string, profiles: Profiles, bandMap: BandMap,
 ): Idol[] {
-  // TODO(Kagami): Complex queries e.g. "nayoung band:pristin".
-  // TODO(Kagami): Is this too slow? O(BIG_C * N)
-  query = normalizeName(query);
-  if (!query) return [];
-  const result = profiles.idols.filter((idol) => {
-    const name1 = normalizeName(idol.name);
-    const name2 = normalizeName(idol.birth_name as string || "");
-    return name1.includes(query) || (name2 && name2.includes(query));
-  });
-  for (const band of profiles.bands) {
-    const name = normalizeName(band.name);
-    if (name.includes(query)) {
-      result.push(...bandMap.get(band.id).idols);
-      break;
+  if (!checkQuery(query)) return [];
+  const q = parseQuery(query);
+  if (!checkQuery(q.name) && !q.props.length) return [];
+  return profiles.idols.filter((idol) => {
+    const { band } = bandMap.get(idol.band_id);
+    if (q.name) {
+      if (normalize(idol.name).includes(q.name)) {
+        return true;
+      }
+      if (idol.birth_name && normalize(idol.birth_name).includes(q.name)) {
+        return true;
+      }
+      if (normalize(band.name).includes(q.name)) {
+        return true;
+      }
     }
-  }
-  return result;
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < q.props.length; i++) {
+      const [keyId, val] = q.props[i];
+      const key = propsMap.get(keyId);
+      switch (key) {
+      case "band":
+        if (normalize(band.name).includes(val)) {
+          return true;
+        }
+        break;
+      }
+    }
+    return false;
+  });
 }
