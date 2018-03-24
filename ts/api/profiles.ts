@@ -134,7 +134,7 @@ export function getAge(birthday: string): number {
 
 // Remove symbols which doesn't make sense for fuzzy search.
 function normalize(s: string): string {
-  return s.replace(/[ .-]/g, "").toLowerCase();
+  return s.replace(/[' .-]/g, "").toLowerCase();
 }
 
 interface Query {
