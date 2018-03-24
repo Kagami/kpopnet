@@ -92,11 +92,12 @@ class KprofilesSpider(ProfileSpider):
                 idol[key] = val
 
         assert idol.get('name'), 'No idol name'
+
+        idol = self.normalize_idol(idol)
         with suppress(KeyError):
             if idol['name'] not in self.keep_only[band['name']]:
                 return
 
-        idol = self.normalize_idol(idol)
         idol['id'] = self.uuid()
         idol['band_id'] = band['id']
         self.save_idol(band, idol)
@@ -186,7 +187,7 @@ class KprofilesSpider(ProfileSpider):
         idol = idol.copy()
         name = idol['name']
 
-        # Alt names var 1.
+        # Alt name var 1.
         with suppress(AttributeError):
             name, alt_name = re.\
                 match(r'(.*?)\s*\(.*?known\s+as\s+(.*?)\)', name).\
@@ -194,7 +195,7 @@ class KprofilesSpider(ProfileSpider):
             idol['name'] = name
             idol['alt_names'] = [alt_name]
 
-        # Alt names var 2.
+        # Alt name var 2.
         with suppress(AttributeError):
             name, alt_name = re.\
                 match(r'(.*?)\s*/\s*(.*)', name).\
@@ -202,7 +203,7 @@ class KprofilesSpider(ProfileSpider):
             idol['name'] = name
             idol['alt_names'] = [alt_name]
 
-        # Normalize hangul name if any.
+        # Hangul name.
         with suppress(AttributeError):
             name, name_hangul = re.\
                 match(r'(.*?)\s*\((.*?)\)', name).\
@@ -215,7 +216,16 @@ class KprofilesSpider(ProfileSpider):
             idol['name'] = name
             idol['name_hangul'] = name_hangul
 
-        # Normalize birth name if any.
+        # Birth name var 1.
+        with suppress(KeyError, AttributeError):
+            birth_name = idol['birth_name']
+            birth_name, korean_name = re.\
+                match(r'(.*?)\s*\{(.*?)\}', birth_name).\
+                groups()
+            idol['birth_name'] = birth_name
+            idol['korean_name'] = korean_name
+
+        # Birth name var 2.
         with suppress(KeyError, AttributeError):
             birth_name = idol['birth_name']
             birth_name, birth_name_hangul = re.\
@@ -229,7 +239,7 @@ class KprofilesSpider(ProfileSpider):
             idol['birth_name'] = birth_name
             idol['birth_name_hangul'] = birth_name_hangul
 
-        # Normalize korean name if any.
+        # Korean name.
         with suppress(KeyError, AttributeError):
             korean_name = idol['korean_name']
             korean_name, korean_name_hangul = re.\
