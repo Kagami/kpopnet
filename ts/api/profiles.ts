@@ -165,9 +165,7 @@ function parseQuery(query: string): Query {
         // [name words] prop1:
         const lastVal = normalize(query.slice(0, spaceIdx));
         if (lastKey) {
-          if (checkQuery(lastVal)) {
-            props.push([lastKey, lastVal]);
-          }
+          props.push([lastKey, lastVal]);
         } else {
           name = lastVal;
         }
@@ -187,9 +185,7 @@ function parseQuery(query: string): Query {
       // prop2:[more words]
       const lastVal = normalize(query);
       if (lastKey) {
-        if (checkQuery(lastVal)) {
-          props.push([lastKey, lastVal]);
-        }
+        props.push([lastKey, lastVal]);
       } else {
         name = lastVal;
       }
@@ -209,20 +205,19 @@ export function searchIdols(
   // console.time("parseQuery");
   const q = parseQuery(query);
   // console.timeEnd("parseQuery");
-  if (!checkQuery(q.name) && !q.props.length) return [];
+  if (!q.name && !q.props.length) return [];
   // TODO(Kagam): Sort idols?
   // console.time("searchIdols");
   const result = profiles.idols.filter((idol) => {
     const band = bandMap.get(idol.band_id);
+    let matched = !q.name;
     if (q.name) {
       if (normalize(idol.name).includes(q.name)) {
-        return true;
-      }
-      if (idol.birth_name && normalize(idol.birth_name).includes(q.name)) {
-        return true;
-      }
-      if (normalize(band.name).includes(q.name)) {
-        return true;
+        matched = true;
+      } else if (idol.birth_name && normalize(idol.birth_name).includes(q.name)) {
+        matched = true;
+      } else if (normalize(band.name).includes(q.name)) {
+        matched = true;
       }
     }
     // Don't use iterators because this should be reliably fast.
@@ -232,12 +227,14 @@ export function searchIdols(
       switch (key) {
       case "b":
         if (normalize(band.name).includes(val)) {
-          return true;
+          matched = matched && true;
+          continue;
         }
         break;
       }
+      return false;
     }
-    return false;
+    return matched;
   });
   // console.timeEnd("searchIdols");
   return result;
