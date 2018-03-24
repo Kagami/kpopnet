@@ -13,6 +13,7 @@ class KprofilesSpider(ProfileSpider):
         'I.O.I': set(['Chungha', 'Doyeon', 'Sohye', 'Somi', 'Yoojung']),
         'I.B.I': set(['Haein', 'Hyeri', 'Sohee', 'Suhyun']),
         'Orange Caramel': set(),
+        'Girls Next Door': set(),
     }
 
     def parse(self, response):
