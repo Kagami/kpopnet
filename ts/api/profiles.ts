@@ -137,13 +137,6 @@ function normalize(s: string): string {
   return s.replace(/[ .-]/g, "").toLowerCase();
 }
 
-// Minimal meaningful length.
-const MIN_QUERY_LENGTH = 3;
-
-function checkQuery(query: string): boolean {
-  return query.length >= MIN_QUERY_LENGTH;
-}
-
 interface Query {
   name: string;
   props: Array<[string, string]>;
@@ -201,7 +194,7 @@ function parseQuery(query: string): Query {
 export function searchIdols(
   query: string, profiles: Profiles, bandMap: BandMap,
 ): Idol[] {
-  if (!checkQuery(query)) return [];
+  if (query.length < 3) return [];
   // console.time("parseQuery");
   const q = parseQuery(query);
   // console.timeEnd("parseQuery");
