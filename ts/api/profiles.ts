@@ -208,11 +208,6 @@ function parseQuery(query: string): Query {
   return {name, props};
 }
 
-// All allowed search props.
-const propsMap = new Map([
-  ["b", "band"],
-]);
-
 /**
  * Find idols matching given query.
  */
@@ -220,9 +215,13 @@ export function searchIdols(
   query: string, profiles: Profiles, bandMap: BandMap,
 ): Idol[] {
   if (!checkQuery(query)) return [];
+  // console.time("parseQuery");
   const q = parseQuery(query);
+  // console.timeEnd("parseQuery");
   if (!checkQuery(q.name) && !q.props.length) return [];
-  return profiles.idols.filter((idol) => {
+  // TODO(Kagam): Sort idols?
+  // console.time("searchIdols");
+  const result = profiles.idols.filter((idol) => {
     const { band } = bandMap.get(idol.band_id);
     if (q.name) {
       if (normalize(idol.name).includes(q.name)) {
@@ -235,12 +234,12 @@ export function searchIdols(
         return true;
       }
     }
+    // Don't use iterators because this should be reliably fast.
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < q.props.length; i++) {
-      const [keyId, val] = q.props[i];
-      const key = propsMap.get(keyId);
+      const [key, val] = q.props[i];
       switch (key) {
-      case "band":
+      case "b":
         if (normalize(band.name).includes(val)) {
           return true;
         }
@@ -249,4 +248,6 @@ export function searchIdols(
     }
     return false;
   });
+  // console.timeEnd("searchIdols");
+  return result;
 }
