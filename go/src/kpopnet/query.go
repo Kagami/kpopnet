@@ -171,7 +171,5 @@ func UpdateProfiles(ps *Profiles) (err error) {
 		}
 	}
 
-	ClearProfilesCache()
-
 	return
 }
