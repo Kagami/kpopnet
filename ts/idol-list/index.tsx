@@ -7,8 +7,8 @@
 
 import { Component, h } from "preact";
 import {
-  Band, BandMap, getIdolPreviewUrl, Idol, Profiles,
-  renderIdol, searchIdols,
+  BandMap, getIdolPreviewUrl, Idol,
+  Profiles, renderIdol, searchIdols,
 } from "../api";
 import "./index.less";
 import previewFallbackUrl from "./no-preview.svg";
@@ -17,14 +17,14 @@ declare const FILE_PREFIX: string;
 
 interface ItemProps {
   idol: Idol;
-  band: Band;
+  bandMap: BandMap;
 }
 
 class IdolItem extends Component<ItemProps, any> {
   public shouldComponentUpdate() {
     return false;
   }
-  public render({ idol, band }: ItemProps) {
+  public render({ idol, bandMap }: ItemProps) {
     const opts = {prefix: FILE_PREFIX, fallback: previewFallbackUrl};
     const previewUrl = getIdolPreviewUrl(idol, opts);
     const style = {backgroundImage: `url(${previewUrl})`};
@@ -35,7 +35,7 @@ class IdolItem extends Component<ItemProps, any> {
           style={style}
         />
         <div class="idol__info">
-          {renderIdol(idol, band).map(([key, val]) =>
+          {renderIdol(idol, bandMap).map(([key, val]) =>
             <p class="idol__info-line">
               <span class="idol__info-key">{key}</span>
               <span class="idol__info-val">{val}</span>
@@ -66,7 +66,7 @@ class IdolList extends Component<ListProps, any> {
           <IdolItem
             key={idol.id}
             idol={idol}
-            band={bandMap.get(idol.band_id)}
+            bandMap={bandMap}
           />,
         )}
       </article>

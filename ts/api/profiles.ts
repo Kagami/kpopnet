@@ -10,6 +10,7 @@ export interface Band {
   // Known props.
   id: string;
   name: string;
+  alt_names?: string[];
   // Other props.
   [key: string]: ProfileValue;
 }
@@ -18,9 +19,12 @@ export interface Idol {
   // Known props.
   id: string;
   name: string;
+  alt_names?: string[];
   band_id: string;
+  alt_band_ids?: string[];
   image_id?: string;
   birth_name?: string;
+  korean_name?: string;
   // Other props.
   [key: string]: ProfileValue;
 }
@@ -40,12 +44,39 @@ export function getBandMap(profiles: Profiles): BandMap {
   return bandMap;
 }
 
+function tryConcat<T>(a: T, b?: T[]): T[] {
+  return b ? [a].concat(b) : [a];
+}
+
+// TODO(Kagami): Profile/optimize.
+function getBandNames(idol: Idol, bandMap: BandMap): string[] {
+  // NOTE(Kagami): Backend doesn't currently guarantee that alt_band_ids
+  // contain correct existing band ids, so this may potentially fail.
+  const bandIds = tryConcat(idol.band_id, idol.alt_band_ids);
+  const bands = bandIds.map((id) => bandMap.get(id));
+  const bnames = [] as string[];
+  bands.forEach((b) => {
+    tryConcat(b.name, b.alt_names).forEach((bname) => {
+      bnames.push(bname);
+    });
+  });
+  return bnames;
+}
+
 export type RenderLine = [string, string];
 export type Rendered = RenderLine[];
 
-export function renderIdol(idol: Idol, band: Band): Rendered {
+export function renderIdol(idol: Idol, bandMap: BandMap): Rendered {
   const renderLine = renderLineCtx.bind(null, idol);
-  const lines = getLines(idol).concat([["band", band.name]]);
+  const bnames = getBandNames(idol, bandMap);
+  // Main name of the main band goes first.
+  let bname = bnames[0];
+  if (bnames.length > 1) {
+    bname += " (";
+    bname += bnames.slice(1).join(", ");
+    bname += ")";
+  }
+  const lines = getLines(idol).concat([["bands", bname]]);
   return lines.filter(keepLine).sort(compareLines).map(renderLine);
 }
 
@@ -58,7 +89,7 @@ function getLines(idol: Idol): InfoLine[] {
 const knownKeys = [
   "name",
   "birth_name",
-  "band",
+  "bands",
   "birth_date",
   "height",
   "weight",
@@ -137,16 +168,19 @@ function normalize(s: string): string {
   return s.replace(/[' .-]/g, "").toLowerCase();
 }
 
+type SearchProp = [string, string];
+
 interface Query {
   name: string;
-  props: Array<[string, string]>;
+  props: SearchProp[];
 }
 
 // Split query into main component and property-tagged parts.
 // Example: "name words prop1:prop words prop2:more words"
+// TODO(Kagami): Profile/optimize.
 function parseQuery(query: string): Query {
   let name = "";
-  const props = [] as Array<[string, string]>;
+  const props = [] as SearchProp[];
   let lastKey = "";
   while (true) {
     // Search for prop1[:]
@@ -188,9 +222,34 @@ function parseQuery(query: string): Query {
   return {name, props};
 }
 
+// Match all possible names of the idol.
+// TODO(Kagami): Search for hangul?
+function matchIdolName(idol: Idol, val: string): boolean {
+  if (normalize(idol.name).includes(val)) {
+    return true;
+  }
+  if (idol.birth_name && normalize(idol.birth_name).includes(val)) {
+    return true;
+  }
+  if (idol.korean_name && normalize(idol.korean_name).includes(val)) {
+    return true;
+  }
+  if (idol.alt_names && idol.alt_names.some((n) => normalize(n).includes(val))) {
+    return true;
+  }
+  return false;
+}
+
+// Match all possible band names.
+function matchBandName(idol: Idol, bandMap: BandMap, val: string): boolean {
+  const bnames = getBandNames(idol, bandMap);
+  return bnames.some((bname) => normalize(bname).includes(val));
+}
+
 /**
  * Find idols matching given query.
  */
+// TODO(Kagami): Profile/optimize.
 export function searchIdols(
   query: string, profiles: Profiles, bandMap: BandMap,
 ): Idol[] {
@@ -199,47 +258,38 @@ export function searchIdols(
   const q = parseQuery(query);
   // console.timeEnd("parseQuery");
   if (!q.name && !q.props.length) return [];
+
   // TODO(Kagam): Sort idols?
   // console.time("searchIdols");
   const result = profiles.idols.filter((idol) => {
-    const band = bandMap.get(idol.band_id);
-    let matched = !q.name;
-    if (q.name) {
-      if (normalize(idol.name).includes(q.name)) {
-        matched = true;
-      } else if (idol.birth_name && normalize(idol.birth_name).includes(q.name)) {
-        matched = true;
-      } else if (normalize(band.name).includes(q.name)) {
-        matched = true;
-      }
+    // Fuzzy name matching.
+    // TODO(Kagami): Allow combinations like "Orange Caramel lizzy"
+    if (q.name
+        && !matchIdolName(idol, q.name)
+        && !matchBandName(idol, bandMap, q.name)) {
+      return false;
     }
-    // Don't use iterators because this should be reliably fast.
-    // tslint:disable-next-line:prefer-for-of
-    for (let i = 0; matched && i < q.props.length; i++) {
-      const [key, val] = q.props[i];
+    // Match for exact properties if user requested.
+    return q.props.every(([key, val]) => {
       switch (key) {
       case "n":
         if (normalize(idol.name).includes(val)) {
-          matched = matched && true;
-          continue;
+          return true;
         }
         break;
       case "rn":
         if (normalize(idol.birth_name || "").includes(val)) {
-          matched = matched && true;
-          continue;
+          return true;
         }
         break;
       case "b":
-        if (normalize(band.name).includes(val)) {
-          matched = matched && true;
-          continue;
+        if (normalize(bandMap.get(idol.band_id).name).includes(val)) {
+          return true;
         }
         break;
       }
       return false;
-    }
-    return matched;
+    });
   });
   // console.timeEnd("searchIdols");
   return result;
