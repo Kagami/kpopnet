@@ -198,18 +198,18 @@ class KprofilesSpider(ProfileSpider):
             idol['name'] = name
             idol['alt_names'] = [alt_name]
 
-        # Alt name var 2.
-        with suppress(AttributeError):
-            name, alt_name = re.\
-                match(r'(.*?)\s*/\s*(.*)', name).\
-                groups()
-            idol['name'] = name
-            idol['alt_names'] = [alt_name]
-
         # Alt name var 3.
         with suppress(AttributeError):
             name, alt_name = re.\
                 match(r'(.*?)\s+or\s+(.*)', name).\
+                groups()
+            idol['name'] = name
+            idol['alt_names'] = [alt_name]
+
+        # Alt name var 4.
+        with suppress(AttributeError):
+            name, alt_name = re.\
+                match(r'(.*?)\s*/\s*(.*)', name).\
                 groups()
             idol['name'] = name
             idol['alt_names'] = [alt_name]
@@ -237,6 +237,16 @@ class KprofilesSpider(ProfileSpider):
             idol['korean_name'] = korean_name
 
         # Birth name var 2.
+        with suppress(KeyError, AttributeError):
+            birth_name = idol['birth_name']
+            birth_name, alt_name = re.\
+                match(r'(.*?)\s*\(.*?english\s+name\s+is\s+(.*?)\)',
+                      birth_name, re.I).\
+                groups()
+            idol['birth_name'] = birth_name
+            idol['alt_names'] = [alt_name]
+
+        # Birth name var 3.
         with suppress(KeyError, AttributeError):
             birth_name = idol['birth_name']
             birth_name, birth_name_hangul = re.\
