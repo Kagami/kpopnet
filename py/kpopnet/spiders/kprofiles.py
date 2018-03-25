@@ -118,6 +118,8 @@ class KprofilesSpider(ProfileSpider):
             name = 'Dal Shabet'
         elif name == 'Cosmic Girls':
             name = 'WJSN'
+        elif name == 'Pristin':
+            name = 'PRISTIN'
 
         return name
 
