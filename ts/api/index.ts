@@ -14,7 +14,7 @@ import { Idol, Profiles } from "./profiles";
 
 export {
   ProfileValue, Band, Idol, Profiles,
-  RenderLine, Rendered, renderIdol,
+  RenderedLine, Rendered, renderIdol,
   BandMap, getBandMap,
   searchIdols,
 } from "./profiles";

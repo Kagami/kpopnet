@@ -24,6 +24,7 @@ export interface Idol {
   alt_band_ids?: string[];
   image_id?: string;
   birth_name?: string;
+  birth_name_hangul?: string;
   korean_name?: string;
   // Other props.
   [key: string]: ProfileValue;
@@ -63,8 +64,8 @@ function getBandNames(idol: Idol, bandMap: BandMap): string[] {
   return bnames;
 }
 
-export type RenderLine = [string, string];
-export type Rendered = RenderLine[];
+export type RenderedLine = [string, string];
+export type Rendered = RenderedLine[];
 
 export function renderIdol(idol: Idol, bandMap: BandMap): Rendered {
   const renderLine = renderLineCtx.bind(null, idol);
@@ -97,7 +98,6 @@ const knownKeys = [
 ];
 
 const keyPriority = new Map(knownKeys
-  // https://github.com/Microsoft/TypeScript/issues/6574
   .map((k, idx) => [k, idx] as [string, number]));
 
 function keepLine([key, val]: InfoLine): boolean {
@@ -147,7 +147,7 @@ function denormalizeVal(key: string, val: ProfileValue, idol: Idol): string {
   }
 }
 
-function renderLineCtx(idol: Idol, [key, val]: InfoLine): RenderLine {
+function renderLineCtx(idol: Idol, [key, val]: InfoLine): RenderedLine {
   val = denormalizeVal(key, val, idol);
   key = denormalizeKey(key);
   return [key, val];
@@ -155,7 +155,7 @@ function renderLineCtx(idol: Idol, [key, val]: InfoLine): RenderLine {
 
 const MILLISECONDS_IN_YEAR = 1000 * 365 * 24 * 60 * 60;
 
-export function getAge(birthday: string): number {
+function getAge(birthday: string): number {
   const now = Date.now();
   // Birthday is always in YYYY-MM-DD form and can be parsed as
   // simplified ISO 8601 format.
