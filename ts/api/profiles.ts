@@ -19,6 +19,7 @@ export interface Idol {
   // Known props.
   id: string;
   name: string;
+  name_hangul?: string;
   alt_names?: string[];
   band_id: string;
   alt_band_ids?: string[];
