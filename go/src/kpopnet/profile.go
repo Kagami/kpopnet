@@ -36,7 +36,7 @@ func getProfilesDir(d string) string {
 
 func getBandDir(d string, bname string) string {
 	checkName(bname)
-	return filepath.Join(d, "profiles", bname)
+	return filepath.Join(getProfilesDir(d), bname)
 }
 
 func getBandPath(d string, bname string) string {
@@ -81,10 +81,10 @@ func ReadProfiles(d string) (ps *Profiles, err error) {
 	if err != nil {
 		return
 	}
-	for _, bdir := range bandDirs {
+	for _, dir := range bandDirs {
 		var data []byte
 		var band Band
-		bname := bdir.Name()
+		bname := dir.Name()
 		data, err = ioutil.ReadFile(getBandPath(d, bname))
 		if err != nil {
 			return

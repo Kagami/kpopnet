@@ -20,3 +20,13 @@ CREATE TABLE IF NOT EXISTS idol_previews (
   id uuid PRIMARY KEY REFERENCES idols ON DELETE CASCADE,
   image_id char(40) UNIQUE NOT NULL REFERENCES images
 );
+
+-- Don't reference images to be able to preload descriptors.
+-- TODO(Kagami): Indexes!
+CREATE TABLE IF NOT EXISTS faces (
+  id bigserial PRIMARY KEY,
+	descriptor bytea NOT NULL,
+  image_id char(40) NOT NULL,
+  idol_id uuid NOT NULL REFERENCES idols ON DELETE CASCADE,
+  idol_confirmed boolean NOT NULL
+);
