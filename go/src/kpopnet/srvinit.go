@@ -42,6 +42,7 @@ func createRouter(o ServerOptions) (h http.Handler, err error) {
 		http.FileServer(http.Dir(staticRoot))))
 
 	r.GET("/api/idols/profiles", ServeProfiles)
+	r.POST("/api/idols/recognize", ServeRecognize)
 
 	h = http.Handler(r)
 	return

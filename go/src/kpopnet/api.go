@@ -5,13 +5,20 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 )
 
 var (
-	// Client errors.
-	// TODO(Kagami): Use custom class to store error context.
-	errInternal = errors.New("internal-error")
+	maxOverheadSize = int64(10 * 1024)
+	maxFileSize     = int64(5 * 1024 * 1024)
+	maxBodySize     = maxFileSize + maxOverheadSize
+
+	errInternal     = errors.New("internal error")
+	errParseForm    = errors.New("error parsing form")
+	errParseFile    = errors.New("error parsing form file")
+	errRecognize    = errors.New("cannot recognize")
+	errNoSingleFace = errors.New("not a single face")
 )
 
 func setApiHeaders(w http.ResponseWriter) {
@@ -28,6 +35,15 @@ func serveData(w http.ResponseWriter, r *http.Request, data []byte) {
 	setApiHeaders(w)
 	w.Header().Set("ETag", etag)
 	w.Write(data)
+}
+
+func serveJson(w http.ResponseWriter, r *http.Request, v interface{}) {
+	data, err := json.Marshal(v)
+	if err != nil {
+		handle500(w, r, err)
+		return
+	}
+	serveData(w, r, data)
 }
 
 func serveError(w http.ResponseWriter, r *http.Request, err error, code int) {
@@ -57,4 +73,43 @@ func ServeProfiles(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	serveData(w, r, v.([]byte))
+}
+
+func ServeRecognize(w http.ResponseWriter, r *http.Request) {
+	r.Body = http.MaxBytesReader(w, r.Body, maxBodySize)
+	if err := r.ParseMultipartForm(0); err != nil {
+		serveError(w, r, errParseForm, 400)
+		return
+	}
+	fhs := r.MultipartForm.File["files[]"]
+	if len(fhs) != 1 {
+		serveError(w, r, errParseFile, 400)
+		return
+	}
+	fd, err := fhs[0].Open()
+	if err != nil {
+		serveError(w, r, errParseFile, 400)
+		return
+	}
+	defer fd.Close()
+	fdata, err := ioutil.ReadAll(fd)
+	if err != nil {
+		serveError(w, r, errParseFile, 400)
+		return
+	}
+	idolId, err := Recognize(fdata)
+	if err != nil {
+		serveError(w, r, errRecognize, 500)
+		return
+	}
+	if idolId == nil {
+		serveError(w, r, errNoSingleFace, 400)
+		return
+	}
+	result := map[string]string{"id": *idolId}
+	serveJson(w, r, result)
+}
+
+func Recognize(fdata []byte) (idolId *string, err error) {
+	return
 }

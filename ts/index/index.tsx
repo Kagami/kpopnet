@@ -1,3 +1,10 @@
+/**
+ * Application entry point.
+ */
+
+// tslint:disable-next-line:no-reference
+/// <reference path="./index.d.ts" />
+
 import { Component, h, render } from "preact";
 import { BandMap, getBandMap, getProfiles, Profiles } from "../api";
 import Dropzone from "../dropzone";
@@ -5,8 +12,6 @@ import IdolList from "../idol-list";
 import Recognizer from "../recognizer";
 import Search from "../search";
 import "./index.less";
-
-declare const API_PREFIX: string;
 
 class Index extends Component<any, any> {
   private profiles: Profiles = null;

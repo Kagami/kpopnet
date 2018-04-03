@@ -100,3 +100,21 @@ export function setIdolPreview(idol: Idol, file: File, opts: ApiOpts = {}): Prom
     body: form,
   }).then(handleResponse, handleError);
 }
+
+export interface IdolIdData {
+  id: string;
+}
+
+/**
+ * Recognize idol.
+ */
+export function recognizeIdol(file: File, opts: ApiOpts = {}): Promise<IdolIdData> {
+  const prefix = opts.prefix || "/api";
+  const form = new FormData();
+  form.append("files[]", file);
+  return fetch(`${prefix}/idols/recognize`, {
+    credentials: "same-origin",
+    method: "POST",
+    body: form,
+  }).then(handleResponse, handleError);
+}

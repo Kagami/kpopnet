@@ -1,6 +1,9 @@
 import { Component, h } from "preact";
 import "./index.less";
 
+const ALLOWED_MIMES = new Set(["image/jpeg", "image/png"]);
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+
 class Dropzone extends Component<any, any> {
   private fileEl: HTMLInputElement = null;
   public render() {
@@ -43,6 +46,14 @@ class Dropzone extends Component<any, any> {
     }
   }
   private handleFile(file: File) {
+    if (!ALLOWED_MIMES.has(file.type)) {
+      alert("Only JPEG and PNG allowed");
+      return;
+    }
+    if (file.size > MAX_FILE_SIZE) {
+      alert("Max file size is 5MB");
+      return;
+    }
     this.props.onChange(file);
   }
 }

@@ -1,5 +1,6 @@
 import * as cx from "classnames";
 import { Component, h } from "preact";
+import { recognizeIdol } from "../api";
 import Spinner from "../spinner";
 import "./index.less";
 
@@ -19,6 +20,15 @@ class Recognizer extends Component<RecognizerProps, any> {
     this.state = {
       loading: true,
     };
+  }
+  public componentWillMount() {
+    recognizeIdol(this.props.file, {prefix: API_PREFIX}).then(({ id }) => {
+      this.setState({loading: false});
+      alert(`Recognized: ${id}`);
+    }, (err) => {
+      this.setState({loading: false});
+      alert(`Error recognizing: ${err.message}`);
+    });
   }
   public render({ file }: RecognizerProps, { loading }: RecognizerState) {
     const style = {backgroundImage: `url(${this.imageUrl})`};
