@@ -6,7 +6,8 @@ import (
 )
 
 // Get all bands.
-func getBands(tx *sql.Tx) (bands []Band, err error) {
+func getBands(tx *sql.Tx) (bands []Band, bandById map[string]Band, err error) {
+	bandById = make(map[string]Band)
 	rs, err := tx.Stmt(prepared["get_bands"]).Query()
 	if err != nil {
 		return
@@ -24,6 +25,7 @@ func getBands(tx *sql.Tx) (bands []Band, err error) {
 		}
 		band["id"] = id
 		bands = append(bands, band)
+		bandById[id] = band
 	}
 	if err = rs.Err(); err != nil {
 		return
@@ -98,7 +100,7 @@ func GetProfiles() (ps *Profiles, err error) {
 		return
 	}
 
-	bands, err := getBands(tx)
+	bands, _, err := getBands(tx)
 	if err != nil {
 		return
 	}

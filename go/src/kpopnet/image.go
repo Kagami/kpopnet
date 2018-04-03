@@ -9,6 +9,9 @@ import (
 	"github.com/Kagami/go-dlib"
 )
 
+type namesKey [2]string
+type idolNamesMap map[namesKey]Idol
+
 var (
 	faceRec *dlib.FaceRec
 )
@@ -21,7 +24,27 @@ func getModelsDir(d string) string {
 	return filepath.Join(d, "models")
 }
 
-func getIdolNameMap() (idolByName map[string]Idol, err error) {
+func getIdolNamesKey(idol Idol, bandById map[string]Band) (key namesKey, ok bool) {
+	iname, ok := idol["name"].(string)
+	if !ok {
+		return
+	}
+	bandId, ok := idol["band_id"].(string)
+	if !ok {
+		return
+	}
+	band, ok := bandById[bandId]
+	if !ok {
+		return
+	}
+	bname, ok := band["name"].(string)
+	if !ok {
+		return
+	}
+	return [2]string{bname, iname}, true
+}
+
+func getIdolNamesMap() (idolByNames idolNamesMap, err error) {
 	tx, err := beginTx()
 	if err != nil {
 		return
@@ -30,20 +53,24 @@ func getIdolNameMap() (idolByName map[string]Idol, err error) {
 	if err = setReadOnly(tx); err != nil {
 		return
 	}
+	_, bandById, err := getBands(tx)
+	if err != nil {
+		return
+	}
 	idols, _, err := getIdols(tx)
 	if err != nil {
 		return
 	}
-	idolByName = make(map[string]Idol)
+	idolByNames = make(idolNamesMap)
 	for _, idol := range idols {
-		if name, ok := idol["name"].(string); ok {
-			idolByName[name] = idol
+		if key, ok := getIdolNamesKey(idol, bandById); ok {
+			idolByNames[key] = idol
 		}
 	}
 	return
 }
 
-func recognizeIdolImages(idir string) (ds []dlib.Descriptor, err error) {
+func recognizeIdolImages(idir string) (ds []dlib.FaceDescriptor, err error) {
 	idolImages, err := ioutil.ReadDir(idir)
 	if err != nil {
 		return
@@ -51,7 +78,7 @@ func recognizeIdolImages(idir string) (ds []dlib.Descriptor, err error) {
 	// No need to validate names/formats because everything was checked by
 	// Python spider.
 	for _, file := range idolImages {
-		var d *dlib.Descriptor
+		var d *dlib.FaceDescriptor
 		fname := file.Name()
 		ipath := filepath.Join(idir, fname)
 		d, err = faceRec.GetDescriptor(ipath)
@@ -67,7 +94,7 @@ func recognizeIdolImages(idir string) (ds []dlib.Descriptor, err error) {
 	return
 }
 
-func importBandImages(bdir string, idolByName map[string]Idol) (err error) {
+func importBandImages(bdir, bname string, idolByNames idolNamesMap) (err error) {
 	// Use single transaction per band.
 	tx, err := beginTx()
 	if err != nil {
@@ -80,11 +107,13 @@ func importBandImages(bdir string, idolByName map[string]Idol) (err error) {
 		return
 	}
 	for _, dir := range idolDirs {
-		var ds []dlib.Descriptor
+		var ds []dlib.FaceDescriptor
 		iname := dir.Name()
-		idol, ok := idolByName[iname]
+		key := [2]string{bname, iname}
+		idol, ok := idolByNames[key]
 		if !ok {
-			continue
+			err = fmt.Errorf("Can't find %s (%s)", iname, bname)
+			return
 		}
 		idir := filepath.Join(bdir, iname)
 		log.Printf("Importing %s", idir)
@@ -103,7 +132,7 @@ func ImportImages(connStr string, dataDir string) (err error) {
 		return
 	}
 
-	idolByName, err := getIdolNameMap()
+	idolByNames, err := getIdolNamesMap()
 	if err != nil {
 		err = fmt.Errorf("Error querying idols: %v", err)
 		return
@@ -124,7 +153,7 @@ func ImportImages(connStr string, dataDir string) (err error) {
 	for _, dir := range bandDirs {
 		bname := dir.Name()
 		bdir := filepath.Join(getImagesDir(dataDir), bname)
-		if err = importBandImages(bdir, idolByName); err != nil {
+		if err = importBandImages(bdir, bname, idolByNames); err != nil {
 			err = fmt.Errorf("Error importing %s images: %v", bname, err)
 			return
 		}

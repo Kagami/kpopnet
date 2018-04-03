@@ -28,5 +28,6 @@ CREATE TABLE IF NOT EXISTS faces (
 	descriptor bytea NOT NULL,
   image_id char(40) NOT NULL,
   idol_id uuid NOT NULL REFERENCES idols ON DELETE CASCADE,
-  idol_confirmed boolean NOT NULL
+  idol_confirmed boolean NOT NULL DEFAULT FALSE,
+  UNIQUE (image_id, idol_id)
 );
