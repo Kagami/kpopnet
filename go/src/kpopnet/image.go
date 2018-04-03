@@ -1,16 +1,26 @@
 package kpopnet
 
 import (
+	"crypto/sha1"
+	"encoding/hex"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
+	"os"
 	"path/filepath"
+	"unsafe"
 
 	"github.com/Kagami/go-dlib"
 )
 
 type namesKey [2]string
 type idolNamesMap map[namesKey]Idol
+
+type Face struct {
+	descriptor dlib.FaceDescriptor
+	imageId    string
+}
 
 var (
 	faceRec *dlib.FaceRec
@@ -22,6 +32,22 @@ func getImagesDir(d string) string {
 
 func getModelsDir(d string) string {
 	return filepath.Join(d, "models")
+}
+
+func getImageSha1(ipath string) (hashHex string, err error) {
+	f, err := os.Open(ipath)
+	if err != nil {
+		return
+	}
+	defer f.Close()
+
+	h := sha1.New()
+	if _, err = io.Copy(h, f); err != nil {
+		return
+	}
+	hash := h.Sum(nil)
+	hashHex = hex.EncodeToString(hash[:])
+	return
 }
 
 func getIdolNamesKey(idol Idol, bandById map[string]Band) (key namesKey, ok bool) {
@@ -70,7 +96,21 @@ func getIdolNamesMap() (idolByNames idolNamesMap, err error) {
 	return
 }
 
-func recognizeIdolImages(idir string) (ds []dlib.FaceDescriptor, err error) {
+func recognizeIdolImage(ipath string) (face *Face, err error) {
+	d, err := faceRec.GetDescriptor(ipath)
+	if err != nil || d == nil {
+		return
+	}
+	hash, err := getImageSha1(ipath)
+	if err != nil {
+		return
+	}
+	face = &Face{*d, hash}
+	return
+}
+
+// TODO(Kagami): Use multiple threads?
+func recognizeIdolImages(idir string) (faces []Face, err error) {
 	idolImages, err := ioutil.ReadDir(idir)
 	if err != nil {
 		return
@@ -78,18 +118,18 @@ func recognizeIdolImages(idir string) (ds []dlib.FaceDescriptor, err error) {
 	// No need to validate names/formats because everything was checked by
 	// Python spider.
 	for _, file := range idolImages {
-		var d *dlib.FaceDescriptor
+		var face *Face
 		fname := file.Name()
 		ipath := filepath.Join(idir, fname)
-		d, err = faceRec.GetDescriptor(ipath)
+		face, err = recognizeIdolImage(ipath)
 		if err != nil {
 			return
 		}
-		if d == nil {
+		if face == nil {
 			log.Printf("Not a single face on %s", ipath)
 			continue
 		}
-		ds = append(ds, *d)
+		faces = append(faces, *face)
 	}
 	return
 }
@@ -101,13 +141,14 @@ func importBandImages(bdir, bname string, idolByNames idolNamesMap) (err error) 
 		return
 	}
 	defer endTx(tx, &err)
+	st := tx.Stmt(prepared["upsert_face"])
 
 	idolDirs, err := ioutil.ReadDir(bdir)
 	if err != nil {
 		return
 	}
 	for _, dir := range idolDirs {
-		var ds []dlib.FaceDescriptor
+		var faces []Face
 		iname := dir.Name()
 		key := [2]string{bname, iname}
 		idol, ok := idolByNames[key]
@@ -117,11 +158,19 @@ func importBandImages(bdir, bname string, idolByNames idolNamesMap) (err error) 
 		}
 		idir := filepath.Join(bdir, iname)
 		log.Printf("Importing %s", idir)
-		ds, err = recognizeIdolImages(idir)
+		faces, err = recognizeIdolImages(idir)
 		if err != nil {
 			return
 		}
-		fmt.Println(idol["id"], len(ds))
+		idolId := idol["id"].(string)
+		for _, face := range faces {
+			descrSize := unsafe.Sizeof(face.descriptor)
+			descrPtr := unsafe.Pointer(&face.descriptor)
+			descrBytes := (*[1 << 30]byte)(descrPtr)[:descrSize:descrSize]
+			if _, err = st.Exec(descrBytes, face.imageId, idolId); err != nil {
+				return
+			}
+		}
 	}
 	return
 }
@@ -157,7 +206,6 @@ func ImportImages(connStr string, dataDir string) (err error) {
 			err = fmt.Errorf("Error importing %s images: %v", bname, err)
 			return
 		}
-		break
 	}
 	return
 }
