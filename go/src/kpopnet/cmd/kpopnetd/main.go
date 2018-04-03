@@ -15,7 +15,7 @@ K-pop neural network backend.
 
 Usage:
   kpopnetd profile import [options]
-  kpopnetd image import [options]
+  kpopnetd image import [BAND...] [options]
   kpopnetd serve [options]
   kpopnetd [-h | --help]
   kpopnetd [-V | --version]
@@ -36,11 +36,12 @@ type config struct {
 	Import  bool
 	Image   bool
 	Serve   bool
-	Host    string `docopt:"-H"`
-	Port    int    `docopt:"-p"`
-	Conn    string `docopt:"-c"`
-	SiteDir string `docopt:"-s"`
-	DataDir string `docopt:"-d"`
+	Bands   []string `docopt:"BAND"`
+	Host    string   `docopt:"-H"`
+	Port    int      `docopt:"-p"`
+	Conn    string   `docopt:"-c"`
+	SiteDir string   `docopt:"-s"`
+	DataDir string   `docopt:"-d"`
 }
 
 func importProfiles(conf config) {
@@ -53,7 +54,7 @@ func importProfiles(conf config) {
 
 func importImages(conf config) {
 	log.Printf("Importing images from %s", conf.DataDir)
-	if err := kpopnet.ImportImages(conf.Conn, conf.DataDir); err != nil {
+	if err := kpopnet.ImportImages(conf.Conn, conf.DataDir, conf.Bands); err != nil {
 		log.Fatal(err)
 	}
 	log.Print("Done.")

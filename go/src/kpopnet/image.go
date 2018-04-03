@@ -176,7 +176,7 @@ func importBandImages(bdir, bname string, idolByNames idolNamesMap) (err error) 
 }
 
 // Read and update idol faces in database.
-func ImportImages(connStr string, dataDir string) (err error) {
+func ImportImages(connStr string, dataDir string, onlyBands []string) (err error) {
 	if err = StartDb(nil, connStr); err != nil {
 		return
 	}
@@ -199,8 +199,16 @@ func ImportImages(connStr string, dataDir string) (err error) {
 		return
 	}
 
+	bandFilter := make(map[string]bool)
+	for _, bname := range onlyBands {
+		bandFilter[bname] = true
+	}
+
 	for _, dir := range bandDirs {
 		bname := dir.Name()
+		if len(bandFilter) > 0 && !bandFilter[bname] {
+			continue
+		}
 		bdir := filepath.Join(getImagesDir(dataDir), bname)
 		if err = importBandImages(bdir, bname, idolByNames); err != nil {
 			err = fmt.Errorf("Error importing %s images: %v", bname, err)
