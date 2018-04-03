@@ -31,16 +31,20 @@ class Recognizer extends Component<RecognizerProps, any> {
     });
   }
   public render({ file }: RecognizerProps, { loading }: RecognizerState) {
-    const style = {backgroundImage: `url(${this.imageUrl})`};
     return (
       <div class={cx("recognizer", loading && "recognizer_loading")}>
-        <div
+        <img
           class="recognizer__preview"
-          style={style}
+          src={this.imageUrl}
+          draggable={0 as any}
+          onDragStart={this.handleDrag}
         />
         {loading && <Spinner center large />}
       </div>
     );
+  }
+  private handleDrag = (e: DragEvent) => {
+    e.preventDefault();
   }
 }
 
