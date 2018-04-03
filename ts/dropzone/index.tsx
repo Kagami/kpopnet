@@ -1,3 +1,4 @@
+import * as cx from "classnames";
 import { Component, h } from "preact";
 import "./index.less";
 
@@ -35,12 +36,17 @@ function validateImage(file: File): Promise<File> {
   });
 }
 
-class Dropzone extends Component<any, any> {
+interface DropzoneProps {
+  disabled: boolean;
+  onChange: (file: File) => void;
+}
+
+class Dropzone extends Component<DropzoneProps, any> {
   private fileEl: HTMLInputElement = null;
-  public render() {
+  public render({ disabled }: DropzoneProps) {
     return (
       <div
-        class="dropzone"
+        class={cx("dropzone", disabled && "dropzone_disabled")}
         onClick={this.handleClick}
         onDragOver={this.handleDragOver}
         onDrop={this.handleDrop}
@@ -57,6 +63,7 @@ class Dropzone extends Component<any, any> {
     );
   }
   private handleClick = () => {
+    if (this.props.disabled) return;
     this.fileEl.click();
   }
   private handleInputChange = () => {
@@ -71,15 +78,14 @@ class Dropzone extends Component<any, any> {
   }
   private handleDrop = (e: DragEvent) => {
     e.preventDefault();
+    if (this.props.disabled) return;
     const files = e.dataTransfer.files;
     if (files.length) {
       this.handleFile(files[0]);
     }
   }
   private handleFile(file: File) {
-    validateImage(file).then(this.props.onChange, (err) => {
-      alert(err);
-    });
+    validateImage(file).then(this.props.onChange, alert);
   }
 }
 

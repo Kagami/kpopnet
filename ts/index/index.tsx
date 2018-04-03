@@ -44,7 +44,7 @@ class Index extends Component<any, any> {
             disabled={!!file}
             onChange={this.handleSearch}
           />
-          {!file && !loading && query &&
+          {!loading && !file && query &&
             <IdolList
               profiles={this.profiles}
               bandMap={this.bandMap}
@@ -52,7 +52,10 @@ class Index extends Component<any, any> {
             />
           }
           {!file && !query &&
-            <Dropzone onChange={this.handleFile} />
+            <Dropzone
+              disabled={loading}
+              onChange={this.handleFile}
+            />
           }
           {file &&
             <Recognizer file={file} />
