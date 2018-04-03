@@ -43,7 +43,7 @@ func getIdolNameMap() (idolByName map[string]Idol, err error) {
 	return
 }
 
-func recognizeIdolImages(idir string) (faces []*dlib.Face, err error) {
+func recognizeIdolImages(idir string) (ds []dlib.Descriptor, err error) {
 	idolImages, err := ioutil.ReadDir(idir)
 	if err != nil {
 		return
@@ -51,19 +51,18 @@ func recognizeIdolImages(idir string) (faces []*dlib.Face, err error) {
 	// No need to validate names/formats because everything was checked by
 	// Python spider.
 	for _, file := range idolImages {
-		var idolFaces []*dlib.Face
+		var d *dlib.Descriptor
 		fname := file.Name()
 		ipath := filepath.Join(idir, fname)
-		idolFaces, err = faceRec.Recognize(ipath)
+		d, err = faceRec.GetDescriptor(ipath)
 		if err != nil {
 			return
 		}
-		// TODO(Kagami): RecognizeSingle.
-		if len(idolFaces) != 1 {
-			log.Printf("Not a single idol face on %s (%d)", ipath, len(idolFaces))
+		if d == nil {
+			log.Printf("Not a single face on %s", ipath)
 			continue
 		}
-		faces = append(faces, idolFaces[0])
+		ds = append(ds, *d)
 	}
 	return
 }
@@ -81,7 +80,7 @@ func importBandImages(bdir string, idolByName map[string]Idol) (err error) {
 		return
 	}
 	for _, dir := range idolDirs {
-		var faces []*dlib.Face
+		var ds []dlib.Descriptor
 		iname := dir.Name()
 		idol, ok := idolByName[iname]
 		if !ok {
@@ -89,11 +88,11 @@ func importBandImages(bdir string, idolByName map[string]Idol) (err error) {
 		}
 		idir := filepath.Join(bdir, iname)
 		log.Printf("Importing %s", idir)
-		faces, err = recognizeIdolImages(idir)
+		ds, err = recognizeIdolImages(idir)
 		if err != nil {
 			return
 		}
-		fmt.Println(idol["id"], faces)
+		fmt.Println(idol["id"], len(ds))
 	}
 	return
 }
