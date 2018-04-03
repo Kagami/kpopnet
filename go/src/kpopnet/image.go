@@ -153,8 +153,8 @@ func importBandImages(bdir, bname string, idolByNames idolNamesMap) (err error) 
 		key := [2]string{bname, iname}
 		idol, ok := idolByNames[key]
 		if !ok {
-			err = fmt.Errorf("Can't find %s (%s)", iname, bname)
-			return
+			log.Printf("Can't find %s (%s)", iname, bname)
+			continue
 		}
 		idir := filepath.Join(bdir, iname)
 		log.Printf("Importing %s", idir)
