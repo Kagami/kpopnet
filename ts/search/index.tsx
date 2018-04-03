@@ -2,21 +2,27 @@ import { Component, h } from "preact";
 import Spinner from "../spinner";
 import "./index.less";
 
-class Search extends Component<any, any> {
+interface SearchProps {
+  loading: boolean;
+  disabled: boolean;
+  onChange: (query: string) => void;
+}
+
+class Search extends Component<SearchProps, any> {
   private inputEl: HTMLInputElement = null;
   public componentDidUpdate(prevProps: any) {
     if (prevProps.loading && !this.props.loading) {
       this.focus();
     }
   }
-  public render({ loading }: any) {
+  public render({ loading, disabled }: SearchProps) {
     return (
       <div class="search">
         <input
           ref={(i) => this.inputEl = i as HTMLInputElement}
           class="search__input"
           placeholder="Search for idol or band"
-          disabled={loading}
+          disabled={loading || disabled}
           onInput={this.handleChange}
         />
         {loading && <Spinner/>}

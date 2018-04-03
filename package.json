@@ -18,9 +18,11 @@
   },
   "homepage": "https://github.com/Kagami/kpopnet#readme",
   "dependencies": {
+    "classnames": "^2.2.5",
     "preact": "^8.2.7"
   },
   "devDependencies": {
+    "@types/classnames": "^2.2.3",
     "clean-webpack-plugin": "^0.1.19",
     "css-loader": "^0.28.10",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",

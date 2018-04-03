@@ -1,7 +1,8 @@
 import { Component, h, render } from "preact";
 import { BandMap, getBandMap, getProfiles, Profiles } from "../api";
-// import Dropzone from "../dropzone";
+import Dropzone from "../dropzone";
 import IdolList from "../idol-list";
+import Recognizer from "../recognizer";
 import Search from "../search";
 import "./index.less";
 
@@ -35,18 +36,22 @@ class Index extends Component<any, any> {
         <div class="index__inner">
           <Search
             loading={loading}
+            disabled={!!file}
             onChange={this.handleSearch}
           />
-          {(!file && !query) &&
-            {/*<Dropzone onChange={this.handleFile} />*/}
-          }
-          {/*{(!loading && query) &&*/}
+          {!file && !loading && query &&
             <IdolList
               profiles={this.profiles}
               bandMap={this.bandMap}
               query={query}
             />
-          {/*}*/}
+          }
+          {!file && !query &&
+            <Dropzone onChange={this.handleFile} />
+          }
+          {file &&
+            <Recognizer file={file} />
+          }
         </div>
         <footer class="footer">
           <div class="footer__inner">
@@ -64,9 +69,9 @@ class Index extends Component<any, any> {
       </main>
     );
   }
-  // private handleFile = (file: File) => {
-  //   this.setState({file});
-  // }
+  private handleFile = (file: File) => {
+    this.setState({file});
+  }
   private handleSearch = (query: string) => {
     this.setState({query});
   }
