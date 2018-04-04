@@ -25,7 +25,8 @@ CREATE TABLE IF NOT EXISTS idol_previews (
 -- TODO(Kagami): Indexes!
 CREATE TABLE IF NOT EXISTS faces (
   id bigserial PRIMARY KEY,
-	descriptor bytea NOT NULL,
+  rectangle box NOT NULL,
+  descriptor bytea NOT NULL,
   image_id char(40) NOT NULL,
   idol_id uuid NOT NULL REFERENCES idols ON DELETE CASCADE,
   idol_confirmed boolean NOT NULL DEFAULT FALSE,
