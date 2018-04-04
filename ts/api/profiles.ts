@@ -284,6 +284,7 @@ export function searchIdols(
     return q.props.every(([key, val]) => {
       switch (key) {
       case "n":
+      case "name":
         if (normalize(idol.name).includes(val)) {
           return true;
         }

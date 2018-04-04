@@ -7,6 +7,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"time"
 )
 
 var (
@@ -112,7 +113,8 @@ func ServeRecognize(w http.ResponseWriter, r *http.Request) {
 
 func Recognize(fdata []byte) (idolId *string, err error) {
 	// FIXME(Kagami): tmp.
-	id := "4d834545-6220-4c3e-b283-3f70743d9eb1"
-	idolId = &id
+	time.Sleep(time.Second * 2)
+	// id := "4d834545-6220-4c3e-b283-3f70743d9eb1"
+	// idolId = &id
 	return
 }

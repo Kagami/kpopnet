@@ -6,6 +6,7 @@
 /// <reference path="./index.d.ts" />
 
 import { Component, h, render } from "preact";
+import Alerts, { showAlert } from "../alerts";
 import { BandMap, getBandMap, getIdolMap, getProfiles, IdolMap, Profiles } from "../api";
 import Dropzone from "../dropzone";
 import IdolList from "../idol-list";
@@ -39,14 +40,14 @@ class Index extends Component<{}, IndexState> {
       this.setState({loading: false});
     }, (err) => {
       this.setState({loading: false});
-      // TODO(Kagami): Something better.
-      alert("Error getting profiles");
+      showAlert(["Fetch error", "Error getting profiles"]);
     });
   }
   public render({}, { loading, query, file }: any) {
     return (
       <main class="index">
         <div class="index__inner">
+          <Alerts/>
           <Search
             query={query}
             loading={loading}
@@ -69,7 +70,8 @@ class Index extends Component<{}, IndexState> {
           {file &&
             <Recognizer
               file={file}
-              onFound={this.handleFound}
+              onMatch={this.handleRecognizeMatch}
+              onError={this.handleRecognizeError}
             />
           }
         </div>
@@ -95,14 +97,18 @@ class Index extends Component<{}, IndexState> {
   private handleSearch = (query: string) => {
     this.setState({query});
   }
-  private handleFound = (idolId: string) => {
+  private handleRecognizeMatch = (idolId: string) => {
     // Everything must exist unless in a very rare case (e.g. new idols
     // was added after page load and user uploaded image with them.)
     const idol = this.idolMap.get(idolId);
     const iname = idol.name;
     const bname = this.bandMap.get(idol.band_id).name;
-    const query = `${iname} band:${bname}`;
+    const query = `name:${iname} band:${bname}`;
     this.setState({query, file: null});
+  }
+  private handleRecognizeError = (err: Error) => {
+    this.setState({file: null});
+    showAlert(["Recognize error", err.toString()]);
   }
 }
 
