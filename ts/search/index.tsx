@@ -3,24 +3,26 @@ import Spinner from "../spinner";
 import "./index.less";
 
 interface SearchProps {
+  query: string;
   loading: boolean;
   disabled: boolean;
   onChange: (query: string) => void;
 }
 
-class Search extends Component<SearchProps, any> {
+class Search extends Component<SearchProps, {}> {
   private inputEl: HTMLInputElement = null;
-  public componentDidUpdate(prevProps: any) {
-    if (prevProps.loading && !this.props.loading) {
+  public componentDidUpdate({ loading }: SearchProps) {
+    if (loading && !this.props.loading) {
       this.focus();
     }
   }
-  public render({ loading, disabled }: SearchProps) {
+  public render({ query, loading, disabled }: SearchProps) {
     return (
       <div class="search">
         <input
           ref={(i) => this.inputEl = i as HTMLInputElement}
           class="search__input"
+          value={query}
           placeholder="Search for idol or band"
           disabled={loading || disabled}
           onInput={this.handleChange}

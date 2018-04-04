@@ -6,13 +6,14 @@ import "./index.less";
 
 interface RecognizerProps {
   file: File;
+  onFound: (idolId: string) => void;
 }
 
 interface RecognizerState {
   loading: boolean;
 }
 
-class Recognizer extends Component<RecognizerProps, any> {
+class Recognizer extends Component<RecognizerProps, RecognizerState> {
   private imageUrl = "";
   constructor(props: RecognizerProps) {
     super(props);
@@ -23,8 +24,7 @@ class Recognizer extends Component<RecognizerProps, any> {
   }
   public componentWillMount() {
     recognizeIdol(this.props.file, {prefix: API_PREFIX}).then(({ id }) => {
-      this.setState({loading: false});
-      alert(`Recognized: ${id}`);
+      this.props.onFound(id);
     }, (err) => {
       this.setState({loading: false});
       alert(`Error recognizing: ${err.message}`);

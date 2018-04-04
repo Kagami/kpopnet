@@ -46,6 +46,16 @@ export function getBandMap(profiles: Profiles): BandMap {
   return bandMap;
 }
 
+export type IdolMap = Map<string, Idol>;
+
+export function getIdolMap(profiles: Profiles): IdolMap {
+  const idolMap = new Map();
+  profiles.idols.forEach((idol) => {
+    idolMap.set(idol.id, idol);
+  });
+  return idolMap;
+}
+
 function tryConcat<T>(a: T, b?: T[]): T[] {
   return b ? [a].concat(b) : [a];
 }
@@ -284,6 +294,7 @@ export function searchIdols(
         }
         break;
       case "b":
+      case "band":
         if (normalize(bandMap.get(idol.band_id).name).includes(val)) {
           return true;
         }

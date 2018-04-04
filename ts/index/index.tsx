@@ -6,16 +6,23 @@
 /// <reference path="./index.d.ts" />
 
 import { Component, h, render } from "preact";
-import { BandMap, getBandMap, getProfiles, Profiles } from "../api";
+import { BandMap, getBandMap, getIdolMap, getProfiles, IdolMap, Profiles } from "../api";
 import Dropzone from "../dropzone";
 import IdolList from "../idol-list";
 import Recognizer from "../recognizer";
 import Search from "../search";
 import "./index.less";
 
-class Index extends Component<any, any> {
+interface IndexState {
+  loading: boolean;
+  query: string;
+  file?: File;
+}
+
+class Index extends Component<{}, IndexState> {
   private profiles: Profiles = null;
   private bandMap: BandMap = null;
+  private idolMap: IdolMap = null;
   constructor() {
     super();
     this.state = {
@@ -28,6 +35,7 @@ class Index extends Component<any, any> {
     getProfiles({prefix: API_PREFIX}).then((profiles) => {
       this.profiles = profiles;
       this.bandMap = getBandMap(profiles);
+      this.idolMap = getIdolMap(profiles);
       this.setState({loading: false});
     }, (err) => {
       this.setState({loading: false});
@@ -40,6 +48,7 @@ class Index extends Component<any, any> {
       <main class="index">
         <div class="index__inner">
           <Search
+            query={query}
             loading={loading}
             disabled={!!file}
             onChange={this.handleSearch}
@@ -58,7 +67,10 @@ class Index extends Component<any, any> {
             />
           }
           {file &&
-            <Recognizer file={file} />
+            <Recognizer
+              file={file}
+              onFound={this.handleFound}
+            />
           }
         </div>
         <footer class="footer">
@@ -82,6 +94,15 @@ class Index extends Component<any, any> {
   }
   private handleSearch = (query: string) => {
     this.setState({query});
+  }
+  private handleFound = (idolId: string) => {
+    // Everything must exist unless in a very rare case (e.g. new idols
+    // was added after page load and user uploaded image with them.)
+    const idol = this.idolMap.get(idolId);
+    const iname = idol.name;
+    const bname = this.bandMap.get(idol.band_id).name;
+    const query = `${iname} band:${bname}`;
+    this.setState({query, file: null});
   }
 }
 
