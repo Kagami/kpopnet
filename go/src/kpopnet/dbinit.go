@@ -50,7 +50,7 @@ func StartDb(openedDb *sql.DB, connStr string) (err error) {
 	}
 
 	if err = execQ("init_db"); err != nil {
-		return fmt.Errorf("Error initializing: %v", err)
+		return fmt.Errorf("Error initializing database: %v", err)
 	}
 
 	if err = prepare(); err != nil {

@@ -7,7 +7,6 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
-	"time"
 )
 
 var (
@@ -15,11 +14,14 @@ var (
 	maxFileSize     = int64(5 * 1024 * 1024)
 	maxBodySize     = maxFileSize + maxOverheadSize
 
-	errInternal     = errors.New("internal error")
-	errParseForm    = errors.New("error parsing form")
-	errParseFile    = errors.New("error parsing form file")
-	errRecognize    = errors.New("cannot recognize")
-	errNoSingleFace = errors.New("not a single face")
+	// TODO(Kagami): Better error granularity?
+	errInternal     = errors.New("Internal error")
+	errParseForm    = errors.New("Error parsing form")
+	errParseFile    = errors.New("Error parsing form file")
+	errBadImage     = errors.New("Invalid image")
+	errRecognize    = errors.New("Recognize error")
+	errNoSingleFace = errors.New("Not a single face")
+	errNoIdol       = errors.New("Cannot find idol")
 )
 
 func setApiHeaders(w http.ResponseWriter) {
@@ -99,7 +101,16 @@ func ServeRecognize(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	idolId, err := Recognize(fdata)
-	if err != nil {
+	switch err {
+	case errBadImage:
+		serveError(w, r, err, 400)
+		return
+	case errNoIdol:
+		serveError(w, r, err, 404)
+		return
+	case nil:
+		// Do nothing.
+	default:
 		serveError(w, r, errRecognize, 500)
 		return
 	}
@@ -109,12 +120,4 @@ func ServeRecognize(w http.ResponseWriter, r *http.Request) {
 	}
 	result := map[string]string{"id": *idolId}
 	serveJson(w, r, result)
-}
-
-func Recognize(fdata []byte) (idolId *string, err error) {
-	// FIXME(Kagami): tmp.
-	time.Sleep(time.Second * 2)
-	// id := "4d834545-6220-4c3e-b283-3f70743d9eb1"
-	// idolId = &id
-	return
 }

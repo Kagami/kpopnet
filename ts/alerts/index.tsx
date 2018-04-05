@@ -74,7 +74,7 @@ export function showAlert(a: Alert | Error | string | [string, string]) {
   if (typeof a === "string") {
     a = {message: a};
   } else if (a instanceof Error) {
-    a = {message: a.toString()};
+    a = {message: a.message};
   } else if (Array.isArray(a)) {
     a = {title: a[0], message: a[1]};
   }

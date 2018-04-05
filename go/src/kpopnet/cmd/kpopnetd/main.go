@@ -61,8 +61,10 @@ func importImages(conf config) {
 }
 
 func serve(conf config) {
-	err := kpopnet.StartDb(nil, conf.Conn)
-	if err != nil {
+	if err := kpopnet.StartDb(nil, conf.Conn); err != nil {
+		log.Fatal(err)
+	}
+	if err := kpopnet.StartFaceRec(conf.DataDir); err != nil {
 		log.Fatal(err)
 	}
 	opts := kpopnet.ServerOptions{

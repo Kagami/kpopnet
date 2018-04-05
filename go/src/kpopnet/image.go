@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"encoding/hex"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"log"
 	"os"
@@ -18,10 +17,6 @@ import (
 type namesKey [2]string
 type idolNamesMap map[namesKey]Idol
 
-var (
-	faceRec *dlib.FaceRec
-)
-
 func getImagesDir(d string) string {
 	return filepath.Join(d, "images")
 }
@@ -30,20 +25,9 @@ func getModelsDir(d string) string {
 	return filepath.Join(d, "models")
 }
 
-func getImageSha1(ipath string) (hashHex string, err error) {
-	f, err := os.Open(ipath)
-	if err != nil {
-		return
-	}
-	defer f.Close()
-
-	h := sha1.New()
-	if _, err = io.Copy(h, f); err != nil {
-		return
-	}
-	hash := h.Sum(nil)
-	hashHex = hex.EncodeToString(hash[:])
-	return
+func getSha1(data []byte) string {
+	hash := sha1.Sum(data)
+	return hex.EncodeToString(hash[:])
 }
 
 func getNamesKey(bname, iname string) namesKey {
@@ -97,11 +81,19 @@ func getIdolNamesMap() (idolByNames idolNamesMap, err error) {
 }
 
 func recognizeIdolImage(ipath string) (face *dlib.Face, id string, err error) {
-	face, err = faceRec.RecognizeSingle(ipath)
+	fd, err := os.Open(ipath)
+	if err != nil {
+		return
+	}
+	imgData, err := ioutil.ReadAll(fd)
+	if err != nil {
+		return
+	}
+	face, err = faceRec.RecognizeSingle(imgData)
 	if err != nil || face == nil {
 		return
 	}
-	id, err = getImageSha1(ipath)
+	id = getSha1(imgData)
 	return
 }
 
@@ -139,8 +131,11 @@ func importIdolImages(st *sql.Stmt, idir string, idol Idol) (err error) {
 	}
 	idolId := idol["id"].(string)
 	for i, face := range faces {
-		r := face.Rectangle
-		rectStr := fmt.Sprintf("((%d,%d),(%d,%d))", r[0], r[1], r[2], r[3])
+		x0 := face.Rectangle.Min.X
+		y0 := face.Rectangle.Min.Y
+		x1 := face.Rectangle.Max.X
+		y1 := face.Rectangle.Max.Y
+		rectStr := fmt.Sprintf("((%d,%d),(%d,%d))", x0, y0, x1, y1)
 		descrSize := unsafe.Sizeof(face.Descriptor)
 		descrPtr := unsafe.Pointer(&face.Descriptor)
 		descrBytes := (*[1 << 30]byte)(descrPtr)[:descrSize:descrSize]
@@ -188,15 +183,13 @@ func ImportImages(connStr string, dataDir string, onlyBands []string) (err error
 		return
 	}
 
-	idolByNames, err := getIdolNamesMap()
-	if err != nil {
-		err = fmt.Errorf("Error querying idols: %v", err)
+	if err = StartFaceRec(dataDir); err != nil {
 		return
 	}
 
-	faceRec, err = dlib.NewFaceRec(getModelsDir(dataDir))
+	idolByNames, err := getIdolNamesMap()
 	if err != nil {
-		err = fmt.Errorf("Error initializing face recognizer: %v", err)
+		err = fmt.Errorf("Error querying idols: %v", err)
 		return
 	}
 

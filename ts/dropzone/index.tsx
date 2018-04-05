@@ -1,8 +1,9 @@
 import * as cx from "classnames";
 import { Component, h } from "preact";
+import { showAlert } from "../alerts";
 import "./index.less";
 
-const ALLOWED_MIMES = new Set(["image/jpeg", "image/png"]);
+const ALLOWED_MIMES = new Set(["image/jpeg"]);
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const MIN_DIMENSION = 300;
 const MAX_DIMENTION = 5000;
@@ -10,7 +11,7 @@ const MAX_DIMENTION = 5000;
 function validateImage(file: File): Promise<File> {
   return new Promise((resolve, reject) => {
     if (!ALLOWED_MIMES.has(file.type)) {
-      throw new Error("Only JPEG and PNG allowed");
+      throw new Error("Only JPEGs are allowed");
     }
     if (file.size > MAX_FILE_SIZE) {
       throw new Error("Max file size is 5MB");
@@ -85,7 +86,9 @@ class Dropzone extends Component<DropzoneProps, any> {
     }
   }
   private handleFile(file: File) {
-    validateImage(file).then(this.props.onChange, alert);
+    validateImage(file).then(this.props.onChange, (err) => {
+      showAlert(["Invalid image", err.message]);
+    });
   }
 }
 

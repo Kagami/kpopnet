@@ -108,7 +108,7 @@ class Index extends Component<{}, IndexState> {
   }
   private handleRecognizeError = (err: Error) => {
     this.setState({file: null});
-    showAlert(["Recognize error", err.toString()]);
+    showAlert(["Recognize error", err.message]);
   }
 }
 
