@@ -16,6 +16,7 @@ import "./index.less";
 
 interface IndexState {
   loading: boolean;
+  loadingErr: boolean;
   query: string;
   file?: File;
 }
@@ -28,6 +29,7 @@ class Index extends Component<{}, IndexState> {
     super();
     this.state = {
       loading: true,
+      loadingErr: false,
       query: "",
       file: null,
     };
@@ -39,11 +41,15 @@ class Index extends Component<{}, IndexState> {
       this.idolMap = getIdolMap(profiles);
       this.setState({loading: false});
     }, (err) => {
-      this.setState({loading: false});
-      showAlert(["Fetch error", "Error getting profiles"]);
+      this.setState({loading: false, loadingErr: true});
+      showAlert({
+        title: "Fetch error",
+        message: "Error getting profiles",
+        sticky: true,
+      });
     });
   }
-  public render({}, { loading, query, file }: any) {
+  public render({}, { loading, loadingErr, query, file }: any) {
     return (
       <main class="index">
         <div class="index__inner">
@@ -51,7 +57,7 @@ class Index extends Component<{}, IndexState> {
           <Search
             query={query}
             loading={loading}
-            disabled={!!file}
+            disabled={loadingErr || !!file}
             onChange={this.handleSearch}
           />
           {!loading && !file && query &&
@@ -63,7 +69,7 @@ class Index extends Component<{}, IndexState> {
           }
           {!file && !query &&
             <Dropzone
-              disabled={loading}
+              disabled={loading || loadingErr}
               onChange={this.handleFile}
             />
           }
