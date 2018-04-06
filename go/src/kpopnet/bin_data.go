@@ -3,6 +3,7 @@
 // sql/get_bands.sql
 // sql/get_idol_previews.sql
 // sql/get_idols.sql
+// sql/get_train_data.sql
 // sql/init_db.sql
 // sql/upsert_band.sql
 // sql/upsert_face.sql
@@ -132,6 +133,26 @@ func get_idolsSql() (*asset, error) {
 
 	info := bindataFileInfo{name: "get_idols.sql", size: 0, mode: os.FileMode(0), modTime: time.Unix(0, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x38, 0x44, 0xfe, 0xcc, 0x62, 0x3d, 0x28, 0x78, 0xf2, 0xd7, 0x53, 0xfa, 0x71, 0xf0, 0xe5, 0xcb, 0x5c, 0xa8, 0xd2, 0xf, 0x89, 0xcb, 0x9, 0xa4, 0x8f, 0xcb, 0x78, 0xdd, 0x79, 0xfd, 0x28, 0xa9}}
+	return a, nil
+}
+
+var _get_train_dataSql = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\x0a\x76\xf5\x71\x75\x0e\x51\xc8\x4c\xc9\xcf\x89\xcf\x4c\xd1\x51\x48\x49\x2d\x4e\x2e\xca\x2c\x28\xc9\x2f\x52\x70\x0b\xf2\xf7\x55\x48\x4b\x4c\x4e\x2d\x56\x08\xf7\x70\x0d\x72\x85\x28\x4a\xce\xcf\x4b\xcb\x2c\xca\x4d\x4d\x51\xb0\x55\x08\x09\x0a\x75\xe5\x02\x04\x00\x00\xff\xff\xe0\xc4\x44\xab\x42\x00\x00\x00")
+
+func get_train_dataSqlBytes() ([]byte, error) {
+	return bindataRead(
+		_get_train_dataSql,
+		"get_train_data.sql",
+	)
+}
+
+func get_train_dataSql() (*asset, error) {
+	bytes, err := get_train_dataSqlBytes()
+	if err != nil {
+		return nil, err
+	}
+
+	info := bindataFileInfo{name: "get_train_data.sql", size: 0, mode: os.FileMode(0), modTime: time.Unix(0, 0)}
+	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xef, 0xc3, 0x60, 0xf8, 0xf0, 0xb6, 0xa3, 0x64, 0x4b, 0x4e, 0xf5, 0xdd, 0x77, 0x6b, 0x5c, 0xa4, 0xc3, 0x8b, 0x63, 0x65, 0x17, 0x54, 0x56, 0xa5, 0xcb, 0xa, 0x7f, 0x24, 0xf1, 0x4, 0x35, 0x9b}}
 	return a, nil
 }
 
@@ -312,6 +333,8 @@ var _bindata = map[string]func() (*asset, error){
 
 	"get_idols.sql": get_idolsSql,
 
+	"get_train_data.sql": get_train_dataSql,
+
 	"init_db.sql": init_dbSql,
 
 	"upsert_band.sql": upsert_bandSql,
@@ -365,6 +388,7 @@ var _bintree = &bintree{nil, map[string]*bintree{
 	"get_bands.sql":         &bintree{get_bandsSql, map[string]*bintree{}},
 	"get_idol_previews.sql": &bintree{get_idol_previewsSql, map[string]*bintree{}},
 	"get_idols.sql":         &bintree{get_idolsSql, map[string]*bintree{}},
+	"get_train_data.sql":    &bintree{get_train_dataSql, map[string]*bintree{}},
 	"init_db.sql":           &bintree{init_dbSql, map[string]*bintree{}},
 	"upsert_band.sql":       &bintree{upsert_bandSql, map[string]*bintree{}},
 	"upsert_face.sql":       &bintree{upsert_faceSql, map[string]*bintree{}},

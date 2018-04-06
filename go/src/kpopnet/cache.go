@@ -8,6 +8,7 @@ type Key int
 
 const (
 	profileCacheKey Key = iota
+	trainDataCacheKey
 )
 
 var (

@@ -9,7 +9,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"unsafe"
 
 	"github.com/Kagami/go-dlib"
 )
@@ -136,9 +135,7 @@ func importIdolImages(st *sql.Stmt, idir string, idol Idol) (err error) {
 		x1 := face.Rectangle.Max.X
 		y1 := face.Rectangle.Max.Y
 		rectStr := fmt.Sprintf("((%d,%d),(%d,%d))", x0, y0, x1, y1)
-		descrSize := unsafe.Sizeof(face.Descriptor)
-		descrPtr := unsafe.Pointer(&face.Descriptor)
-		descrBytes := (*[1 << 30]byte)(descrPtr)[:descrSize:descrSize]
+		descrBytes := descr2bytes(face.Descriptor)
 		imageId := imageIds[i]
 		if _, err = st.Exec(rectStr, descrBytes, imageId, idolId); err != nil {
 			return
