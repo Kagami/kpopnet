@@ -23,21 +23,35 @@ class Search extends Component<SearchProps, {}> {
           ref={(i) => this.inputEl = i as HTMLInputElement}
           class="search__input"
           value={query}
+          maxLength={40}
           placeholder="Search for idol or band"
           disabled={loading || disabled}
-          onInput={this.handleChange}
+          onInput={this.handleInputChange}
         />
+        {this.renderClearButton()}
         {loading && <Spinner/>}
       </div>
     );
   }
-  private focus() {
+  private renderClearButton() {
+    if (!this.props.query) return null;
+    return (
+      <span class="search__clear-control" onClick={this.handleClearClick}>
+        ✖
+      </span>
+    );
+  }
+  private focus = () => {
     if (this.inputEl) {
       this.inputEl.focus();
     }
   }
-  private handleChange = () => {
+  private handleInputChange = () => {
     this.props.onChange(this.inputEl.value);
+  }
+  private handleClearClick = () => {
+    this.props.onChange("");
+    setTimeout(this.focus);
   }
 }
 
