@@ -57,14 +57,14 @@ class Alerts extends Component<{}, AlertsState> {
   private renderAlert = ({ id, title, message, closing }: Alert) => {
     return (
       <article class={cx("alert", closing && "alert_closing")} key={id.toString()}>
-        <a class="alert-close-control" onClick={this.makeClose(id)}>✖</a>
+        <a class="alert__close-control" onClick={this.makeClose(id)}>✖</a>
         {this.renderTitle(title)}
-        <section class="alert-message">{message}</section>
+        <section class="alert__message">{message}</section>
       </article>
     );
   }
   private renderTitle(title: string) {
-    return title ? <header class="alert-title">{title}</header> : null;
+    return title ? <header class="alert__title">{title}</header> : null;
   }
 }
 
