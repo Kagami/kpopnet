@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"image"
 	_ "image/jpeg"
-	"unsafe"
 
 	"github.com/Kagami/go-dlib"
 )
@@ -22,17 +21,6 @@ var (
 type TrainData struct {
 	labels  []string
 	samples []dlib.FaceDescriptor
-}
-
-// Zero-copy conversions.
-
-func descr2bytes(d dlib.FaceDescriptor) []byte {
-	size := unsafe.Sizeof(d)
-	return (*[1 << 30]byte)(unsafe.Pointer(&d))[:size:size]
-}
-
-func bytes2descr(b []byte) dlib.FaceDescriptor {
-	return *(*dlib.FaceDescriptor)(unsafe.Pointer(&b[0]))
 }
 
 func StartFaceRec(dataDir string) (err error) {
