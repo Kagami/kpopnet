@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS idol_previews (
 CREATE TABLE IF NOT EXISTS faces (
   id bigserial PRIMARY KEY,
   rectangle box NOT NULL,
-  descriptor bytea NOT NULL,
+  descriptor bytea NOT NULL CHECK (octet_length(descriptor) = 512),
   image_id char(40) NOT NULL,
   idol_id uuid NOT NULL REFERENCES idols ON DELETE CASCADE,
   idol_confirmed boolean NOT NULL DEFAULT FALSE,

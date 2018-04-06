@@ -45,6 +45,7 @@ func StartFaceRec(dataDir string) (err error) {
 
 // TODO(Kagami): Search for already recognized idol using imageId.
 func Recognize(imgData []byte) (idolId *string, err error) {
+	// TODO(Kagami): Invalidate?
 	v, err := cached(trainDataCacheKey, func() (interface{}, error) {
 		return GetTrainData()
 	})

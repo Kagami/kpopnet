@@ -19,7 +19,6 @@ var (
 	errParseForm    = errors.New("Error parsing form")
 	errParseFile    = errors.New("Error parsing form file")
 	errBadImage     = errors.New("Invalid image")
-	errRecognize    = errors.New("Recognize error")
 	errNoSingleFace = errors.New("Not a single face")
 	errNoIdol       = errors.New("Cannot find idol")
 )
@@ -61,7 +60,7 @@ func handle500(w http.ResponseWriter, r *http.Request, err error) {
 }
 
 func ServeProfiles(w http.ResponseWriter, r *http.Request) {
-	// FIXME(Kagami): For some reason cached request is not fast enough.
+	// TODO(Kagami): For some reason cached request is not fast enough.
 	// TODO(Kagami): Use some trigger to invalidate cache.
 	v, err := cached(profileCacheKey, func() (v interface{}, err error) {
 		ps, err := GetProfiles()
@@ -111,7 +110,7 @@ func ServeRecognize(w http.ResponseWriter, r *http.Request) {
 	case nil:
 		// Do nothing.
 	default:
-		serveError(w, r, errRecognize, 500)
+		handle500(w, r, err)
 		return
 	}
 	if idolId == nil {
