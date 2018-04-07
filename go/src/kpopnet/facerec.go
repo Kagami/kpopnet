@@ -94,7 +94,13 @@ func RecognizeMultipart(fh *multipart.FileHeader) (idolId *string, err error) {
 func Recognize(imgData []byte) (idolId *string, err error) {
 	// TODO(Kagami): Invalidate?
 	v, err := cached(trainDataCacheKey, func() (interface{}, error) {
-		return GetTrainData()
+		trainData, err := GetTrainData()
+		if err == nil {
+			// NOTE(Kagami): We don't copy this data to C++ side so need to
+			// keep in cache to prevent GC.
+			faceRec.SetSamples(trainData.samples)
+		}
+		return trainData, err
 	})
 	if err != nil {
 		return
@@ -117,10 +123,7 @@ func Recognize(imgData []byte) (idolId *string, err error) {
 		return
 	}
 
-	idx, err := faceRec.Classify(trainData.samples, face.Descriptor)
-	if err != nil {
-		return
-	}
+	idx := faceRec.Classify(face.Descriptor)
 	if idx < 0 {
 		err = errNoIdol
 		return
