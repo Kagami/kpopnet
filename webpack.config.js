@@ -62,7 +62,10 @@ module.exports = (env = {}, opts) => {
     ].concat(DEBUG ? [
       // Development only.
       new (require("webpack-notifier")),
-      new (require("webpack-livereload-plugin")),
+      new (require("webpack-livereload-plugin"))({
+        port: 35730,
+        appendScriptTag: true,
+      }),
     ] : [
       // Production only.
       new OptimizeCssAssetsPlugin(),
