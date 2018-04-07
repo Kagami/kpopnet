@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 )
 
@@ -88,19 +87,11 @@ func ServeRecognize(w http.ResponseWriter, r *http.Request) {
 		serveError(w, r, errParseFile, 400)
 		return
 	}
-	fd, err := fhs[0].Open()
-	if err != nil {
-		serveError(w, r, errParseFile, 400)
-		return
-	}
-	defer fd.Close()
-	fdata, err := ioutil.ReadAll(fd)
-	if err != nil {
-		serveError(w, r, errParseFile, 400)
-		return
-	}
-	idolId, err := Recognize(fdata)
+	idolId, err := RequestRecognizeMultipart(fhs[0])
 	switch err {
+	case errParseFile:
+		serveError(w, r, err, 400)
+		return
 	case errBadImage:
 		serveError(w, r, err, 400)
 		return
