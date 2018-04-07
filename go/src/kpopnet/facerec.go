@@ -96,6 +96,9 @@ func Recognize(imgData []byte) (idolId *string, err error) {
 	v, err := cached(trainDataCacheKey, func() (interface{}, error) {
 		return GetTrainData()
 	})
+	if err != nil {
+		return
+	}
 	trainData := v.(*TrainData)
 
 	r := bytes.NewReader(imgData)
