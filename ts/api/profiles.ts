@@ -11,6 +11,7 @@ export interface Band {
   id: string;
   name: string;
   alt_names?: string[];
+  label_icon?: string;
   // Other props.
   [key: string]: ProfileValue;
 }

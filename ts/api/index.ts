@@ -29,7 +29,7 @@ function handleErrorCode(res: Response): Promise<any> {
   const isHtml = ctype.startsWith("text/html");
   const isJson = ctype.startsWith("application/json");
   if (isHtml) {
-    // Probably 404/500 page, not bother parsing.
+    // Probably 404/500 page, don't bother parsing.
     throw new Error(unknown);
   } else if (isJson) {
     // Probably standardly-shaped JSON error.
