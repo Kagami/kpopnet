@@ -13,7 +13,7 @@ const (
 
 var (
 	mu    sync.Mutex
-	cache = make(map[Key]interface{}, 1)
+	cache = make(map[Key]interface{}, 2)
 )
 
 func cached(key Key, makev func() (interface{}, error)) (v interface{}, err error) {
