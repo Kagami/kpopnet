@@ -34,14 +34,19 @@
   display: flex;
   margin: 0;
 }
-.idol__info-line:first-child {
-  font-size: 36px;
+
+.idol__name-line {
   border-bottom: 5px solid #6b6c9a;
   margin-bottom: 12px;
 
-  .idol__info-key {
-    display: none;
+  .idol__info-val {
+    flex: 1;
+    font-size: 30px;
   }
+}
+
+.idol__label {
+  align-self: flex-end;
 }
 
 .idol__info-key {

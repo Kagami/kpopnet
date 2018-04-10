@@ -28,6 +28,9 @@ class IdolItem extends Component<ItemProps, any> {
     const opts = {prefix: FILE_PREFIX, fallback: previewFallbackUrl};
     const previewUrl = getIdolPreviewUrl(idol, opts);
     const style = {backgroundImage: `url(${previewUrl})`};
+    const lines = renderIdol(idol, bandMap);
+    const nameVal = lines[0][1];
+    const { label_icon } = bandMap.get(idol.band_id);
     return (
       <section class="idol">
         <div
@@ -35,7 +38,15 @@ class IdolItem extends Component<ItemProps, any> {
           style={style}
         />
         <div class="idol__info">
-          {renderIdol(idol, bandMap).map(([key, val]) =>
+          <p class="idol__info-line idol__name-line">
+            <span class="idol__info-val">{nameVal}</span>
+            {label_icon &&
+              <span class="idol__label">
+                <i class={`label label-${label_icon}`} />
+              </span>
+            }
+          </p>
+          {lines.slice(1).map(([key, val]) =>
             <p class="idol__info-line">
               <span class="idol__info-key">{key}</span>
               <span class="idol__info-val">{val}</span>
