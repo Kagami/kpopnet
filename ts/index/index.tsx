@@ -10,6 +10,7 @@ import Alerts, { showAlert } from "../alerts";
 import { BandMap, getBandMap, getIdolMap, getProfiles, IdolMap, Profiles } from "../api";
 import Dropzone from "../dropzone";
 import IdolList from "../idol-list";
+import "../labels";
 import Recognizer from "../recognizer";
 import Search from "../search";
 import "./index.less";

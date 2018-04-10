@@ -11,6 +11,8 @@
 /node_modules/
 /package-lock.json
 /dist/
+/ts/labels/labels.png
+/ts/labels/labels.less
 
 /data/images/
 /data/models/

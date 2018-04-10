@@ -4,6 +4,7 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const SpritesmithPlugin = require("webpack-spritesmith");
 
 module.exports = (env = {}, opts) => {
   function st(name) {
@@ -34,11 +35,14 @@ module.exports = (env = {}, opts) => {
         },
         {
           test: /\.less$/,
-          use: ExtractTextPlugin.extract(["css-loader", "less-loader"]),
+          use: ExtractTextPlugin.extract([
+            "css-loader",
+            {loader: "less-loader", options: {javascriptEnabled: true}},
+          ]),
           exclude: /node_modules/,
         },
         {
-          test: /\.svg$/,
+          test: /\.(png|svg)$/,
           use: {loader: "file-loader", options: {name: ASSET_NAME}},
           exclude: /node_modules/,
         },
@@ -57,6 +61,24 @@ module.exports = (env = {}, opts) => {
       new HtmlWebpackPlugin({
         title: "K-pop idols network | Profiles, images and face recognition",
         favicon: path.resolve(__dirname, "ts/index/favicon.ico"),
+      }),
+      new SpritesmithPlugin({
+        src: {
+          cwd: path.resolve(__dirname, "ts/labels"),
+          glob: "*@2x.png"
+        },
+        target: {
+          image: path.resolve(__dirname, "ts/labels/labels.png"),
+          css: path.resolve(__dirname, "ts/labels/labels.less"),
+        },
+        apiOptions: {
+          cssImageRef: "labels.png",
+          generateSpriteName: (s) => "label-" + path.basename(s, "@2x.png"),
+        },
+        spritesmithOptions: {
+          // https://github.com/twolfson/gulp.spritesmith/issues/97
+          padding: 1,
+        },
       }),
       new ExtractTextPlugin(CSS_NAME),
     ].concat(DEBUG ? [
