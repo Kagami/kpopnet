@@ -1,3 +1,5 @@
+// +build !nodlib
+
 package kpopnet
 
 import (
@@ -7,6 +9,7 @@ import (
 	_ "image/jpeg"
 	"io/ioutil"
 	"mime/multipart"
+	"unsafe"
 
 	"github.com/Kagami/go-dlib"
 )
@@ -34,7 +37,7 @@ type recResult struct {
 	err    error
 }
 
-type TrainData struct {
+type trainData struct {
 	labels  []string
 	samples []dlib.FaceDescriptor
 }
@@ -54,7 +57,7 @@ func StartFaceRec(dataDir string) (err error) {
 func recWorker() {
 	for {
 		req := <-recJobs
-		idolId, err := RecognizeMultipart(req.fh)
+		idolId, err := recognizeMultipart(req.fh)
 		req.ch <- recResult{idolId, err}
 	}
 }
@@ -73,7 +76,7 @@ func RequestRecognizeMultipart(fh *multipart.FileHeader) (idolId *string, err er
 
 // Simple wrapper to work with uploaded files.
 // Recognize immediately.
-func RecognizeMultipart(fh *multipart.FileHeader) (idolId *string, err error) {
+func recognizeMultipart(fh *multipart.FileHeader) (idolId *string, err error) {
 	fd, err := fh.Open()
 	if err != nil {
 		err = errParseFile
@@ -85,27 +88,27 @@ func RecognizeMultipart(fh *multipart.FileHeader) (idolId *string, err error) {
 		err = errParseFile
 		return
 	}
-	idolId, err = Recognize(imgData)
+	idolId, err = recognize(imgData)
 	return
 }
 
 // Recognize immediately.
 // TODO(Kagami): Search for already recognized idol using imageId.
-func Recognize(imgData []byte) (idolId *string, err error) {
+func recognize(imgData []byte) (idolId *string, err error) {
 	// TODO(Kagami): Invalidate?
 	v, err := cached(trainDataCacheKey, func() (interface{}, error) {
-		trainData, err := GetTrainData()
+		data, err := getTrainData()
 		if err == nil {
 			// NOTE(Kagami): We don't copy this data to C++ side so need to
 			// keep in cache to prevent GC.
-			faceRec.SetSamples(trainData.samples)
+			faceRec.SetSamples(data.samples)
 		}
-		return trainData, err
+		return data, err
 	})
 	if err != nil {
 		return
 	}
-	trainData := v.(*TrainData)
+	data := v.(*trainData)
 
 	r := bytes.NewReader(imgData)
 	c, typ, err := image.DecodeConfig(r)
@@ -128,6 +131,48 @@ func Recognize(imgData []byte) (idolId *string, err error) {
 		err = errNoIdol
 		return
 	}
-	idolId = &trainData.labels[idx]
+	idolId = &data.labels[idx]
 	return
+}
+
+// Get all confirmed face descriptors.
+func getTrainData() (data *trainData, err error) {
+	var labels []string
+	var samples []dlib.FaceDescriptor
+
+	rs, err := prepared["get_train_data"].Query()
+	if err != nil {
+		return
+	}
+	defer rs.Close()
+	for rs.Next() {
+		var idolId string
+		var descrBytes []byte
+		if err = rs.Scan(&idolId, &descrBytes); err != nil {
+			return
+		}
+		labels = append(labels, idolId)
+		descriptor := bytes2descr(descrBytes)
+		samples = append(samples, descriptor)
+	}
+	if err = rs.Err(); err != nil {
+		return
+	}
+
+	data = &trainData{
+		labels:  labels,
+		samples: samples,
+	}
+	return
+}
+
+// Zero-copy conversions.
+
+func descr2bytes(d dlib.FaceDescriptor) []byte {
+	size := unsafe.Sizeof(d)
+	return (*[1 << 30]byte)(unsafe.Pointer(&d))[:size:size]
+}
+
+func bytes2descr(b []byte) dlib.FaceDescriptor {
+	return *(*dlib.FaceDescriptor)(unsafe.Pointer(&b[0]))
 }

@@ -3,8 +3,6 @@ package kpopnet
 import (
 	"database/sql"
 	"encoding/json"
-
-	"github.com/Kagami/go-dlib"
 )
 
 // Get all bands.
@@ -175,36 +173,5 @@ func UpdateProfiles(ps *Profiles) (err error) {
 		}
 	}
 
-	return
-}
-
-// Get all confirmed face descriptors.
-func GetTrainData() (data *TrainData, err error) {
-	var labels []string
-	var samples []dlib.FaceDescriptor
-
-	rs, err := prepared["get_train_data"].Query()
-	if err != nil {
-		return
-	}
-	defer rs.Close()
-	for rs.Next() {
-		var idolId string
-		var descrBytes []byte
-		if err = rs.Scan(&idolId, &descrBytes); err != nil {
-			return
-		}
-		labels = append(labels, idolId)
-		descriptor := bytes2descr(descrBytes)
-		samples = append(samples, descriptor)
-	}
-	if err = rs.Err(); err != nil {
-		return
-	}
-
-	data = &TrainData{
-		labels:  labels,
-		samples: samples,
-	}
 	return
 }
