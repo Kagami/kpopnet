@@ -35,10 +35,7 @@ module.exports = (env = {}, opts) => {
         },
         {
           test: /\.less$/,
-          use: ExtractTextPlugin.extract([
-            "css-loader",
-            {loader: "less-loader", options: {javascriptEnabled: true}},
-          ]),
+          use: ExtractTextPlugin.extract(["css-loader", "less-loader"]),
           exclude: /node_modules/,
         },
         {
@@ -64,16 +61,32 @@ module.exports = (env = {}, opts) => {
       }),
       new SpritesmithPlugin({
         src: {
-          cwd: path.resolve(__dirname, "ts/labels"),
-          glob: "*@2x.png"
+          cwd: path.resolve(__dirname, "ts/labels/icons"),
+          glob: "*@[24]x.png"
         },
         target: {
           image: path.resolve(__dirname, "ts/labels/labels.png"),
-          css: path.resolve(__dirname, "ts/labels/labels.less"),
+          css: [[path.resolve(__dirname, "ts/labels/labels.css"), {
+            formatOpts: {
+              cssSelector: l => ".label-" + l.name,
+            },
+          }]],
         },
         apiOptions: {
           cssImageRef: "labels.png",
-          generateSpriteName: (s) => "label-" + path.basename(s, "@2x.png"),
+          generateSpriteName: (l) => path.basename(l.slice(0, -7)),
+        },
+        // This is a bit more complex than it should be because we
+        // provide 1x/2x and 2x/4x (normal/retina) combinations of label
+        // icons.
+        retina: {
+          classifier: (l) => ({
+            type: l.endsWith("@2x.png") ? "normal" : "retina",
+            normalName: l.slice(0, -7) + "@2x.png",
+            retinaName: l.slice(0, -7) + "@4x.png",
+          }),
+          targetImage: path.resolve(__dirname, "ts/labels/labels@2x.png"),
+          cssImageRef: "labels@2x.png",
         },
         spritesmithOptions: {
           // https://github.com/twolfson/gulp.spritesmith/issues/97
