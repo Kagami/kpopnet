@@ -7,6 +7,7 @@ import (
 
 // Get all bands.
 func getBands(tx *sql.Tx) (bands []Band, bandById map[string]Band, err error) {
+	bands = make([]Band, 0)
 	bandById = make(map[string]Band)
 	rs, err := tx.Stmt(prepared["get_bands"]).Query()
 	if err != nil {
@@ -35,6 +36,7 @@ func getBands(tx *sql.Tx) (bands []Band, bandById map[string]Band, err error) {
 
 // Get all idols.
 func getIdols(tx *sql.Tx) (idols []Idol, idolById map[string]Idol, err error) {
+	idols = make([]Idol, 0)
 	idolById = make(map[string]Idol)
 	rs, err := tx.Stmt(prepared["get_idols"]).Query()
 	if err != nil {
