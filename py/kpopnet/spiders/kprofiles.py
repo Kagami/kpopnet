@@ -12,9 +12,10 @@ class KprofilesSpider(ProfileSpider):
     keep_only = {
         'I.O.I': set(['Sohye', 'Somi']),
         'I.B.I': set(['Haein', 'Hyeri', 'Sohee', 'Suhyun']),
-        'Orange Caramel': set(),
-        'Girls Next Door': set(),
+        'Orange Caramel': [],
+        'Girls Next Door': [],
         '4Minute': set(['Gayoon', 'Jihyun', 'Jiyoon', 'Sohyun']),
+        'EXID': set(['Hani', 'Hyerin', 'Jeonghwa', 'LE', 'Solji']),
     }
 
     def parse(self, response):
@@ -152,13 +153,15 @@ class KprofilesSpider(ProfileSpider):
                 val = None
         elif key == 'height':
             try:
-                val = re.search(r'([\d.]+)\s*cm', val).group(1)
+                val = re.search(r'([\d.,]+)\s*cm', val).group(1)
+                val = val.replace(',', '.')
                 val = float(val) if '.' in val else int(val)
             except AttributeError:
                 val = None
         elif key == 'weight':
             try:
-                val = re.search(r'([\d.]+)\s*kg', val).group(1)
+                val = re.search(r'([\d.,]+)\s*kg', val).group(1)
+                val = val.replace(',', '.')
                 val = float(val) if '.' in val else int(val)
             except AttributeError:
                 val = None
