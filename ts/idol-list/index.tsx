@@ -30,7 +30,7 @@ class IdolItem extends Component<ItemProps, any> {
     const style = {backgroundImage: `url(${previewUrl})`};
     const lines = renderIdol(idol, bandMap);
     const nameVal = lines[0][1];
-    const { label_icon } = bandMap.get(idol.band_id);
+    const { label_icon, label_name } = bandMap.get(idol.band_id);
     return (
       <section class="idol">
         <div
@@ -41,7 +41,7 @@ class IdolItem extends Component<ItemProps, any> {
           <p class="idol__info-line idol__name-line">
             <span class="idol__info-val">{nameVal}</span>
             {label_icon &&
-              <span class="idol__label">
+              <span class="idol__label" title={label_name}>
                 <i class={`label label-${label_icon}`} />
               </span>
             }
