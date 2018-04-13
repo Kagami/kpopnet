@@ -12,7 +12,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Kagami/go-dlib"
+	"github.com/Kagami/go-face"
 )
 
 type namesKey [2]string

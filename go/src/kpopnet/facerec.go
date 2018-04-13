@@ -11,7 +11,7 @@ import (
 	"mime/multipart"
 	"unsafe"
 
-	"github.com/Kagami/go-dlib"
+	"github.com/Kagami/go-face"
 )
 
 const (
