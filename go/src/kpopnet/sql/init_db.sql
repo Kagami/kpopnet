@@ -30,5 +30,6 @@ CREATE TABLE IF NOT EXISTS faces (
   image_id char(40) NOT NULL,
   idol_id uuid NOT NULL REFERENCES idols ON DELETE CASCADE,
   idol_confirmed boolean NOT NULL DEFAULT FALSE,
+  source varchar(100) NOT NULL,
   UNIQUE (image_id, idol_id)
 );

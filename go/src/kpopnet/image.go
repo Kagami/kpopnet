@@ -139,7 +139,10 @@ func importIdolImages(st *sql.Stmt, idir string, idol Idol) (err error) {
 		rectStr := fmt.Sprintf("((%d,%d),(%d,%d))", x0, y0, x1, y1)
 		descrBytes := descr2bytes(face.Descriptor)
 		imageId := imageIds[i]
-		if _, err = st.Exec(rectStr, descrBytes, imageId, idolId); err != nil {
+		confirmed := true
+		source := "googleimages"
+		_, err = st.Exec(rectStr, descrBytes, imageId, idolId, confirmed, source)
+		if err != nil {
 			return
 		}
 	}
