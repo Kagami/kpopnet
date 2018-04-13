@@ -23,7 +23,7 @@ const (
 )
 
 var (
-	faceRec *dlib.FaceRec
+	faceRec *face.Recognizer
 	recJobs = make(chan recRequest)
 )
 
@@ -39,11 +39,11 @@ type recResult struct {
 
 type trainData struct {
 	labels  []string
-	samples []dlib.FaceDescriptor
+	samples []face.Descriptor
 }
 
 func StartFaceRec(dataDir string) (err error) {
-	faceRec, err = dlib.NewFaceRec(getModelsDir(dataDir))
+	faceRec, err = face.NewRecognizer(getModelsDir(dataDir))
 	if err != nil {
 		return fmt.Errorf("Error initializing face recognizer: %v", err)
 	}
@@ -138,7 +138,7 @@ func recognize(imgData []byte) (idolId *string, err error) {
 // Get all confirmed face descriptors.
 func getTrainData() (data *trainData, err error) {
 	var labels []string
-	var samples []dlib.FaceDescriptor
+	var samples []face.Descriptor
 
 	rs, err := prepared["get_train_data"].Query()
 	if err != nil {
@@ -168,11 +168,11 @@ func getTrainData() (data *trainData, err error) {
 
 // Zero-copy conversions.
 
-func descr2bytes(d dlib.FaceDescriptor) []byte {
+func descr2bytes(d face.Descriptor) []byte {
 	size := unsafe.Sizeof(d)
 	return (*[1 << 30]byte)(unsafe.Pointer(&d))[:size:size]
 }
 
-func bytes2descr(b []byte) dlib.FaceDescriptor {
-	return *(*dlib.FaceDescriptor)(unsafe.Pointer(&b[0]))
+func bytes2descr(b []byte) face.Descriptor {
+	return *(*face.Descriptor)(unsafe.Pointer(&b[0]))
 }

@@ -81,7 +81,7 @@ func getIdolNamesMap() (idolByNames idolNamesMap, err error) {
 	return
 }
 
-func recognizeIdolImage(ipath string) (face *dlib.Face, id string, err error) {
+func recognizeIdolImage(ipath string) (face *face.Face, id string, err error) {
 	fd, err := os.Open(ipath)
 	if err != nil {
 		return
@@ -99,7 +99,7 @@ func recognizeIdolImage(ipath string) (face *dlib.Face, id string, err error) {
 }
 
 // TODO(Kagami): Use multiple threads?
-func recognizeIdolImages(idir string) (faces []dlib.Face, ids []string, err error) {
+func recognizeIdolImages(idir string) (faces []face.Face, ids []string, err error) {
 	idolImages, err := ioutil.ReadDir(idir)
 	if err != nil {
 		return
@@ -107,7 +107,7 @@ func recognizeIdolImages(idir string) (faces []dlib.Face, ids []string, err erro
 	// No need to validate names/formats because everything was checked by
 	// Python spider.
 	for _, file := range idolImages {
-		var face *dlib.Face
+		var face *face.Face
 		var imageId string
 		fname := file.Name()
 		ipath := filepath.Join(idir, fname)
