@@ -6,6 +6,7 @@ import (
 	"bytes"
 	"fmt"
 	"image"
+	"image/color"
 	_ "image/jpeg"
 	"io/ioutil"
 	"mime/multipart"
@@ -116,17 +117,21 @@ func recognize(imgData []byte) (idolId *string, err error) {
 		c.Width < minDimension ||
 		c.Height < minDimension ||
 		c.Width > maxDimension ||
-		c.Height > maxDimension {
+		c.Height > maxDimension ||
+		c.ColorModel != color.YCbCrModel {
 		err = errBadImage
 		return
 	}
 
-	face, err := faceRec.RecognizeSingle(imgData)
-	if err != nil || face == nil {
+	f, err := faceRec.RecognizeSingle(imgData)
+	if _, ok := err.(face.ImageLoadError); ok {
+		err = errBadImage
+	}
+	if err != nil || f == nil {
 		return
 	}
 
-	idx := faceRec.Classify(face.Descriptor)
+	idx := faceRec.Classify(f.Descriptor)
 	if idx < 0 {
 		err = errNoIdol
 		return

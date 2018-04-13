@@ -81,7 +81,7 @@ func getIdolNamesMap() (idolByNames idolNamesMap, err error) {
 	return
 }
 
-func recognizeIdolImage(ipath string) (face *face.Face, id string, err error) {
+func recognizeIdolImage(ipath string) (f *face.Face, id string, err error) {
 	fd, err := os.Open(ipath)
 	if err != nil {
 		return
@@ -90,8 +90,8 @@ func recognizeIdolImage(ipath string) (face *face.Face, id string, err error) {
 	if err != nil {
 		return
 	}
-	face, err = faceRec.RecognizeSingle(imgData)
-	if err != nil || face == nil {
+	f, err = faceRec.RecognizeSingle(imgData)
+	if err != nil || f == nil {
 		return
 	}
 	id = getSha1(imgData)
@@ -107,19 +107,19 @@ func recognizeIdolImages(idir string) (faces []face.Face, ids []string, err erro
 	// No need to validate names/formats because everything was checked by
 	// Python spider.
 	for _, file := range idolImages {
-		var face *face.Face
+		var f *face.Face
 		var imageId string
 		fname := file.Name()
 		ipath := filepath.Join(idir, fname)
-		face, imageId, err = recognizeIdolImage(ipath)
+		f, imageId, err = recognizeIdolImage(ipath)
 		if err != nil {
 			return
 		}
-		if face == nil {
+		if f == nil {
 			log.Printf("Not a single face on %s", ipath)
 			continue
 		}
-		faces = append(faces, *face)
+		faces = append(faces, *f)
 		ids = append(ids, imageId)
 	}
 	return
@@ -131,13 +131,13 @@ func importIdolImages(st *sql.Stmt, idir string, idol Idol) (err error) {
 		return
 	}
 	idolId := idol["id"].(string)
-	for i, face := range faces {
-		x0 := face.Rectangle.Min.X
-		y0 := face.Rectangle.Min.Y
-		x1 := face.Rectangle.Max.X
-		y1 := face.Rectangle.Max.Y
+	for i, f := range faces {
+		x0 := f.Rectangle.Min.X
+		y0 := f.Rectangle.Min.Y
+		x1 := f.Rectangle.Max.X
+		y1 := f.Rectangle.Max.Y
 		rectStr := fmt.Sprintf("((%d,%d),(%d,%d))", x0, y0, x1, y1)
-		descrBytes := descr2bytes(face.Descriptor)
+		descrBytes := descr2bytes(f.Descriptor)
 		imageId := imageIds[i]
 		confirmed := true
 		source := "googleimages"
