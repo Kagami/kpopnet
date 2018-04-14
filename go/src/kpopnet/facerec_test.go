@@ -14,8 +14,14 @@ const (
 )
 
 var (
-	testIdols = map[string]string{
-		"elkie1.jpg": "Elkie, CLC",
+	testData = map[string]string{
+		"elkie.jpg":      "Elkie, CLC",
+		"chaeyoung.jpg":  "Chaeyoung, Twice",
+		"chaeyoung2.jpg": "Chaeyoung, Twice",
+		"sejeong.jpg":    "Sejeong, Gugudan",
+		"jimin.jpg":      "Jimin, AOA",
+		"jimin2.jpg":     "Jimin, AOA",
+		"jimin4.jpg":     "Jimin, AOA",
 	}
 )
 
@@ -61,27 +67,29 @@ func TestIdols(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for fname, expected := range testIdols {
-		names := strings.Split(expected, ", ")
-		expectedIname := names[0]
-		expectedBname := names[1]
+	for fname, expected := range testData {
+		t.Run(fname, func(t *testing.T) {
+			names := strings.Split(expected, ", ")
+			expectedIname := names[0]
+			expectedBname := names[1]
 
-		actualIdolId, err := recognizeFile(getTestFilePath(fname))
-		if err != nil {
-			t.Fatal(err)
-		}
-		if actualIdolId == nil {
-			t.Errorf("%s: expected %s but not recognized", fname, expected)
-			continue
-		}
+			actualIdolId, err := recognizeFile(getTestFilePath(fname))
+			if err != nil {
+				t.Fatal(err)
+			}
+			if actualIdolId == nil {
+				t.Errorf("%s: expected “%s” but not recognized", fname, expected)
+				return
+			}
 
-		idol := idolById[*actualIdolId]
-		band := bandById[idol["band_id"].(string)]
-		actualIname := idol["name"]
-		actualBname := band["name"]
-		if expectedIname != actualIname || expectedBname != actualBname {
-			actual := fmt.Sprintf("%s, %s", actualIname, actualBname)
-			t.Errorf("%s: expected “%s” but got “%s”", fname, expected, actual)
-		}
+			idol := idolById[*actualIdolId]
+			band := bandById[idol["band_id"].(string)]
+			actualIname := idol["name"]
+			actualBname := band["name"]
+			if expectedIname != actualIname || expectedBname != actualBname {
+				actual := fmt.Sprintf("%s, %s", actualIname, actualBname)
+				t.Errorf("%s: expected “%s” but got “%s”", fname, expected, actual)
+			}
+		})
 	}
 }
