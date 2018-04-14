@@ -1,9 +1,11 @@
 package kpopnet
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -13,12 +15,27 @@ const (
 
 var (
 	testIdols = map[string]string{
-		"elkie1": "235a1504-e54b-4aae-bb11-a2e33d3c2ea8",
+		"elkie1.jpg": "Elkie, CLC",
 	}
 )
 
-func getTestFilePath(name string) string {
-	return filepath.Join("testdata", name+".jpg")
+func getMaps() (idolById map[string]Idol, bandById map[string]Band, err error) {
+	tx, err := beginTx()
+	if err != nil {
+		return
+	}
+	defer endTx(tx, &err)
+	if _, idolById, err = getIdols(tx); err != nil {
+		return
+	}
+	if _, bandById, err = getBands(tx); err != nil {
+		return
+	}
+	return
+}
+
+func getTestFilePath(fname string) string {
+	return filepath.Join("testdata", fname)
 }
 
 func recognizeFile(fpath string) (idolId *string, err error) {
@@ -40,15 +57,31 @@ func TestIdols(t *testing.T) {
 	if err := startFaceRec("testdata"); err != nil {
 		t.Fatal(err)
 	}
-	for name, expectedIdolId := range testIdols {
-		actualIdolId, err := recognizeFile(getTestFilePath(name))
+	idolById, bandById, err := getMaps()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for fname, expected := range testIdols {
+		names := strings.Split(expected, ", ")
+		expectedIname := names[0]
+		expectedBname := names[1]
+
+		actualIdolId, err := recognizeFile(getTestFilePath(fname))
 		if err != nil {
 			t.Fatal(err)
 		}
 		if actualIdolId == nil {
-			t.Errorf("%s: no result", name)
-		} else if expectedIdolId != *actualIdolId {
-			t.Errorf("%s: expected %s but got %s", name, expectedIdolId, *actualIdolId)
+			t.Errorf("%s: expected %s but not recognized", fname, expected)
+			continue
+		}
+
+		idol := idolById[*actualIdolId]
+		band := bandById[idol["band_id"].(string)]
+		actualIname := idol["name"]
+		actualBname := band["name"]
+		if expectedIname != actualIname || expectedBname != actualBname {
+			actual := fmt.Sprintf("%s, %s", actualIname, actualBname)
+			t.Errorf("%s: expected “%s” but got “%s”", fname, expected, actual)
 		}
 	}
 }
