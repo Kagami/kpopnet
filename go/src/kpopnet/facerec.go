@@ -43,8 +43,13 @@ type trainData struct {
 	samples []face.Descriptor
 }
 
-func StartFaceRec(dataDir string) (err error) {
-	faceRec, err = face.NewRecognizer(getModelsDir(dataDir))
+func StartFaceRec(dataDir string) error {
+	return startFaceRec(getModelsDir(dataDir))
+}
+
+// Useful for tests.
+func startFaceRec(modelsDir string) (err error) {
+	faceRec, err = face.NewRecognizer(modelsDir)
 	if err != nil {
 		return fmt.Errorf("Error initializing face recognizer: %v", err)
 	}

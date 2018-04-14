@@ -2,7 +2,7 @@ export GOPATH = $(PWD)/go
 export PATH := $(PATH):$(PWD)/go/bin
 
 all: pydeps tsdeps go/bin/kpopnetd
-test: pylint tslint gofmt-staged go/bin/kpopnetd
+test: pylint tslint gofmt-staged go/bin/kpopnetd gotest
 
 py/env:
 	virtualenv -p python3 --system-site-packages $@
@@ -41,3 +41,9 @@ gofmt-staged:
 
 gotags:
 	ctags -R go/src/kpopnet
+
+go/src/kpopnet/testdata:
+	git clone https://github.com/Kagami/go-face-testdata go/src/kpopnet/testdata
+
+gotest: go/src/kpopnet/testdata
+	-go test -v kpopnet

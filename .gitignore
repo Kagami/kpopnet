@@ -6,6 +6,7 @@
 /go/bin/
 /go/pkg/
 !/go/src/kpopnet/
+/go/src/kpopnet/testdata
 /tags
 
 /node_modules/
