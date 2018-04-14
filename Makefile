@@ -46,4 +46,4 @@ go/src/kpopnet/testdata:
 	git clone https://github.com/Kagami/go-face-testdata go/src/kpopnet/testdata
 
 gotest: go/src/kpopnet/testdata
-	-go test -v kpopnet
+	go test -v kpopnet

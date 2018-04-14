@@ -33,3 +33,5 @@ CREATE TABLE IF NOT EXISTS faces (
   source varchar(100) NOT NULL,
   UNIQUE (image_id, idol_id)
 );
+
+CREATE INDEX IF NOT EXISTS faces_idol_id on faces (idol_id);

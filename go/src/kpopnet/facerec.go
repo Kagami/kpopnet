@@ -39,8 +39,9 @@ type recResult struct {
 }
 
 type trainData struct {
-	labels  []string
 	samples []face.Descriptor
+	cats    [][2]int32
+	labels  map[int]string
 }
 
 func StartFaceRec(dataDir string) error {
@@ -107,7 +108,7 @@ func recognize(imgData []byte) (idolId *string, err error) {
 		if err == nil {
 			// NOTE(Kagami): We don't copy this data to C++ side so need to
 			// keep in cache to prevent GC.
-			faceRec.SetSamples(data.samples)
+			faceRec.SetSamples(data.samples, data.cats)
 		}
 		return data, err
 	})
@@ -136,42 +137,54 @@ func recognize(imgData []byte) (idolId *string, err error) {
 		return
 	}
 
-	idx := faceRec.Classify(f.Descriptor)
-	if idx < 0 {
+	catIdx := faceRec.Classify(f.Descriptor)
+	if catIdx < 0 {
 		err = errNoIdol
 		return
 	}
-	idolId = &data.labels[idx]
-	return
+	id := data.labels[catIdx]
+	return &id, nil
 }
 
 // Get all confirmed face descriptors.
 func getTrainData() (data *trainData, err error) {
-	var labels []string
 	var samples []face.Descriptor
+	var cats [][2]int32
+	labels := make(map[int]string)
 
 	rs, err := prepared["get_train_data"].Query()
 	if err != nil {
 		return
 	}
 	defer rs.Close()
+	var idx int32
+	var catIdx int32
+	var prevIdolId string
+	catIdx = -1
 	for rs.Next() {
 		var idolId string
 		var descrBytes []byte
 		if err = rs.Scan(&idolId, &descrBytes); err != nil {
 			return
 		}
-		labels = append(labels, idolId)
 		descriptor := bytes2descr(descrBytes)
 		samples = append(samples, descriptor)
+		if idolId != prevIdolId {
+			catIdx++
+			labels[int(catIdx)] = idolId
+		}
+		cats = append(cats, [2]int32{idx, catIdx})
+		idx++
+		prevIdolId = idolId
 	}
 	if err = rs.Err(); err != nil {
 		return
 	}
 
 	data = &trainData{
-		labels:  labels,
 		samples: samples,
+		cats:    cats,
+		labels:  labels,
 	}
 	return
 }

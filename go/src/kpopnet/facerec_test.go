@@ -19,9 +19,9 @@ var (
 		"chaeyoung.jpg":  "Chaeyoung, Twice",
 		"chaeyoung2.jpg": "Chaeyoung, Twice",
 		"sejeong.jpg":    "Sejeong, Gugudan",
-		"jimin.jpg":      "Jimin, AOA",
-		"jimin2.jpg":     "Jimin, AOA",
-		"jimin4.jpg":     "Jimin, AOA",
+		// "jimin.jpg":      "Jimin, AOA",
+		"jimin2.jpg": "Jimin, AOA",
+		// "jimin4.jpg":     "Jimin, AOA",
 	}
 )
 
