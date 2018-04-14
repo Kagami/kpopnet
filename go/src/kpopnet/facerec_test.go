@@ -14,14 +14,37 @@ const (
 )
 
 var (
+	// TODO(Kagami): Grab a lot of test data to test against regressions.
 	testData = map[string]string{
 		"elkie.jpg":      "Elkie, CLC",
 		"chaeyoung.jpg":  "Chaeyoung, Twice",
 		"chaeyoung2.jpg": "Chaeyoung, Twice",
 		"sejeong.jpg":    "Sejeong, Gugudan",
-		// "jimin.jpg":      "Jimin, AOA",
-		"jimin2.jpg": "Jimin, AOA",
-		// "jimin4.jpg":     "Jimin, AOA",
+		"jimin.jpg":      "Jimin, AOA",
+		"jimin2.jpg":     "Jimin, AOA",
+		"jimin4.jpg":     "Jimin, AOA",
+		"meiqi.jpg":      "Mei Qi, WJSN",
+		"chaeyeon2.jpg":  "Chaeyeon, DIA",
+		"chaeyeon3.jpg":  "Chaeyeon, DIA",
+		"tzuyu2.jpg":     "Tzuyu, Twice",
+		"nayoung.jpg":    "Nayoung, PRISTIN",
+		"luda2.jpg":      "Luda, WJSN",
+		// Currently failing.
+		// "bona.jpg": "Bona, WJSN",
+		// "bona2.jpg": "Bona, WJSN",
+		// "bona3.jpg": "Bona, WJSN",
+		// "bona4.jpg": "Bona, WJSN",
+		// "nana.jpg": "Nana, After School",
+		// "chaeyeon.jpg": "Chaeyeon, DIA",
+		// "chaeyeon4.jpg": "Chaeyeon, DIA",
+		// "luda.jpg": "Luda, WJSN",
+		// "eunseo2.jpg": "Eunseo, WJSN",
+		// "eunseo3.jpg": "Eunseo, WJSN",
+		// "yujin.jpg": "Yujin, CLC",
+		// "tzuyu.jpg": "Tzuyu, Twice",
+		// "seulgi.jpg": "Seulgi, Red Velvet",
+		// "eunwoo.jpg": "Eunwoo, PRISTIN",
+		// "rena.jpg": "Rena, PRISTIN",
 	}
 )
 
