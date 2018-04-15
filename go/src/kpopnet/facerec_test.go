@@ -45,6 +45,9 @@ var (
 		// "seulgi.jpg": "Seulgi, Red Velvet",
 		// "eunwoo.jpg": "Eunwoo, PRISTIN",
 		// "rena.jpg": "Rena, PRISTIN",
+		// "jimin5.jpg": "Jimin, AOA",
+		// "jimin6.jpg": "Jimin, AOA",
+		// "jimin7.jpg": "Jimin, AOA",
 	}
 )
 
