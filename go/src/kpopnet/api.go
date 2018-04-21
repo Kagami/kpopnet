@@ -22,19 +22,27 @@ var (
 	errNoIdol       = errors.New("Cannot find idol")
 )
 
+func setMainHeaders(w http.ResponseWriter) {
+	w.Header().Set("Cache-Control", "no-cache")
+}
+
+func setBodyHeaders(w http.ResponseWriter) {
+	w.Header().Set("Content-Type", "application/json")
+}
+
 func setApiHeaders(w http.ResponseWriter) {
-	head := w.Header()
-	head.Set("Cache-Control", "no-cache")
-	head.Set("Content-Type", "application/json")
+	setMainHeaders(w)
+	setBodyHeaders(w)
 }
 
 func serveData(w http.ResponseWriter, r *http.Request, data []byte) {
-	etag := fmt.Sprintf("\"%s\"", hashBytes(data))
+	setMainHeaders(w)
+	etag := fmt.Sprintf("W/\"%s\"", hashBytes(data))
+	w.Header().Set("ETag", etag)
 	if checkEtag(w, r, etag) {
 		return
 	}
-	setApiHeaders(w)
-	w.Header().Set("ETag", etag)
+	setBodyHeaders(w)
 	w.Write(data)
 }
 
