@@ -14,12 +14,12 @@ var (
 	maxBodySize     = maxFileSize + maxOverheadSize
 
 	// TODO(Kagami): Better error granularity?
-	errInternal     = errors.New("Internal error")
-	errParseForm    = errors.New("Error parsing form")
-	errParseFile    = errors.New("Error parsing form file")
-	errBadImage     = errors.New("Invalid image")
-	errNoSingleFace = errors.New("Not a single face")
-	errNoIdol       = errors.New("Cannot find idol")
+	errInternal     = errors.New("internal error")
+	errParseForm    = errors.New("error parsing form")
+	errParseFile    = errors.New("error parsing form file")
+	errBadImage     = errors.New("invalid image")
+	errNoSingleFace = errors.New("not a single face")
+	errNoIdol       = errors.New("cannot find idol")
 )
 
 func setMainHeaders(w http.ResponseWriter) {
@@ -30,7 +30,7 @@ func setBodyHeaders(w http.ResponseWriter) {
 	w.Header().Set("Content-Type", "application/json")
 }
 
-func setApiHeaders(w http.ResponseWriter) {
+func setAPIHeaders(w http.ResponseWriter) {
 	setMainHeaders(w)
 	setBodyHeaders(w)
 }
@@ -46,7 +46,7 @@ func serveData(w http.ResponseWriter, r *http.Request, data []byte) {
 	w.Write(data)
 }
 
-func serveJson(w http.ResponseWriter, r *http.Request, v interface{}) {
+func serveJSON(w http.ResponseWriter, r *http.Request, v interface{}) {
 	data, err := json.Marshal(v)
 	if err != nil {
 		handle500(w, r, err)
@@ -56,7 +56,7 @@ func serveJson(w http.ResponseWriter, r *http.Request, v interface{}) {
 }
 
 func serveError(w http.ResponseWriter, r *http.Request, err error, code int) {
-	setApiHeaders(w)
+	setAPIHeaders(w)
 	w.WriteHeader(code)
 	io.WriteString(w, fmt.Sprintf("{\"error\": \"%v\"}", err))
 }
@@ -117,5 +117,5 @@ func ServeRecognize(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	result := map[string]string{"id": *idolId}
-	serveJson(w, r, result)
+	serveJSON(w, r, result)
 }
