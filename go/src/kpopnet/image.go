@@ -191,13 +191,13 @@ func ImportImages(connStr string, dataDir string, onlyBands []string) (err error
 
 	idolByNames, err := getIdolNamesMap()
 	if err != nil {
-		err = fmt.Errorf("Error querying idols: %v", err)
+		err = fmt.Errorf("error querying idols: %v", err)
 		return
 	}
 
 	bandDirs, err := ioutil.ReadDir(getImagesDir(dataDir))
 	if err != nil {
-		err = fmt.Errorf("Error reading bands: %v", err)
+		err = fmt.Errorf("error reading bands: %v", err)
 		return
 	}
 
@@ -213,7 +213,7 @@ func ImportImages(connStr string, dataDir string, onlyBands []string) (err error
 		}
 		bdir := filepath.Join(getImagesDir(dataDir), bname)
 		if err = importBandImages(bdir, bname, idolByNames); err != nil {
-			err = fmt.Errorf("Error importing %s images: %v", bname, err)
+			err = fmt.Errorf("error importing %s images: %v", bname, err)
 			return
 		}
 	}

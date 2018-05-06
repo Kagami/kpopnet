@@ -29,11 +29,11 @@ func prepare() (err error) {
 			// Do nothing.
 		case strings.HasPrefix(name, "fn_"):
 			if err = execQ(id); err != nil {
-				return fmt.Errorf("Error preparing %s: %v", name, err)
+				return fmt.Errorf("error preparing %s: %v", name, err)
 			}
 		default:
 			if prepared[id], err = db.Prepare(getQuery(id)); err != nil {
-				return fmt.Errorf("Error preparing %s: %v", name, err)
+				return fmt.Errorf("error preparing %s: %v", name, err)
 			}
 		}
 	}
@@ -50,7 +50,7 @@ func StartDb(openedDb *sql.DB, connStr string) (err error) {
 	}
 
 	if err = execQ("init_db"); err != nil {
-		return fmt.Errorf("Error initializing database: %v", err)
+		return fmt.Errorf("error initializing database: %v", err)
 	}
 
 	if err = prepare(); err != nil {

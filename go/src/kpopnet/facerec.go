@@ -52,7 +52,7 @@ func StartFaceRec(dataDir string) error {
 func startFaceRec(modelsDir string) (err error) {
 	faceRec, err = face.NewRecognizer(modelsDir)
 	if err != nil {
-		return fmt.Errorf("Error initializing face recognizer: %v", err)
+		return fmt.Errorf("error initializing face recognizer: %v", err)
 	}
 	for i := 0; i < numRecWorkers; i++ {
 		go recWorker()

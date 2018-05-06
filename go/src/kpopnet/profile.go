@@ -119,12 +119,12 @@ func ImportProfiles(connStr string, dataDir string) (err error) {
 	}
 	ps, err := ReadProfiles(dataDir)
 	if err != nil {
-		err = fmt.Errorf("Error reading profiles: %v", err)
+		err = fmt.Errorf("error reading profiles: %v", err)
 		return
 	}
 	err = UpdateProfiles(ps)
 	if err != nil {
-		err = fmt.Errorf("Error updating DB profiles: %v", err)
+		err = fmt.Errorf("error updating DB profiles: %v", err)
 		return
 	}
 	return
