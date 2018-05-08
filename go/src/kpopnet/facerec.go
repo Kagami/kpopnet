@@ -40,7 +40,7 @@ type recResult struct {
 
 type trainData struct {
 	samples []face.Descriptor
-	cats    [][2]int32
+	cats    []int32
 	labels  map[int]string
 }
 
@@ -149,7 +149,7 @@ func recognize(imgData []byte) (idolId *string, err error) {
 // Get all confirmed face descriptors.
 func getTrainData() (data *trainData, err error) {
 	var samples []face.Descriptor
-	var cats [][2]int32
+	var cats []int32
 	labels := make(map[int]string)
 
 	rs, err := prepared["get_train_data"].Query()
@@ -157,7 +157,6 @@ func getTrainData() (data *trainData, err error) {
 		return
 	}
 	defer rs.Close()
-	var idx int32
 	var catIdx int32
 	var prevIdolId string
 	catIdx = -1
@@ -173,8 +172,7 @@ func getTrainData() (data *trainData, err error) {
 			catIdx++
 			labels[int(catIdx)] = idolId
 		}
-		cats = append(cats, [2]int32{idx, catIdx})
-		idx++
+		cats = append(cats, catIdx)
 		prevIdolId = idolId
 	}
 	if err = rs.Err(); err != nil {
