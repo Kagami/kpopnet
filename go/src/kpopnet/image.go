@@ -7,6 +7,7 @@ import (
 	"database/sql"
 	"encoding/hex"
 	"fmt"
+	"image"
 	"io/ioutil"
 	"log"
 	"os"
@@ -14,6 +15,21 @@ import (
 
 	"github.com/Kagami/go-face"
 )
+
+// TODO(Kagami): Add close matches field to simplify confirmation.
+type ImageInfo struct {
+	Rectangle image.Rectangle
+	IdolId    string
+	Confirmed bool
+}
+
+func (i ImageInfo) MarshalJSON() ([]byte, error) {
+	r := i.Rectangle
+	s := fmt.Sprintf(
+		`{"rect":[%d,%d,%d,%d],"id":"%s","confirmed":"%v"}`,
+		r.Min.X, r.Min.Y, r.Max.X, r.Max.Y, i.IdolId, i.Confirmed)
+	return []byte(s), nil
+}
 
 type namesKey [2]string
 type idolNamesMap map[namesKey]Idol
@@ -132,11 +148,7 @@ func importIdolImages(st *sql.Stmt, idir string, idol Idol) (err error) {
 	}
 	idolId := idol["id"].(string)
 	for i, f := range faces {
-		x0 := f.Rectangle.Min.X
-		y0 := f.Rectangle.Min.Y
-		x1 := f.Rectangle.Max.X
-		y1 := f.Rectangle.Max.Y
-		rectStr := fmt.Sprintf("((%d,%d),(%d,%d))", x0, y0, x1, y1)
+		rectStr := rect2str(f.Rectangle)
 		descrBytes := descr2bytes(f.Descriptor)
 		imageId := imageIds[i]
 		confirmed := true

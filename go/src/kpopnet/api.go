@@ -119,3 +119,19 @@ func ServeRecognize(w http.ResponseWriter, r *http.Request) {
 	result := map[string]string{"id": *idolId}
 	serveJSON(w, r, result)
 }
+
+func ServeImageInfo(w http.ResponseWriter, r *http.Request) {
+	imageId := getParam(r, "id")
+	info, err := getImageInfo(imageId)
+	switch err {
+	case errNoIdol:
+		serveError(w, r, err, 404)
+		return
+	case nil:
+		// Do nothing.
+	default:
+		handle500(w, r, err)
+		return
+	}
+	serveJSON(w, r, info)
+}

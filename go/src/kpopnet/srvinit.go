@@ -43,6 +43,7 @@ func createRouter(o ServerOptions) (h http.Handler, err error) {
 
 	r.GET("/api/idols/profiles", ServeProfiles)
 	r.POST("/api/idols/recognize", ServeRecognize)
+	r.GET("/api/idols/by-image/:id", ServeImageInfo)
 
 	h = http.Handler(r)
 	return

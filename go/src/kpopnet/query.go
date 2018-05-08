@@ -177,3 +177,19 @@ func UpdateProfiles(ps *Profiles) (err error) {
 
 	return
 }
+
+func getImageInfo(imageId string) (info *ImageInfo, err error) {
+	var rectStr string
+	var idolId string
+	var confirmed bool
+	err = prepared["get_face"].QueryRow(imageId).Scan(&rectStr, &idolId, &confirmed)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			err = errNoIdol
+		}
+		return
+	}
+	rect := str2rect(rectStr)
+	info = &ImageInfo{rect, idolId, confirmed}
+	return
+}
