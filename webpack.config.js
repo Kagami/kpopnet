@@ -1,7 +1,7 @@
 const path = require("path");
 const DefinePlugin = require("webpack").DefinePlugin;
 const CleanWebpackPlugin = require("clean-webpack-plugin");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const SpritesmithPlugin = require("webpack-spritesmith");
@@ -35,7 +35,7 @@ module.exports = (env = {}, opts) => {
         },
         {
           test: /\.less$/,
-          use: ExtractTextPlugin.extract(["css-loader", "less-loader"]),
+          use: [MiniCssExtractPlugin.loader, "css-loader", "less-loader"],
           exclude: /node_modules/,
         },
         {
@@ -93,7 +93,7 @@ module.exports = (env = {}, opts) => {
           padding: 1,
         },
       }),
-      new ExtractTextPlugin(CSS_NAME),
+      new MiniCssExtractPlugin({filename: CSS_NAME}),
     ].concat(DEBUG ? [
       // Development only.
       new (require("webpack-notifier")),
