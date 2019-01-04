@@ -10,7 +10,6 @@
 /tags
 
 /node_modules/
-/package-lock.json
 /dist/
 /ts/labels/labels.png
 /ts/labels/labels@2x.png
