@@ -3,6 +3,7 @@ package kpopnet
 import (
 	"encoding/json"
 	"fmt"
+	"image"
 	"io/ioutil"
 	"path/filepath"
 	"strings"
@@ -22,6 +23,21 @@ type Idol map[string]interface{}
 type Profiles struct {
 	Bands []Band `json:"bands"`
 	Idols []Idol `json:"idols"`
+}
+
+// TODO(Kagami): Add close matches field to simplify confirmation.
+type ImageInfo struct {
+	Rectangle image.Rectangle
+	IdolId    string
+	Confirmed bool
+}
+
+func (i ImageInfo) MarshalJSON() ([]byte, error) {
+	r := i.Rectangle
+	s := fmt.Sprintf(
+		`{"rect":[%d,%d,%d,%d],"id":"%s","confirmed":"%v"}`,
+		r.Min.X, r.Min.Y, r.Max.X, r.Max.Y, i.IdolId, i.Confirmed)
+	return []byte(s), nil
 }
 
 func checkName(name string) {
